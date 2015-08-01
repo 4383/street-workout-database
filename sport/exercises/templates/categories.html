@@ -1,0 +1,15 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Exercises Overview" %}{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+<h1>
+    {% trans "Exercises Categories List" %}<br>
+    <small>{{ categories|length }} Categor{{ categories|pluralize:"ies" }} {% trans "defined" %}</small>
+</h1>
+{% endblock %}
