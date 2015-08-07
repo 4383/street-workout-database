@@ -3,3 +3,5 @@
 *media*
 *.idea*
 *.swp
+bin
+lib
