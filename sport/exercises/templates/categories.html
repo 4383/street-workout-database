@@ -1,5 +1,8 @@
 {% extends "common/base.html" %}
 {% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
 
 {% block title %}{% trans "Exercises Overview" %}{% endblock %}
 
@@ -8,8 +11,53 @@
 {% endblock %}
 
 {% block content %}
+<aside class="right list-group fixed">
+    <ul class="nav nav-pills nav-stacked">
+        {% for category in categories %}
+            {% if forloop.first %}
+                <a href="#{{ category.slug }}" class="active list-group-item">{{ category }}</a>
+            {% else %}
+                <a href="#{{ category.slug }}" class="list-group-item">{{ category }}</a>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</aside>
 <h1>
     {% trans "Exercises Categories List" %}<br>
-    <small>{{ categories|length }} Categor{{ categories|pluralize:"ies" }} {% trans "defined" %}</small>
+    <small>{{ categories|length }} {% trans "Defined" %} Categor{{ categories|pluralize:"y,ies" }} </small>
 </h1>
-{% endblock %}
+
+{% for row in categories_in_row %}
+    <div class="row">
+        {% for category in row %}
+        <div class="col-md-3">
+            <section id="{{ category.slug }}" class="panel panel-default media">
+                <div class="panel-heading"><h4>{{ category|capfirst }}</h4></div>
+                {% for image in images %}
+                    {% if image.binding.id == category.id %}
+                        <img src="{% get_media_prefix %}{{ image.image }}" class="pull-left img-thumbnail img-xs">
+                    {% endif %}
+                {% endfor %}
+                <article class="panel-body">
+                    <p>{{ category.description }}<br>
+                        <a href="{% url 'exercises_category' slug=category.slug %}">{% trans "See" %} {{ category }} {% trans "Variations Exercises..." %}</a>
+                    </p>
+                    <hr>
+                    <h5 class="underline"><u>{% trans "Related Random Exercises" %}: </u><h5>
+                    <p>
+                        {% for exercise in exercises %}
+                            {% if exercise.category == category %}
+                                <small>
+                                    <a class="btn btn-primary btn-xs"
+                                       role="button" href="{% url 'exercise' slug=exercise.slug %}">{{ exercise }}</a>
+                                </small>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                </article>
+            </section>
+        </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+{% endblock %}<!-- End Content -->

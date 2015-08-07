@@ -4,7 +4,7 @@
         <li><a href="{% url 'exercises_categories' %}">{% trans "Show By Categories" %}</a></li>
         {% for category in categories %}
             <li>
-                <a href="{% url 'exercises_category' name=category.name %}">
+                <a href="{% url 'exercises_category' slug=category.slug %}">
                     {{ category.name|capfirst }}
                 </a>
             </li>

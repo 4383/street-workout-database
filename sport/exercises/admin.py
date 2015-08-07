@@ -1,18 +1,18 @@
 from django.contrib import admin
-from models import Category
-from models import Equipment
-from models import Exercise
-from models import ImageExercise
-from models import ImageEquipment
-from models import ImageCategory
-from models import ImageMuscle
-from models import ImageMuscleGroup
-from models import ImageStep
-from models import MuscleGroup
-from models import Muscle
-from models import MuscleType
-from models import Step
-from models import VideoExercise
+from exercises.models import Category
+from exercises.models import Equipment
+from exercises.models import Exercise
+from exercises.models import ImageExercise
+from exercises.models import ImageEquipment
+from exercises.models import ImageCategory
+from exercises.models import ImageMuscle
+from exercises.models import ImageMuscleGroup
+from exercises.models import ImageStep
+from exercises.models import MuscleGroup
+from exercises.models import Muscle
+from exercises.models import MuscleType
+from exercises.models import Step
+from exercises.models import VideoExercise
 
 
 class ImageCategoryInLine(admin.StackedInline):
@@ -57,6 +57,7 @@ class StepAdminInline(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
     inlines = [ImageCategoryInLine]
 
 
@@ -64,7 +65,7 @@ class ExerciseAdmin(admin.ModelAdmin):
     inlines = [StepAdminInline, ImageExerciseInLine, VideoExerciseInline]
     list_display = ('name', 'level', 'category', 'have_related_exercises')
     fieldsets = (
-        ('General', {'fields': ('name', 'description', 'link_title', 'level', 'active')}),
+        ('General', {'fields': ('name', 'description', 'link_title', 'level', 'active', 'slug')}),
         ('Organisation', {'classes': ('collapse', ), 'fields': ('category', 'muscles', 'related_exercises')}),
         ('Extra', {'classes': ('collapse', ), 'fields': ('equipments', )})
     )

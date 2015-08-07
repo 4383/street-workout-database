@@ -14,6 +14,7 @@ class MuscleGroup(models.Model):
     name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
     active = models.BooleanField(default=False)
+    slug = models.SlugField(default='', unique=True)
 
     def __str__(self):
         return self.name
@@ -23,6 +24,7 @@ class MuscleType(models.Model):
     name = models.CharField(max_length=150, choices=MUSCLE_TYPE, unique=True)
     description = models.TextField()
     active = models.BooleanField(default=False)
+    slug = models.SlugField(default='', unique=True)
 
     def __str__(self):
         return self.name
@@ -34,6 +36,7 @@ class Muscle(models.Model):
     group = models.ForeignKey(MuscleGroup, blank=True)
     type_of_muscle = models.ForeignKey(MuscleType)
     active = models.BooleanField(default=False)
+    slug = models.SlugField(default='', unique=True)
 
     def __str__(self):
         return self.name
@@ -44,6 +47,7 @@ class Category(models.Model):
     description = models.TextField()
     muscles = models.ManyToManyField(Muscle)
     active = models.BooleanField(default=False)
+    slug = models.SlugField(default='', unique=True)
 
     def __str__(self):
         return self.name
@@ -59,6 +63,7 @@ class Equipment(models.Model):
     gym_suit = models.BooleanField(default=False)
     comfort = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
+    slug = models.SlugField(default='', unique=True)
 
     def is_indoor(self):
         return self.indoor
@@ -94,6 +99,7 @@ class Exercise(models.Model):
     level = models.CharField(max_length=15, choices=DIFFICULTY)
     equipments = models.ManyToManyField(Equipment, blank=True, default=None, null=True)
     active = models.BooleanField(default=False)
+    slug = models.SlugField(default='', unique=True)
 
     def __str__(self):
         return self.name
