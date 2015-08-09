@@ -15,9 +15,9 @@
     <ul class="nav nav-pills nav-stacked">
         {% for category in categories %}
             {% if forloop.first %}
-                <a href="#{{ category.slug }}" class="active list-group-item">{{ category }}</a>
+                <!--<a href="#{{ category.slug }}" class="active list-group-item">{{ category }}</a>-->
             {% else %}
-                <a href="#{{ category.slug }}" class="list-group-item">{{ category }}</a>
+                <!--<a href="#{{ category.slug }}" class="list-group-item">{{ category }}</a>-->
             {% endif %}
         {% endfor %}
     </ul>
@@ -29,30 +29,38 @@
 
 {% for row in categories_in_row %}
     <div class="row">
-        {% for category in row %}
+        {% for selected_category in row %}
         <div class="col-md-3">
             <section id="{{ category.slug }}" class="panel panel-default media">
-                <div class="panel-heading"><h4>{{ category|capfirst }}</h4></div>
-                {% for image in images %}
-                    {% if image.binding.id == category.id %}
-                        <img src="{% get_media_prefix %}{{ image.image }}" class="pull-left img-thumbnail img-xs">
-                    {% endif %}
-                {% endfor %}
+                <div class="panel-heading">
+                    <h4>
+                        <a href="{% url 'exercises_category' slug=selected_category.category.slug %}" >
+                            {{ selected_category.category|capfirst }}
+                            <small>
+                                ({{ selected_category.total_exercises }}
+                                Exercise{{ selected_category.total_exercises|pluralize }})
+                            </small>
+                        </a>
+                    </h4>
+                </div>
+                <img src="{% get_media_prefix %}{{ selected_category.main_image.image }}"
+                     alt="{{ selected_category.main_image.alt }}" class="pull-left img-thumbnail img-xs">
                 <article class="panel-body">
-                    <p>{{ category.description }}<br>
-                        <a href="{% url 'exercises_category' slug=category.slug %}">{% trans "See" %} {{ category }} {% trans "Variations Exercises..." %}</a>
+                    <p class="text-justify">{{ selected_category.category.description }}<br>
+                        <a href="{% url 'exercises_category' slug=selected_category.category.slug %}">
+                            {% trans "See" %} {{ selected_category.total_exercises }} {{ selected_category.category }}
+                            Variation{{ selected_category.total_exercises|pluralize }}
+                            Exercise{{ selected_category.total_exercises|pluralize }}...
+                        </a>
                     </p>
                     <hr>
-                    <h5 class="underline"><u>{% trans "Related Random Exercises" %}: </u><h5>
+                    <h5 class="underline"><u>{% trans "Related Random" %} Exercise{{ selected_category.random_selected_exercises|pluralize }}: </u><h5>
                     <p>
-                        {% for exercise in exercises %}
-                            {% if exercise.category == category %}
-                                <small>
-                                    <a class="btn btn-primary btn-xs"
-                                       role="button" href="{% url 'exercise' slug=exercise.slug %}">{{ exercise }}</a>
-                                </small>
-                            {% endif %}
-                        {% endfor %}
+                        <small>
+                            {% for exercise in selected_category.random_selected_exercises %}
+                            <a class="btn btn-primary btn-xs" role="button" href="{% url 'exercise' slug=exercise.slug %}">{{ exercise }}</a>
+                            {% endfor %}
+                        </small>
                     </p>
                 </article>
             </section>

@@ -22,12 +22,25 @@ def row_builder(items, maximum=3):
 
 def categories(request):
     active_categories = Category.objects.filter(active=True)
-    images = ImageCategory.objects.filter(active=True, main=True)
-    exercises = Exercise.objects.filter(category__in=active_categories, active=True).order_by('-id', 'category')
+    categories_list = []
+    for active_category in active_categories:
+        category_data = {
+            'category': active_category,
+            'total_exercises': Exercise.objects.filter(category=active_category).count(),
+            'random_selected_exercises': Exercise.objects.filter(category=active_category)[:10],
+            'main_image': ImageCategory.objects.filter(active=True, main=True, binding=active_category)[0],
+        }
+        print(category_data)
+        categories_list.append(category_data)
+
+    #images = ImageCategory.objects.filter(active=True, main=True)
+    #exercises = Exercise.objects.filter(category__in=active_categories, active=True).order_by('-id', 'category')
     context = {'categories': active_categories,
-               'categories_in_row': row_builder(active_categories),
-               'images': images,
-               'exercises': exercises}
+               'categories_in_row': row_builder(categories_list),
+               #'categories_in_row': row_builder(active_categories),
+               #'images': images,
+               #'exercises': exercises
+               }
     return render(request, "categories.html", context)
 
 
