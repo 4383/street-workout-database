@@ -13,12 +13,18 @@
 {% block content %}
 <aside class="right list-group fixed">
     <ul class="nav nav-pills nav-stacked">
-        {% for category in categories %}
-            {% if forloop.first %}
-                <!--<a href="#{{ category.slug }}" class="active list-group-item">{{ category }}</a>-->
-            {% else %}
-                <!--<a href="#{{ category.slug }}" class="list-group-item">{{ category }}</a>-->
-            {% endif %}
+        {% for row in categories %}
+            {% for selected_category in row %}
+                {% if forloop.first %}
+                    <a href="#{{ selected_category.category.slug }}" class="active list-group-item">
+                        {{ selected_category.category }}
+                    </a>
+                {% else %}
+                    <a href="#{{ selected_category.category.slug }}" class="list-group-item">
+                        {{ selected_category.category }}
+                    </a>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
     </ul>
 </aside>
@@ -27,7 +33,7 @@
     <small>{{ categories|length }} {% trans "Defined" %} Categor{{ categories|pluralize:"y,ies" }} </small>
 </h1>
 
-{% for row in categories_in_row %}
+{% for row in categories %}
     <div class="row">
         {% for selected_category in row %}
         <div class="col-md-3">
@@ -54,11 +60,20 @@
                         </a>
                     </p>
                     <hr>
-                    <h5 class="underline"><u>{% trans "Related Random" %} Exercise{{ selected_category.random_selected_exercises|pluralize }}: </u><h5>
+                    <h5 class="underline">
+                        <u>
+                            {% trans "Related Random" %}
+                            Exercise{{ selected_category.random_selected_exercises|pluralize }}:
+                        </u>
+                    <h5>
                     <p>
                         <small>
                             {% for exercise in selected_category.random_selected_exercises %}
-                            <a class="btn btn-primary btn-xs" role="button" href="{% url 'exercise' slug=exercise.slug %}">{{ exercise }}</a>
+                            <a class="btn btn-primary btn-xs"
+                               role="button"
+                               href="{% url 'exercise' slug=exercise.slug %}">
+                                {{ exercise }}
+                            </a>
                             {% endfor %}
                         </small>
                     </p>
