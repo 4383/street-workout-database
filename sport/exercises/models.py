@@ -176,3 +176,7 @@ class Video(models.Model):
 
 class VideoExercise(Video):
     binding = models.ForeignKey(Exercise)
+
+
+class VideoCategory(Video):
+    binding = models.ForeignKey(Category)

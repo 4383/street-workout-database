@@ -13,6 +13,7 @@ from exercises.models import Muscle
 from exercises.models import MuscleType
 from exercises.models import Step
 from exercises.models import VideoExercise
+from exercises.models import VideoCategory
 
 
 class ImageCategoryInLine(admin.StackedInline):
@@ -50,6 +51,11 @@ class VideoExerciseInline(admin.StackedInline):
     extra = 1
 
 
+class VideoCategoryInline(admin.StackedInline):
+    model = VideoCategory
+    extra = 1
+
+
 class StepAdminInline(admin.TabularInline):
     model = Step
     extra = 3
@@ -58,7 +64,7 @@ class StepAdminInline(admin.TabularInline):
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug')
-    inlines = [ImageCategoryInLine]
+    inlines = [ImageCategoryInLine, VideoCategoryInline]
 
 
 class ExerciseAdmin(admin.ModelAdmin):
