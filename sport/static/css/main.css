@@ -141,6 +141,10 @@ separator: #E7E7E7
     float: right;
 }
 
+.left {
+    float: left;
+}
+
 .dropdown-menu > li > span {
     padding: 3px 20px;
     color: gray;
@@ -156,6 +160,28 @@ separator: #E7E7E7
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
+}
+
+.img-xl {
+    height: 200px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.img-xxl {
+    height: 300px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.left-spaced-xl {
+    margin-left : 20px;
+}
+
+.left-spaced-xs {
+    margin-left : 5px;
 }
 
 
