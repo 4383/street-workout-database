@@ -6,6 +6,7 @@ from exercises.models import ImageCategory
 from exercises.models import ImageExercise
 from exercises.models import ImageMuscle
 from exercises.models import Muscle
+from exercises.models import VideoCategory
 
 
 # Helper
@@ -48,7 +49,7 @@ def categories(request):
 def category(request, slug):
     current_category = get_object_or_404(Category, active=True, slug=slug)
     exercises = Exercise.objects.filter(active=True, category=current_category)
-    images_category = ImageCategory.objects.filter(active=True, binding=current_category)
+    main_image = ImageCategory.objects.filter(active=True, binding=current_category, main=True)[0]
     actives_muscles = Muscle.objects.filter(id__in=current_category.muscles.all, active=True)
     exercises_list = []
     for active_exercise in exercises:
@@ -80,10 +81,27 @@ def category(request, slug):
             muscles_list.append(muscles_data)
 
     context = {'category': current_category,
-               'images_category': images_category,
+               'main_image': main_image,
                'exercises_list': exercises_list,
                'muscles_list': muscles_list, }
     return render(request, "category.html", context)
+
+
+def category_images(request, slug):
+    current_category = get_object_or_404(Category, active=True, slug=slug)
+    images = ImageCategory.objects.filter(active=True, binding=current_category)
+    context = {'category': current_category,
+               'images': images, }
+    return render(request, "category_images.html", context)
+
+
+def category_videos(request, slug):
+    current_category = get_object_or_404(Category, active=True, slug=slug)
+    videos = VideoCategory.objects.filter(active=True, binding=current_category)
+    context = {'category': current_category,
+               'videos': videos, }
+    return render(request, "category_videos.html", context)
+
 
 
 def muscles(request):

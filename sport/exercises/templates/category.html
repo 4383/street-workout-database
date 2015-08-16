@@ -3,6 +3,7 @@
 {% load staticfiles %}
 {% load static %}
 {% get_media_prefix as MEDIA_PREFIX %}
+{% load exercises_tags %}
 
 {% block title %}{% trans "Exercises Overview" %}{% endblock %}
 
@@ -13,30 +14,14 @@
 {% block content %}
 <ol class="breadcrumb">
     <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
-    <li class="active">{{ category|capfirst }}</li>
+    <li>{{ category|capfirst }}</li>
+    <li class="active">{% trans "Exercises" %}</li>
 </ol>
-<aside class="right list-group fixed left-spaced-xl">
-    <ul class="nav nav-pills nav-stacked">
-        <a href="#description" class="list-group-item">{% trans "description" %}</a>
-        {% if exercises_list %}
-            <a href="#exercises" class="list-group-item">
-                {% trans "Exercises" %}
-                <span class="badge badge-success left-spaced-xs">{{ exercises_list|length }}</span>
-            </a>
-        {% endif %}
-        {% if images_category %}
-            <a href="#images" class="list-group-item">
-                {% trans "Images" %}
-                <span class="badge badge-success left-spaced-xs">{{ images_category|length }}</span>
-            </a>
-        {% endif %}
-    </ul>
-</aside>
 <h1>
-    {{ category|capfirst }} {% trans "Category" %}<br>
-    <small>{{ exercises_list|length }} {% trans "Defined" %} Exercise{{ categories|pluralize }}
-        Variation{{ categories|pluralize }} </small>
+    {{ category|capfirst }} {% trans "Category" %}
 </h1>
+
+{% show_exercises_category_menu category "exercises" %}
 
 <section id="description">
     <h4><u>{% trans "Description" %}</u></h4>
@@ -63,19 +48,6 @@
     </table>
 </section>
 {% endif %}
-
-{% if images_category %}
-<section id="images">
-    <h4><u>{% trans "Related Images" %}</u></h4>
-    {% for image in images_category %}
-        <img src="{% get_media_prefix %}{{ image.image }}" alt="{{ image.alt }}" class="img-thumbnail img-xl" >
-    {% endfor %}
-</section>
-{% endif %}
-
-<section id="videos">
-
-</section>
 
 <section id="muscles">
     <h4><u>{% trans "Solicited Muscles" %}</u></h4>
