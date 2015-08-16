@@ -108,9 +108,7 @@ separator: #E7E7E7
     padding-left: 2%;
 }
 .main-footer {
-    /*background-image: url('../img/design/footer.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;*/
+    clear:both;
     border-top: 1px solid #E7E7E7;
     padding: 30px;
     background-image: url("../img/design/brand-xs.png");
@@ -177,11 +175,23 @@ separator: #E7E7E7
 }
 
 .left-spaced-xl {
-    margin-left : 20px;
+    margin-left: 20px;
 }
 
 .left-spaced-xs {
-    margin-left : 5px;
+    margin-left: 5px;
+}
+
+.margin-bottom-xs {
+    margin-bottom: 5px;
+}
+
+.margin-bottom-xl {
+    margin-bottom: 10px;
+}
+
+.margin-bottom-xxl {
+    margin-bottom: 20px;
 }
 
 
