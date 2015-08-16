@@ -1,0 +1,88 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+
+{% block title %}{% trans "Exercises Overview" %}{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
+    <li class="active">{{ category|capfirst }}</li>
+</ol>
+<aside class="right list-group fixed left-spaced-xl">
+    <ul class="nav nav-pills nav-stacked">
+        <a href="#description" class="list-group-item">{% trans "description" %}</a>
+        {% if exercises_list %}
+            <a href="#exercises" class="list-group-item">
+                {% trans "Exercises" %}
+                <span class="badge badge-success left-spaced-xs">{{ exercises_list|length }}</span>
+            </a>
+        {% endif %}
+        {% if images_category %}
+            <a href="#images" class="list-group-item">
+                {% trans "Images" %}
+                <span class="badge badge-success left-spaced-xs">{{ images_category|length }}</span>
+            </a>
+        {% endif %}
+    </ul>
+</aside>
+<h1>
+    {{ category|capfirst }} {% trans "Category" %}<br>
+    <small>{{ exercises_list|length }} {% trans "Defined" %} Exercise{{ categories|pluralize }}
+        Variation{{ categories|pluralize }} </small>
+</h1>
+
+<section id="description">
+    <h4><u>{% trans "Description" %}</u></h4>
+    {% for image in images_category %}
+        {% if image.main %}
+        <img src="{% get_media_prefix %}{{ image.image }}" alt="{{ image.alt }}" class="left img-thumbnail img-xs" >
+        {% endif %}
+    {% endfor %}
+    <p>
+        {{ category.description|capfirst }}
+    </p>
+</section>
+
+{% if exercises_list %}
+<section id="exercises">
+    <h4><u>{% trans "Related Exercises Variations" %}</u></h4>
+    <table>
+        {% for exercise in exercises_list %}
+            <tr>
+                <td>{{ exercise.main_image.image }}</td>
+                <td>{{ exercise.exercise }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endif %}
+
+{% if images_category %}
+<section id="images">
+    <h4><u>{% trans "Related Images" %}</u></h4>
+    {% for image in images_category %}
+        <img src="{% get_media_prefix %}{{ image.image }}" alt="{{ image.alt }}" class="img-thumbnail img-xl" >
+    {% endfor %}
+</section>
+{% endif %}
+
+<section id="videos">
+
+</section>
+
+<section id="muscles">
+    <h4><u>{% trans "Solicited Muscles" %}</u></h4>
+    {% for muscle in muscles_list %}
+        <a href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">
+            {{ muscle.muscle }}
+        </a>
+    {% endfor %}
+</section>
+{% endblock %}<!-- End Content -->
