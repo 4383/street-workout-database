@@ -1,0 +1,41 @@
+{% load i18n %}
+<nav>
+    <ul class="nav nav-pills">
+        {% if total_exercises > 0 %}
+            {% if active == "exercises" %}
+                <li role="presentation" class="active">
+            {% else %}
+                <li role="presentation">
+            {% endif %}
+                <a href="{% url 'exercises_category' slug=category.slug %}" class="list-group-item">
+                    {% trans "Exercises" %}
+                    <span class="badge badge-success left-spaced-xs">{{ total_exercises }}</span>
+                </a>
+            </li>
+        {% endif %}
+        {% if total_images > 0 %}
+            {% if active == "images" %}
+                <li role="presentation" class="active">
+            {% else %}
+                <li role="presentation">
+            {% endif %}
+                <a href="{% url 'exercises_category_images' slug=category.slug %}" class="list-group-item">
+                    {% trans "Images" %}
+                    <span class="badge badge-success left-spaced-xs">{{ total_images }}</span>
+                </a>
+            </li>
+        {% endif %}
+        {% if total_videos > 0 %}
+            {% if active == "videos" %}
+                <li role="presentation" class="active">
+            {% else %}
+                <li role="presentation">
+            {% endif %}
+                <a href="{% url 'exercises_category_videos' slug=category.slug %}" class="list-group-item">
+                    {% trans "Videos" %}
+                    <span class="badge badge-success left-spaced-xs">{{ total_videos }}</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
