@@ -1,0 +1,49 @@
+{% load i18n %}
+{% load static %}
+<script>
+ /****
+ * modalImageViewerTitle = name
+ * modalImageViewerDescription = description
+ * modalImageViewerImage.alt = alt
+ * modalImageViewerImage.src = image
+ ****/
+function updateImageViewerContent(title, description, imageAlt, imageSrc) {
+    document.getElementById("modalImageViewerTitle").innerHTML = title;
+    document.getElementById("modalImageViewerDescription").innerHTML = description;
+    document.getElementById("modalImageViewerImage").alt = imageAlt;
+    document.getElementById("modalImageViewerImage").src = imageSrc;
+}
+</script>
+
+{% for image in images %}
+    <a href="#" data-toggle="modal" data-target="#modalImageViewer"
+       onclick="updateImageViewerContent(
+            '{{ image.name|capfirst }}',
+            '{{ image.description }}',
+            '{{ image.alt }}',
+            '{% get_media_prefix %}{{ image.image }}');return false;">
+        <img src="{% get_media_prefix %}{{ image.image }}"
+             alt="{{ image.alt }}"
+             class="img-thumbnail img-xl no-margin-left-right">
+    </a>
+{% endfor %}
+
+<div class="modal fade" id="modalImageViewer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="modalImageViewerTitle" class="modal-title"></h4>
+            </div>
+            <div class="modal-body text-justify">
+                <img id="modalImageViewerImage" src="" class="img-xxxl margin-bottom-xl" alt="">
+                <p id="modalImageViewerDescription"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Close" %}</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

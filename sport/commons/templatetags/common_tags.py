@@ -13,3 +13,8 @@ def show_exercises_menu():
     muscles_groups = MuscleGroup.objects.filter(active=True).count()
     muscles = Muscle.objects.filter(active=True).count()
     return {'categories': categories, 'muscles_group': muscles_groups, 'muscles': muscles}
+
+
+@register.inclusion_tag('common_tags/image_gallery.html')
+def images_gallery(images):
+    return {"images": images}
