@@ -121,7 +121,7 @@ class Step(models.Model):
 
 class Image(models.Model):
     name = models.CharField(max_length=300)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='upload/exercises')
     alt = models.CharField(max_length=300)
     description = models.TextField()
     active = models.BooleanField(default=False)
