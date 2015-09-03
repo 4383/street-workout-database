@@ -42,7 +42,7 @@ def categories(request):
         }
         categories_list.append(category_data)
 
-    context = {'categories': row_builder(categories_list),}
+    context = {'categories': row_builder(categories_list), }
     return render(request, "categories.html", context)
 
 
