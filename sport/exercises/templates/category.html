@@ -22,6 +22,17 @@
 </h1>
 
 {% show_exercises_category_menu category "exercises" %}
+    
+<section class="right right-spaced-xl panel panel-default padding-xl" id="muscles">
+    <div class="panel-body">
+        <img src="{% static "img/design/muscle-anatomy-l.png" %}">
+        {% for muscle in muscles_list %}
+            <p>
+                <a href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
+            </p>
+        {% endfor %}
+    </div>
+</section>
 
 <section id="description">
     <h4><u>{% trans "Description" %}</u></h4>
@@ -48,13 +59,4 @@
     </table>
 </section>
 {% endif %}
-
-<section id="muscles">
-    <h4><u>{% trans "Solicited Muscles" %}</u></h4>
-    {% for muscle in muscles_list %}
-        <a href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">
-            {{ muscle.muscle }}
-        </a>
-    {% endfor %}
-</section>
 {% endblock %}<!-- End Content -->

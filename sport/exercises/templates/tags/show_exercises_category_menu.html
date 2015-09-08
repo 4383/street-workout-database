@@ -1,6 +1,7 @@
 {% load i18n %}
 <nav>
     <ul class="nav nav-pills">
+        {% comment %}***** exercises link *****{% endcomment %}
         {% if total_exercises > 0 %}
             {% if active == "exercises" %}
                 <li role="presentation" class="active">
@@ -13,6 +14,7 @@
                 </a>
             </li>
         {% endif %}
+        {% comment %}***** images link *****{% endcomment %}
         {% if total_images > 0 %}
             {% if active == "images" %}
                 <li role="presentation" class="active">
@@ -25,6 +27,7 @@
                 </a>
             </li>
         {% endif %}
+        {% comment %}***** videos link *****{% endcomment %}
         {% if total_videos > 0 %}
             {% if active == "videos" %}
                 <li role="presentation" class="active">
@@ -37,5 +40,16 @@
                 </a>
             </li>
         {% endif %}
+        {% comment %}***** muscles link *****{% endcomment %}
+        {% if active == "Muscles" %}
+            <li role="presentation" class="active">
+        {% else %}
+            <li role="presentation">
+        {% endif %}
+            <a href="{% url 'exercises_category_videos' slug=category.slug %}" class="list-group-item">
+                {% trans "Videos" %}
+                <span class="badge badge-success left-spaced-xs">{{ total_videos }}</span>
+            </a>
+        </li>
     </ul>
 </nav>

@@ -49,8 +49,13 @@
                         </a>
                     </h4>
                 </div>
-                <img src="{% get_media_prefix %}{{ selected_category.main_image.image }}"
-                     alt="{{ selected_category.main_image.alt }}" class="pull-left img-thumbnail img-xs">
+                {% if selected_category.main_image %}
+                    <img src="{% get_media_prefix %}{{ selected_category.main_image.image }}"
+                         alt="{{ selected_category.main_image.alt }}" class="pull-left img-thumbnail img-xs">
+                {% else %}
+                    <img src="{% static "img/design/image-not-available.png" %}"
+                         alt="{{ selected_category.main_image.alt }}" class="pull-left img-thumbnail img-xs">
+                {% endif %}
                 <article class="panel-body">
                     <p class="text-justify">{{ selected_category.category.description }}<br>
                         <a href="{% url 'exercises_category' slug=selected_category.category.slug %}">
