@@ -1,4 +1,7 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TranslationTabularInline
+from modeltranslation.admin import TranslationStackedInline
 from exercises.models import Category
 from exercises.models import Equipment
 from exercises.models import Exercise
@@ -8,6 +11,8 @@ from exercises.models import ImageCategory
 from exercises.models import ImageMuscle
 from exercises.models import ImageMuscleGroup
 from exercises.models import ImageStep
+from exercises.models import MappingAreaMuscles
+from exercises.models import Mapping
 from exercises.models import MuscleGroup
 from exercises.models import Muscle
 from exercises.models import MuscleType
@@ -44,6 +49,11 @@ class ImageStepInline(admin.StackedInline):
 class ImageEquipmentInline(admin.StackedInline):
     model = ImageEquipment
     extra = 1
+
+
+class MappingAreaMusclesInline(admin.StackedInline):
+    model = MappingAreaMuscles
+    extra = 2
 
 
 class VideoExerciseInline(admin.StackedInline):
@@ -84,7 +94,7 @@ class EquimentAdmin(admin.ModelAdmin):
 
 
 class MuscleAdmin(admin.ModelAdmin):
-    inlines = [ImageMuscleInLine]
+    inlines = [ImageMuscleInLine, MappingAreaMusclesInline]
 
 
 class MuscleGroupAdmin(admin.ModelAdmin):
@@ -98,3 +108,4 @@ admin.site.register(Equipment, EquimentAdmin)
 admin.site.register(Muscle, MuscleAdmin)
 admin.site.register(MuscleGroup, MuscleGroupAdmin)
 admin.site.register(MuscleType)
+admin.site.register(Mapping)
