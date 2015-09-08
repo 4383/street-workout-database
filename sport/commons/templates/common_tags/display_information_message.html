@@ -1,0 +1,9 @@
+{% if information_message %}
+    <script>
+        document.cookie = "information_message_id={{ information_message.id }}; expires={{ expiration_date }};"
+    </script>
+    <div id="information-message" class="alert alert-{{ information_message.type }}" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>{{ information_message.title|capfirst }}</strong> {% autoescape off %}{{ information_message.text|capfirst }}{% endautoescape %}
+    </div>
+{% endif %}
