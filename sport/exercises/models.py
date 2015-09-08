@@ -10,6 +10,25 @@ DIFFICULTY = (('easy', _('Easy')),
               ('hard', _('Hard')))
 
 
+class Mapping(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    image = models.ImageField(upload_to='upload/exercises/mapping')
+    alt = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.name
+
+
+class MappingArea(models.Model):
+    name = models.CharField(max_length=150)
+    points = models.TextField()
+    mapping = models.ForeignKey(Mapping)
+    image_over = models.ImageField(upload_to='upload/exercises/mapping', blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class MuscleGroup(models.Model):
     name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
@@ -131,6 +150,10 @@ class Image(models.Model):
         return self.name
 
 
+class MappingAreaMuscles(MappingArea):
+    binding = models.ForeignKey(Muscle)
+
+
 class ImageExercise(Image):
     binding = models.ForeignKey(Exercise)
 
@@ -162,10 +185,11 @@ class ImageEquipment(Image):
 class Video(models.Model):
     name = models.CharField(max_length=300)
     url = models.URLField()
+    thumbnail_url = models.URLField(default="")
     alt = models.CharField(max_length=300)
     description = models.TextField()
-    player_height = models.IntegerField()
-    player_width = models.IntegerField()
+    player_width = models.IntegerField(default=550)
+    player_height = models.IntegerField(default=350)
     youtube_id = models.CharField(max_length=150)
     active = models.BooleanField(default=True)
     main = models.BooleanField(default=False)
