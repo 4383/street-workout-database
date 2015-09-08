@@ -34,12 +34,20 @@ def categories(request):
     actives_categories = Category.objects.filter(active=True)
     categories_list = []
     for active_category in actives_categories:
-        category_data = {
-            'category': active_category,
-            'total_exercises': Exercise.objects.filter(category=active_category).count(),
-            'random_selected_exercises': Exercise.objects.filter(category=active_category)[:10],
-            'main_image': ImageCategory.objects.filter(active=True, main=True, binding=active_category)[0],
-        }
+        try:
+            category_data = {
+                'category': active_category,
+                'total_exercises': Exercise.objects.filter(category=active_category).count(),
+                'random_selected_exercises': Exercise.objects.filter(category=active_category)[:10],
+                'main_image': ImageCategory.objects.filter(active=True, main=True, binding=active_category)[0],
+            }
+        except IndexError:
+            category_data = {
+                'category': active_category,
+                'total_exercises': Exercise.objects.filter(category=active_category).count(),
+                'random_selected_exercises': Exercise.objects.filter(category=active_category)[:10],
+                'main_image': None,
+            }
         categories_list.append(category_data)
 
     context = {'categories': row_builder(categories_list), }
@@ -49,7 +57,10 @@ def categories(request):
 def category(request, slug):
     current_category = get_object_or_404(Category, active=True, slug=slug)
     exercises = Exercise.objects.filter(active=True, category=current_category)
-    main_image = ImageCategory.objects.filter(active=True, binding=current_category, main=True)[0]
+    try:
+        main_image = ImageCategory.objects.filter(active=True, binding=current_category, main=True)[0]
+    except IndexError:
+        main_image = None
     actives_muscles = Muscle.objects.filter(id__in=current_category.muscles.all, active=True)
     exercises_list = []
     for active_exercise in exercises:
@@ -102,6 +113,11 @@ def category_videos(request, slug):
                'videos': videos, }
     return render(request, "category_videos.html", context)
 
+
+def category_muscles(request, slug):
+    current_category = get_object_or_404(Category, active=True, slug=slug)
+    context = {'category': current_category, }
+    return render(request, "category_muscles.html", context)
 
 
 def muscles(request):
