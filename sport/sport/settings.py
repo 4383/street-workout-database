@@ -28,7 +28,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,10 +35,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'exercises',
     'commons',
+    'community',
 )
+
+
+if DEBUG:
+    INSTALLED_APPS += ('debug_toolbar',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -72,9 +75,25 @@ DIRS = [os.path.join(BASE_DIR, 'templates'),
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates'),
                  os.path.join(BASE_DIR, 'commons', 'templates'),
                  os.path.join(BASE_DIR, 'exercises', 'templates'), ]
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.template.context_processors.debug',
+    'django.template.context_processors.request',
+    'django.template.context_processors.i18n',
+    'django.template.context_processors.media',
+    'django.template.context_processors.static',
+    'django.template.context_processors.tz',
+    'django.contrib.messages.context_processors.messages')
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 LANGUAGE_CODE = 'en-us'
+
+gettext = lambda s: s
+LANGUAGES = (
+    ('en', gettext('English')),
+)
 
 TIME_ZONE = 'UTC'
 
