@@ -127,6 +127,11 @@ separator: #E7E7E7
     margin-right: 10px;
 }
 
+#information-message {
+    width: 80%;
+    margin: auto;
+}
+
 /*-----------------
  Misc
 -------------------*/

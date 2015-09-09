@@ -1,7 +1,9 @@
 {% if information_message %}
+    {% if information_message.display_once %}
     <script>
-        document.cookie = "information_message_id={{ information_message.id }}; expires={{ expiration_date }};"
+        document.cookie = "information_message_id={{ information_message.id }}; expires={{ expiration_date }}; path=/"
     </script>
+    {% endif %}
     <div id="information-message" class="alert alert-{{ information_message.type }}" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <strong>{{ information_message.title|capfirst }}</strong> {% autoescape off %}{{ information_message.text|capfirst }}{% endautoescape %}
