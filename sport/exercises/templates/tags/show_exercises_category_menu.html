@@ -46,8 +46,8 @@
         {% else %}
             <li role="presentation">
         {% endif %}
-            <a href="{% url 'exercises_category_videos' slug=category.slug %}" class="list-group-item">
-                {% trans "Videos" %}
+            <a href="{% url 'exercises_category_muscles' slug=category.slug %}" class="list-group-item">
+                {% trans "Muscles" %}
                 <span class="badge badge-success left-spaced-xs">{{ total_videos }}</span>
             </a>
         </li>
