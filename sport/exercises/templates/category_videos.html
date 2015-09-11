@@ -6,7 +6,7 @@
 {% load exercises_tags %}
 {% load common_tags %}
 
-{% block title %}{% trans "Exercises Overview" %}{% endblock %}
+{% block title %}{% trans "Videos Related To" %} {{ category|capfirst }} {% trans "Category" %}{% endblock %}
 
 {% block main_menu_exercises_active %}
 <li class="dropdown active">
@@ -16,7 +16,7 @@
 <ol class="breadcrumb">
     <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
     <li><a href="{% url 'exercises_category' slug=category.slug %}">{{ category|capfirst }}</a></li>
-    <li class="active">{% trans "Images" %}</li>
+    <li class="active">{% trans "Videos" %}</li>
 </ol>
 <h1>
     {{ category|capfirst }} {% trans "Category" %}
