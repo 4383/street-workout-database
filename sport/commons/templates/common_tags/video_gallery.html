@@ -1,12 +1,56 @@
 {% load i18n %}
 {% load static %}
+<style>
+.video-container {
+    position:relative;
+}
+
+.video-duration {
+    position: absolute;
+    bottom: -90px;
+    left: 20px;
+    padding : 2px;
+    background-color: black;
+    color: white;
+    float: left;
+    margin-top: 10px;
+    opacity: 0.75;
+}
+
+.video-play {
+    position: absolute;
+    horiz-align: right;
+    bottom: -95%;
+    left: 100px;
+    padding : 2px;
+    color: white;
+    float: left;
+    margin-top: 10px;
+    height: 50px;
+    width: 50px;
+    background-image: url("{% static 'img/design/play.png' %}");
+}
+
+.video-container:hover .video-play {
+    background-image: url("{% static 'img/design/play-over.png' %}");
+}
+</style>
 
 {% for video in videos %}
-    <a class="popup-opener" id="{{ forloop.counter0 }}" href="#" data-toggle="modal" data-target="#modalVideoViewer">
-        <img src="http://img.youtube.com/vi/{{ video.youtube_id }}/0.jpg"
-             alt="{{ video.alt }}"
-             class="img-thumbnail img-xl no-margin-left-right">
-    </a>
+        <a class="video-container popup-opener"
+           id="{{ forloop.counter0 }}"
+           href="#"
+           data-toggle="modal"
+           data-target="#modalVideoViewer"
+           title="{{ video.alt }}" >
+            <img src="http://img.youtube.com/vi/{{ video.youtube_id }}/0.jpg"
+                 alt="{{ video.alt }}"
+                 class="img-thumbnail img-xl no-margin-left-right">
+
+            <span class="video-duration">{{ video.duration }}</span>
+            <span class="video-play">
+            </span>
+        </a>
 {% endfor %}
 
 <div class="modal fade" id="modalVideoViewer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -20,7 +64,9 @@
             </div>
             <div class="modal-body text-justify">
                 <iframe id="modalVideoViewerVideo" width="" height=""
-                        src=""></iframe>
+                        src="" frameborder="0" allowfullscreen></iframe>
+                <a id="modalVideoViewerOriginalLink" href=""></a>
+                <hr>
                 <p id="modalVideoViewerDescription"></p>
             </div>
             <div class="modal-footer">
@@ -38,9 +84,14 @@
     {% if forloop.first %}
         var gallery_content = '{"gallery" : [' +
     {% endif %}
-    '{"title" : "{{ video.name|capfirst }}", "description" : "{{ video.description }}", ' +
-    '"alt" : "{{ video.alt }}", "url" : "{{ video.url }}", "player_height" : "{{ video.player_height }}",' +
-    '"player_width" : "{{ video.player_width }}", "youtube_id" : "{{ video.youtube_id }}"}' +
+    '{"title" : "{{ video.name|capfirst }}", ' +
+    '"description" : "{{ video.description }}", ' +
+    '"alt" : "{{ video.alt }}", ' +
+    '"embedded_url" : "{{ video.embedded_url }}", ' +
+    '"player_height" : "{{ video.player_height }}", ' +
+    '"player_width" : "{{ video.player_width }}", ' +
+    '"youtube_id" : "{{ video.youtube_id }}", ' +
+    '"origin_url" : "{{ video.origin_url }}"}' +
     {% if not forloop.last %}
         ',' +
     {% else %}
@@ -68,6 +119,8 @@ function updateVideoViewerContent(video_id) {
     document.getElementById("modalVideoViewerDescription").innerHTML = json_entry.description;
     document.getElementById("modalVideoViewerVideo").width = json_entry.player_width;
     document.getElementById("modalVideoViewerVideo").height = json_entry.player_height;
-    document.getElementById("modalVideoViewerVideo").src = json_entry.url;
+    document.getElementById("modalVideoViewerVideo").src = json_entry.embedded_url;
+    document.getElementById("modalVideoViewerOriginalLink").href = json_entry.origin_url;
+    document.getElementById("modalVideoViewerOriginalLink").innerHTML = json_entry.origin_url;
 }
 </script>

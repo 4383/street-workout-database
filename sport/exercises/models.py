@@ -184,7 +184,8 @@ class ImageEquipment(Image):
 
 class Video(models.Model):
     name = models.CharField(max_length=300)
-    url = models.URLField()
+    embedded_url = models.URLField()
+    origin_url = models.URLField(default="")
     thumbnail_url = models.URLField(default="")
     alt = models.CharField(max_length=300)
     description = models.TextField()
@@ -193,6 +194,7 @@ class Video(models.Model):
     youtube_id = models.CharField(max_length=150)
     active = models.BooleanField(default=True)
     main = models.BooleanField(default=False)
+    duration = models.CharField(max_length=6)
 
     def __str__(self):
         return self.name
