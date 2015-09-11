@@ -10,6 +10,15 @@ DIFFICULTY = (('easy', _('Easy')),
               ('hard', _('Hard')))
 
 
+class CommonsPagesAttributes(models.Model):
+    name = models.CharField(max_length=100)
+    keywords = models.CharField(max_length=150)
+    description = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
 class Mapping(models.Model):
     name = models.CharField(max_length=150, unique=True)
     image = models.ImageField(upload_to='upload/exercises/mapping')
@@ -67,6 +76,7 @@ class Category(models.Model):
     muscles = models.ManyToManyField(Muscle)
     active = models.BooleanField(default=False)
     slug = models.SlugField(default='', unique=True)
+    common_page_attribute = models.ForeignKey(CommonsPagesAttributes)
 
     def __str__(self):
         return self.name

@@ -5,6 +5,12 @@
 {% get_media_prefix as MEDIA_PREFIX %}
 
 {% block title %}{% trans "Exercises Categories Overview" %}{% endblock %}
+{% block meta_description %}
+    {% trans "List all categories exercises and variations by topic" %}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "topic, subject, variations, categories, category, exercises, exercise" %}
+{% endblock %}
 
 {% block main_menu_exercises_active %}
 <li class="dropdown active">

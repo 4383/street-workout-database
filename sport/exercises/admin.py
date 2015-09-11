@@ -1,8 +1,6 @@
 from django.contrib import admin
-from modeltranslation.admin import TranslationAdmin
-from modeltranslation.admin import TranslationTabularInline
-from modeltranslation.admin import TranslationStackedInline
 from exercises.models import Category
+from exercises.models import CommonsPagesAttributes
 from exercises.models import Equipment
 from exercises.models import Exercise
 from exercises.models import ImageExercise
@@ -19,6 +17,10 @@ from exercises.models import MuscleType
 from exercises.models import Step
 from exercises.models import VideoExercise
 from exercises.models import VideoCategory
+
+
+class CommonsPagesAttributesAdmin(admin.ModelAdmin):
+    list_display = ('keywords', 'description')
 
 
 class ImageCategoryInLine(admin.StackedInline):
@@ -109,3 +111,4 @@ admin.site.register(Muscle, MuscleAdmin)
 admin.site.register(MuscleGroup, MuscleGroupAdmin)
 admin.site.register(MuscleType)
 admin.site.register(Mapping)
+admin.site.register(CommonsPagesAttributes, CommonsPagesAttributesAdmin)

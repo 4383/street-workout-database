@@ -7,6 +7,13 @@
 {% load common_tags %}
 
 {% block title %}{% trans "Videos Related To" %} {{ category|capfirst }} {% trans "Category" %}{% endblock %}
+{% block meta_description %}
+    {% trans "Retrieve videos :" %} {{ category.common_page_attribute.description }}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "video, youtube, dailymotion, play," %}
+    {{ category.common_page_attribute.keywords }}
+{% endblock %}
 
 {% block main_menu_exercises_active %}
 <li class="dropdown active">

@@ -6,6 +6,8 @@
 {% load exercises_tags %}
 
 {% block title %}{{ category|capfirst }} {% trans "Category" %}{% endblock %}
+{% block meta_description %}{{ category.common_page_attribute.description }}{% endblock %}
+{% block meta_keywords %}{{ category.common_page_attribute.keywords }}{% endblock %}
 
 {% block main_menu_exercises_active %}
 <li class="dropdown active">
