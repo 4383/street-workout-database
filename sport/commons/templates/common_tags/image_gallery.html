@@ -2,7 +2,12 @@
 {% load static %}
 
 {% for image in images %}
-    <a class="popup-opener" id="{{ forloop.counter0 }}" href="#" data-toggle="modal" data-target="#modalImageViewer">
+    <a class="popup-opener"
+       id="{{ forloop.counter0 }}"
+       href="#"
+       data-toggle="modal"
+       data-target="#modalImageViewer"
+       title="{% trans 'Click to enlarge' %}" >
         <img src="{% get_media_prefix %}{{ image.image }}"
              alt="{{ image.alt }}"
              class="img-thumbnail img-xl no-margin-left-right">
