@@ -8,6 +8,7 @@ urlpatterns = [
     # Categories
     url(r'^categories/$', views.categories, name='exercises_categories'),
     url(r'^category/(?P<slug>[a-z\-0-9]+)/$', views.category, name='exercises_category'),
+    url(r'^category/(?P<slug>[a-z\-0-9]+)/exercises/$', views.category_exercises, name='exercises_category_exercises'),
     url(r'^category/(?P<slug>[a-z\-0-9]+)/images/$', views.category_images, name='exercises_category_images'),
     url(r'^category/(?P<slug>[a-z\-0-9]+)/videos/$', views.category_videos, name='exercises_category_videos'),
     url(r'^category/(?P<slug>[a-z\-0-9]+)/muscles/$', views.category_muscles, name='exercises_category_muscles'),

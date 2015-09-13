@@ -16,4 +16,5 @@ def show_exercises_category_menu(category, active="exercises"):
             'total_images': total_images,
             'total_videos': total_videos,
             'active': active,
-            'category': category, }
+            'category': category,
+    }
