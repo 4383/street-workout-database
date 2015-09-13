@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
+from exercises.decorators import add_exercises_to_context
 from exercises.models import Category
 from exercises.models import Exercise
 from exercises.models import ImageCategory
@@ -7,6 +8,50 @@ from exercises.models import ImageExercise
 from exercises.models import ImageMuscle
 from exercises.models import Muscle
 from exercises.models import VideoCategory
+
+
+def get_full_exercises_representation_for_a_category(current_category, limit=None):
+    if limit:
+        exercises = Exercise.objects.filter(active=True, category=current_category)[:limit]
+    else:
+        exercises = Exercise.objects.filter(active=True, category=current_category)
+    exercises_list = []
+    for active_exercise in exercises:
+        try:
+            exercises_data = {
+                'exercise': active_exercise,
+                'main_image': ImageExercise.objects.filter(active=True, main=True, binding=active_exercise)[0],
+                }
+        except IndexError:
+            exercises_data = {
+                'exercise': active_exercise,
+                'main_image': None,
+                }
+        exercises_list.append(exercises_data)
+    return exercises_list
+
+
+def get_full_muscles_representation_for_a_category(current_category, limit=None):
+    if limit:
+        actives_muscles = Muscle.objects.filter(id__in=current_category.muscles.all, active=True)[:limit]
+    else:
+        actives_muscles = Muscle.objects.filter(id__in=current_category.muscles.all, active=True)
+
+    if actives_muscles:
+        muscles_list = []
+        for active_muscle in actives_muscles:
+            try:
+                muscles_data = {
+                    'muscle': active_muscle,
+                    'main_image': ImageMuscle.objects.filter(active=True, main=True, binding=active_muscle)[0],
+                    }
+            except IndexError:
+                muscles_data = {
+                    'muscle': active_muscle,
+                    'main_image': None,
+                    }
+            muscles_list.append(muscles_data)
+    return muscles_list
 
 
 # Helper
@@ -56,46 +101,28 @@ def categories(request):
 
 def category(request, slug):
     current_category = get_object_or_404(Category, active=True, slug=slug)
-    exercises = Exercise.objects.filter(active=True, category=current_category)
     try:
         main_image = ImageCategory.objects.filter(active=True, binding=current_category, main=True)[0]
     except IndexError:
         main_image = None
-    actives_muscles = Muscle.objects.filter(id__in=current_category.muscles.all, active=True)
-    exercises_list = []
-    for active_exercise in exercises:
-        try:
-            exercises_data = {
-                'exercise': active_exercise,
-                'main_image': ImageExercise.objects.filter(active=True, main=True, binding=active_exercise)[0],
-                }
-        except IndexError:
-            exercises_data = {
-                'exercise': active_exercise,
-                'main_image': None,
-                }
-        exercises_list.append(exercises_data)
-
-    if actives_muscles:
-        muscles_list = []
-        for active_muscle in actives_muscles:
-            try:
-                muscles_data = {
-                    'muscle': active_muscle,
-                    'main_image': ImageMuscle.objects.filter(active=True, main=True, binding=active_muscle)[0],
-                    }
-            except IndexError:
-                muscles_data = {
-                    'muscle': active_muscle,
-                    'main_image': None,
-                    }
-            muscles_list.append(muscles_data)
+    try:
+        main_video = VideoCategory.objects.filter(active=True, binding=current_category, main=True)[0]
+    except IndexError:
+        main_video = None
 
     context = {'category': current_category,
                'main_image': main_image,
-               'exercises_list': exercises_list,
-               'muscles_list': muscles_list, }
+               'exercises_list': get_full_exercises_representation_for_a_category(current_category),
+               'main_video': main_video,
+               'muscles_list': get_full_muscles_representation_for_a_category(current_category), }
     return render(request, "category.html", context)
+
+
+def category_exercises(request, slug):
+    current_category = get_object_or_404(Category, active=True, slug=slug)
+    context = {'category': current_category,
+               'exercises_list': get_full_exercises_representation_for_a_category(current_category)}
+    return render(request, "category_exercises.html", context)
 
 
 def category_images(request, slug):
