@@ -14,51 +14,49 @@
 {% endblock %}
 
 {% block content %}
-<ol class="breadcrumb">
-    <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
-    <li>{{ category|capfirst }}</li>
-    <li class="active">{% trans "Exercises" %}</li>
-</ol>
-<h1>
-    {{ category|capfirst }} {% trans "Category" %}
-</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
+        <li>{{ category|capfirst }}</li>
+        <li class="active">{% trans "Exercises" %}</li>
+    </ol>
+    <h1>
+        {{ category|capfirst }} {% trans "Category" %}
+    </h1>
 
-{% show_exercises_category_menu category "exercises" %}
-    
-<section class="right right-spaced-xl panel panel-default padding-xl" id="muscles">
-    <div class="panel-body">
-        <img src="{% static "img/design/muscle-anatomy-l.png" %}">
-        {% for muscle in muscles_list %}
-            <p>
-                <a href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
-            </p>
-        {% endfor %}
-    </div>
-</section>
+    {% show_exercises_category_menu category "description" %}
 
-<section id="description">
-    <h4><u>{% trans "Description" %}</u></h4>
-    {% for image in images_category %}
-        {% if image.main %}
-        <img src="{% get_media_prefix %}{{ image.image }}" alt="{{ image.alt }}" class="left img-thumbnail img-xs" >
-        {% endif %}
-    {% endfor %}
-    <p>
-        {{ category.description|capfirst }}
-    </p>
-</section>
+    <section class="right right-spaced-xl panel panel-default padding-xl" id="muscles">
+        <div class="panel-body">
+            <img src="{% static "img/design/muscle-anatomy-l.png" %}">
+            {% for muscle in muscles_list %}
+                <p>
+                    <a href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
+                </p>
+            {% endfor %}
+        </div>
+    </section>
 
-{% if exercises_list %}
-<section id="exercises">
-    <h4><u>{% trans "Related Exercises Variations" %}</u></h4>
-    <table>
-        {% for exercise in exercises_list %}
-            <tr>
-                <td>{{ exercise.main_image.image }}</td>
-                <td>{{ exercise.exercise }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-</section>
-{% endif %}
+    {% if main_image %}
+        <section class="right right-spaced-xl panel panel-default padding-xl left-spaced-xl" id="media">
+            <img class="img-xl"
+                 src="{% get_media_prefix %}{{ main_image.image }}"
+                 alt="{{ main_image.alt }}"
+                 title="{{ main_image.name }}" />
+        </section>
+    {% endif %}
+
+    <section id="description">
+        <p class="text-justify text-xl">{{ category.description|capfirst }}</p>
+    </section>
+
+    {% if category.related_category.all %}
+        <hr>
+        <section id="related-categories">
+            <h4><u>{% trans "Related Categories" %}</u></h4>
+            {% for related_category in category.related_category.all %}
+                <a href="{% url 'exercises_category' slug=related_category.slug %}"
+                class="btn btn-success">{{ related_category|capfirst }}</a>
+            {% endfor %}
+        </section>
+    {% endif %}
 {% endblock %}<!-- End Content -->

@@ -76,6 +76,7 @@ class Category(models.Model):
     muscles = models.ManyToManyField(Muscle)
     active = models.BooleanField(default=False)
     slug = models.SlugField(default='', unique=True)
+    related_category = models.ManyToManyField('self', blank=True, default=None, null=True)
     common_page_attribute = models.ForeignKey(CommonsPagesAttributes)
 
     def __str__(self):
