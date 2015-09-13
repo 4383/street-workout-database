@@ -1,6 +1,15 @@
 {% load i18n %}
-<nav>
+<nav class="margin-bottom-xl">
     <ul class="nav nav-pills">
+        {% if active == "description" %}
+            <li role="presentation" class="active">
+        {% else %}
+            <li role="presentation">
+        {% endif %}
+            <a href="{% url 'exercises_category' slug=category.slug %}" class="list-group-item">
+                {% trans "Description" %}
+            </a>
+        </li>
         {% comment %}***** exercises link *****{% endcomment %}
         {% if total_exercises > 0 %}
             {% if active == "exercises" %}
@@ -8,7 +17,7 @@
             {% else %}
                 <li role="presentation">
             {% endif %}
-                <a href="{% url 'exercises_category' slug=category.slug %}" class="list-group-item">
+                <a href="{% url 'exercises_category_exercises' slug=category.slug %}" class="list-group-item">
                     {% trans "Exercises" %}
                     <span class="badge badge-success left-spaced-xs">{{ total_exercises }}</span>
                 </a>
@@ -48,7 +57,7 @@
         {% endif %}
             <a href="{% url 'exercises_category_muscles' slug=category.slug %}" class="list-group-item">
                 {% trans "Muscles" %}
-                <span class="badge badge-success left-spaced-xs">{{ total_videos }}</span>
+                <span class="badge badge-success left-spaced-xs">{{ category.muscles.all|length }}</span>
             </a>
         </li>
     </ul>

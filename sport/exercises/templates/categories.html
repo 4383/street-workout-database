@@ -64,19 +64,21 @@
                 {% endif %}
                 <article class="panel-body">
                     <p class="text-justify">{{ selected_category.category.description }}<br>
-                        <a href="{% url 'exercises_category' slug=selected_category.category.slug %}">
+                        <a href="{% url 'exercises_category_exercises' slug=selected_category.category.slug %}">
                             {% trans "See" %} {{ selected_category.total_exercises }} {{ selected_category.category }}
                             Variation{{ selected_category.total_exercises|pluralize }}
                             Exercise{{ selected_category.total_exercises|pluralize }}...
                         </a>
                     </p>
-                    <hr>
-                    <h5 class="underline">
-                        <u>
-                            {% trans "Related Random" %}
-                            Exercise{{ selected_category.random_selected_exercises|pluralize }}:
-                        </u>
-                    <h5>
+                    {% if selected_category.random_selected_exercises %}
+                        <hr>
+                        <h5 class="underline">
+                            <u>
+                                {% trans "Related Random" %}
+                                Exercise{{ selected_category.random_selected_exercises|pluralize }}:
+                            </u>
+                        <h5>
+                    {% endif %}
                     <p>
                         <small>
                             {% for exercise in selected_category.random_selected_exercises %}
