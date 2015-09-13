@@ -1,0 +1,60 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load exercises_tags %}
+
+{% block title %}{% trans "List Of Exercises Variations For" %} {{ category|capfirst }} {% trans "Category" %}{% endblock %}
+{% block meta_description %}
+    {% trans "Variations exercises: " %}
+    {{ category.common_page_attribute.description }}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "exercises, variations," %}{{ category.common_page_attribute.keywords }}
+{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
+        <li><a href="{% url 'exercises_category' slug=category.slug %}">{{ category|capfirst }}</a></li>
+        <li class="active">{% trans "Exercises" %}</li>
+    </ol>
+    <h1>
+        {{ category|capfirst }} {% trans "Category" %}
+    </h1>
+
+    {% show_exercises_category_menu category "exercises" %}
+
+    {% if exercises_list %}
+        <section id="exercises">
+            {% for exercise in exercises_list %}
+                <div class="col-md-3">
+                    <section id="{{ exercise.exercise.slug }}" class="panel panel-default media">
+                        <div class="panel-heading">
+                            <h4>
+                                <a href="{% url 'exercise' slug=exercise.exercise.slug %}" >
+                                    {{ exercise.exercise|capfirst }}
+                                </a>
+                            </h4>
+                        </div>
+                        {% if exercise.main_image %}
+                            <img src="{% get_media_prefix %}{{ exercise.main_image.image }}"
+                                 alt="{{ exercise.main_image.alt }}" class="pull-left img-thumbnail img-xs">
+                        {% else %}
+                            <img src="{% static "img/design/image-not-available.png" %}"
+                                 alt="{{ exercise.main_image.alt }}" class="pull-left img-thumbnail img-xs">
+                        {% endif %}
+                        <article class="panel-body">
+                            <p class="text-justify">{{ exercise.exercise.description }}</p>
+                        </article>
+                    </section>
+                </div>
+            {% endfor %}
+        </section>
+    {% endif %}
+{% endblock %}<!-- End Content -->
