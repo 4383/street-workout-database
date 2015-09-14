@@ -75,6 +75,10 @@ def exercise(request, slug):
     return render(request, "exercise.html")
 
 
+def exercise_how_to(request, slug):
+    return render(request, "exercise_how_to.html")
+
+
 def categories(request):
     actives_categories = Category.objects.filter(active=True)
     categories_list = []

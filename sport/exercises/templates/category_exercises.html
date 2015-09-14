@@ -22,7 +22,7 @@
     <ol class="breadcrumb">
         <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
         <li><a href="{% url 'exercises_category' slug=category.slug %}">{{ category|capfirst }}</a></li>
-        <li class="active">{% trans "Exercises" %}</li>
+        <li class="active">{% trans "Variations Exercises" %}</li>
     </ol>
     <h1>
         {{ category|capfirst }} {% trans "Category" %}
@@ -33,9 +33,27 @@
     {% if exercises_list %}
         <section id="exercises">
             {% for exercise in exercises_list %}
-                <div class="col-md-3">
-                    <section id="{{ exercise.exercise.slug }}" class="panel panel-default media">
+                <div class="col-md-3 no-padding-left padding-top-xs">
+                    <section id="{{ exercise.exercise.slug }}" class=" panel panel-default">
                         <div class="panel-heading">
+                            <span class="right padding-top-xs">
+                                {% if exercise.exercise.level == "easy" %}
+                                    <span class="btn btn-success btn-xs"
+                                          title="{% trans 'Exercise for beginners' %}">
+                                        {% trans 'Easy Level' %}
+                                    </span>
+                                {% elif exercise.exercise.level == "medium" %}
+                                    <span class="btn btn-warning btn-xs"
+                                          title="{% trans 'Exercise For Anyone Intermediate' %}">
+                                        {% trans 'Medium Level' %}
+                                    </span>
+                                {% else %}
+                                    <span class="btn btn-danger btn-xs"
+                                          title="Exercise For People Of Advanced Level">
+                                        {% trans 'Hard Level' %}
+                                    </span>
+                                {% endif %}
+                            </span>
                             <h4>
                                 <a href="{% url 'exercise' slug=exercise.exercise.slug %}" >
                                     {{ exercise.exercise|capfirst }}
@@ -51,6 +69,10 @@
                         {% endif %}
                         <article class="panel-body">
                             <p class="text-justify">{{ exercise.exercise.description }}</p>
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                            <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}">
+                                {% trans "See how to do a" %} {{ exercise.exercise }}
+                            </a>
                         </article>
                     </section>
                 </div>
