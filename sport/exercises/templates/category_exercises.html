@@ -34,22 +34,22 @@
         <section id="exercises">
             {% for exercise in exercises_list %}
                 <div class="col-md-3 no-padding-left padding-top-xs">
-                    <section id="{{ exercise.exercise.slug }}" class=" panel panel-default">
+                    <section id="{{ exercise.exercise.slug }}" class="panel panel-default">
                         <div class="panel-heading">
                             <span class="right padding-top-xs">
                                 {% if exercise.exercise.level == "easy" %}
                                     <span class="btn btn-success btn-xs"
-                                          title="{% trans 'Exercise for beginners' %}">
+                                          title="{% trans 'For all' %}">
                                         {% trans 'Easy Level' %}
                                     </span>
                                 {% elif exercise.exercise.level == "medium" %}
                                     <span class="btn btn-warning btn-xs"
-                                          title="{% trans 'Exercise For Anyone Intermediate' %}">
+                                          title="{% trans 'For anyone intermediate and people of advanced level' %}">
                                         {% trans 'Medium Level' %}
                                     </span>
                                 {% else %}
                                     <span class="btn btn-danger btn-xs"
-                                          title="Exercise For People Of Advanced Level">
+                                          title="For people of advanced level">
                                         {% trans 'Hard Level' %}
                                     </span>
                                 {% endif %}
@@ -69,10 +69,23 @@
                         {% endif %}
                         <article class="panel-body">
                             <p class="text-justify">{{ exercise.exercise.description }}</p>
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                            <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}">
-                                {% trans "See how to do a" %} {{ exercise.exercise }}
-                            </a>
+                            <div class="btn-group" role="group" aria-label="exercise-explorer">
+                                <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}"
+                                   title="{% trans "See how to do a" %} {{ exercise.exercise|capfirst }}"
+                                   class="btn btn-default btn-lg">
+                                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                </a>
+                                <a href="{% url 'exercise_videos' slug=exercise.exercise.slug %}"
+                                   title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'videos' %}"
+                                   class="btn btn-default btn-lg">
+                                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                                </a>
+                                <a href="{% url 'exercise_images' slug=exercise.exercise.slug %}"
+                                   title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'images' %}"
+                                   class="btn btn-default btn-lg">
+                                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                </a>
+                            </div>
                         </article>
                     </section>
                 </div>
