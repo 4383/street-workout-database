@@ -156,6 +156,10 @@ separator: #E7E7E7
     font-size: 16px;
 }
 
+area:hover {
+    cursor: pointer;
+}
+
 /**********************************************
 Images
 ***********************************************/
@@ -186,6 +190,12 @@ Images
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
+}
+
+.superposition {
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
 /************************************************

@@ -22,7 +22,10 @@ class CommonsPagesAttributes(models.Model):
 class Mapping(models.Model):
     name = models.CharField(max_length=150, unique=True)
     image = models.ImageField(upload_to='upload/exercises/mapping')
+    transparent_image = models.ImageField(upload_to='upload/exercises/mapping')
     alt = models.CharField(max_length=150)
+    width = models.IntegerField(default=300)
+    height = models.IntegerField(default=255)
 
     def __str__(self):
         return self.name
@@ -32,7 +35,8 @@ class MappingArea(models.Model):
     name = models.CharField(max_length=150)
     points = models.TextField()
     mapping = models.ForeignKey(Mapping)
-    image_over = models.ImageField(upload_to='upload/exercises/mapping', blank=True)
+    first_image_hover = models.ImageField(upload_to='upload/exercises/mapping', blank=True)
+    second_image_hover = models.ImageField(upload_to='upload/exercises/mapping', blank=True)
 
     def __str__(self):
         return self.name

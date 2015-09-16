@@ -90,7 +90,7 @@ class ExerciseAdmin(admin.ModelAdmin):
     list_filter = ['category', 'muscles', 'level', 'active']
 
 
-class EquimentAdmin(admin.ModelAdmin):
+class EquipmentAdmin(admin.ModelAdmin):
     inlines = [ImageEquipmentInline]
     list_display = ('name', 'is_indoor', 'is_outdoor', 'is_public_facilities', 'is_free')
 
@@ -106,7 +106,7 @@ class MuscleGroupAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
-admin.site.register(Equipment, EquimentAdmin)
+admin.site.register(Equipment, EquipmentAdmin)
 admin.site.register(Muscle, MuscleAdmin)
 admin.site.register(MuscleGroup, MuscleGroupAdmin)
 admin.site.register(MuscleType)

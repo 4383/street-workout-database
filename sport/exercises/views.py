@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
-from exercises.decorators import add_exercises_to_context
+from django.core.exceptions import ObjectDoesNotExist
 from exercises.models import Category
 from exercises.models import Exercise
 from exercises.models import ImageCategory
 from exercises.models import ImageExercise
 from exercises.models import ImageMuscle
+from exercises.models import Mapping
+from exercises.models import MappingAreaMuscles
 from exercises.models import Muscle
 from exercises.models import VideoCategory
 
@@ -43,11 +45,13 @@ def get_full_muscles_representation_for_a_category(current_category, limit=None)
             try:
                 muscles_data = {
                     'muscle': active_muscle,
+                    'area': MappingAreaMuscles.objects.filter(binding=active_muscle),
                     'main_image': ImageMuscle.objects.filter(active=True, main=True, binding=active_muscle)[0],
                     }
             except IndexError:
                 muscles_data = {
                     'muscle': active_muscle,
+                    'area': MappingAreaMuscles.objects.filter(binding=active_muscle),
                     'main_image': None,
                     }
             muscles_list.append(muscles_data)
@@ -122,11 +126,17 @@ def category(request, slug):
     except IndexError:
         main_video = None
 
+    try:
+        mapping = Mapping.objects.get(name="category_muscle_mapping")
+    except ObjectDoesNotExist:
+        mapping = None
+
     context = {'category': current_category,
                'main_image': main_image,
                'exercises_list': get_full_exercises_representation_for_a_category(current_category),
                'main_video': main_video,
-               'muscles_list': get_full_muscles_representation_for_a_category(current_category), }
+               'muscles_list': get_full_muscles_representation_for_a_category(current_category),
+               'mapping': mapping, }
     return render(request, "category.html", context)
 
 

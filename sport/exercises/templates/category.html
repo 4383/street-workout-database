@@ -25,16 +25,120 @@
 
     {% show_exercises_category_menu category "description" %}
 
+    {% if mapping %}
     <section class="right right-spaced-xl panel panel-default padding-xl" id="muscles">
-        <div class="panel-body">
-            <img src="{% static "img/design/muscle-anatomy-l.png" %}">
+        <script>
             {% for muscle in muscles_list %}
-                <p>
-                    <a href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
-                </p>
+                {% if muscle.area %}
+                    {% for area in muscle.area %}
+                        {% if area.mapping == mapping %}
+                            {% if forloop.first %}
+                                var gallery_content = '{' +
+                            {% endif %}
+                            '"{{ area.name }}" : {"image1" : "{% get_media_prefix %}{{ area.first_image_hover }}", ' +
+                            '"image2" : "{% get_media_prefix %}{{ area.second_image_hover }}", ' +
+                            '"muscle" : "{{ muscle.muscle }}"}' +
+                            {% if not forloop.last %}
+                                ',' +
+                            {% else %}
+                                '}';
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
+
+            var json_images_data = JSON.parse(gallery_content);
+
+            var MappingManager = MappingManager || {};
+            MappingManager.Mapping = function() {
+
+                var overArea = function(area_id) {
+                    console.log(area_id);
+                    image = json_images_data[area_id]['image2'];
+                    muscle_link = json_images_data[area_id]['muscle'] + '_link';
+                    console.log(image);
+                    document.getElementById(area_id + "_img").src = image;
+                    document.getElementById(muscle_link).className = "btn btn-xs btn-danger";
+                };
+
+                var outArea = function(area_id) {
+                    console.log(area_id);
+                    image = json_images_data[area_id]['image1'];
+                    muscle_link = json_images_data[area_id]['muscle'] + '_link';
+                    console.log(image);
+                    document.getElementById(area_id + "_img").src = image;
+                    document.getElementById(muscle_link).className = "btn btn-xs btn-success";
+                };
+
+                var oPublic = {
+                    overArea: overArea,
+                    outArea: outArea
+                }
+
+                return oPublic;
+            }();
+        </script>
+        <div class="panel-body"
+             style="background: url('{% get_media_prefix %}{{ mapping.image }}') no-repeat;
+                     min-height: {{ mapping.height }}px;
+                     width: {{ mapping.width }}px;
+                     position: relative;">
+            {% for muscle in muscles_list %}
+                {% if muscle.area %}
+                    {% for area in muscle.area %}
+                        {% if area.mapping == mapping %}
+                            <img src="{% get_media_prefix %}{{ area.first_image_hover }}"
+                                 class="superposition hand-cursor"
+                                 id="{{ area.name }}_img"
+                                 style="z-index: {{ forloop.counter }};"/>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
+            <img usemap="#{{ mapping.name }}" alt="{{ mapping.alt }}"
+                 style="z-index: 1000; min-height: {{ mapping.height }}; width: {{ mapping.width }};"
+                 class="superposition"
+                 src="{% get_media_prefix %}{{ mapping.transparent_image }}">
+
+            <map name="{{ mapping.name }}">
+                {% for muscle in muscles_list %}
+                    {% if muscle.area %}
+                        {% for area in muscle.area %}
+                            {% if area.mapping == mapping %}
+                                <area shape="poly"
+                                      href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}"
+                                      coords="{{ area.points }}"
+                                      id="{{ area.name }}"
+                                      class="mapping_area">
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </map>
+            <script>
+
+            $('.mapping_area').mouseover(function (event) {
+                area_id = event.target.id;
+                MappingManager.Mapping.overArea(area_id);
+            });
+
+            $('.mapping_area').mouseout(function (event) {
+                area_id = event.target.id;
+                MappingManager.Mapping.outArea(area_id);
+            });
+            </script>
         </div>
+        <p>
+            {% for muscle in muscles_list %}
+                <a id="{{ muscle.muscle }}_link"
+                   class="btn btn-xs btn-success"
+                   href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
+            {% endfor %}
+        </p>
     </section>
+    {% endif %}
 
     {% if main_image %}
         <section class="right right-spaced-xl panel panel-default padding-xl left-spaced-xl" id="media">

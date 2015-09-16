@@ -49,16 +49,5 @@
                 </a>
             </li>
         {% endif %}
-        {% comment %}***** muscles link *****{% endcomment %}
-        {% if active == "Muscles" %}
-            <li role="presentation" class="active">
-        {% else %}
-            <li role="presentation">
-        {% endif %}
-            <a href="{% url 'exercises_category_muscles' slug=category.slug %}" class="list-group-item">
-                {% trans "Muscles" %}
-                <span class="badge badge-success left-spaced-xs">{{ category.muscles.all|length }}</span>
-            </a>
-        </li>
     </ul>
 </nav>
