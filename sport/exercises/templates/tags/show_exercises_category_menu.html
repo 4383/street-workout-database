@@ -1,5 +1,5 @@
 {% load i18n %}
-<nav class="margin-bottom-xl">
+<nav id="category-main-menu" class="margin-bottom-xl">
     <ul class="nav nav-pills">
         {% if active == "description" %}
             <li role="presentation" class="active">
@@ -51,3 +51,14 @@
         {% endif %}
     </ul>
 </nav>
+<nav id="category-main-menu-sticky" class="right">
+    <a href="#" title="{% trans "Display Exercises In Grid Format" %}"
+       id="show-category-menu" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+    </a>
+</nav>
+<script>
+    $(document).scroll(function() {
+        $('#category-main-menu-sticky').css({display: $(this).scrollTop()>100 ? "block":"none"});
+    });
+</script>
