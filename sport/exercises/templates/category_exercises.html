@@ -90,49 +90,23 @@
                 $('.medium').css('display', 'none');
                 $('.hard').css('display', 'block');
             });
-
+            $(document).scroll(function() {
+                $logo.css({display: $(this).scrollTop()>100 ? "block":"none"});
+            });
         </script>
     </menu>
     {% if exercises_list %}
         <section id="exercises-grid">
             {% for exercise in exercises_list %}
                 <div class="col-md-3 no-padding-left padding-top-xs {{ exercise.exercise.level }}">
-                    <section id="{{ exercise.exercise.slug }}" class="panel panel-default">
-                        <div class="panel-heading">
-                            <span class="right padding-top-xs">
-                                {% if exercise.exercise.level == "easy" %}
-                                    <span class="btn btn-success btn-xs"
-                                          title="{% trans 'For all' %}">
-                                        {% trans 'Easy Level' %}
-                                    </span>
-                                {% elif exercise.exercise.level == "medium" %}
-                                    <span class="btn btn-warning btn-xs"
-                                          title="{% trans 'For anyone intermediate and people of advanced level' %}">
-                                        {% trans 'Medium Level' %}
-                                    </span>
-                                {% else %}
-                                    <span class="btn btn-danger btn-xs"
-                                          title="For people of advanced level">
-                                        {% trans 'Hard Level' %}
-                                    </span>
-                                {% endif %}
-                            </span>
-                            <h4>
-                                <a href="{% url 'exercise' slug=exercise.exercise.slug %}" >
-                                    {{ exercise.exercise|capfirst }}
-                                </a>
-                            </h4>
-                        </div>
+                    <section id="{{ exercise.exercise.slug }}" class="bg-img-adjust panel panel-default"
                         {% if exercise.main_image %}
-                            <img src="{% get_media_prefix %}{{ exercise.main_image.image }}"
-                                 alt="{{ exercise.main_image.alt }}" class="pull-left img-thumbnail img-xs">
-                        {% else %}
-                            <img src="{% static "img/design/image-not-available.png" %}"
-                                 alt="{{ exercise.main_image.alt }}" class="pull-left img-thumbnail img-xs">
+                            style="background: url('{% get_media_prefix %}{{ exercise.main_image.image }}') no-repeat;
+                                   background-size: 100% 100%;
+                                   background-position: center;"
                         {% endif %}
-                        <article class="panel-body">
-                            <p class="text-justify">{{ exercise.exercise.description }}</p>
-                            <div class="btn-group" role="group" aria-label="exercise-explorer">
+                        >
+                        <div class="btn-group-vertical right" role="group" aria-label="exercise-explorer">
                                 <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}"
                                    title="{% trans "See how to do a" %} {{ exercise.exercise|capfirst }}"
                                    class="btn btn-default btn-lg">
@@ -149,7 +123,35 @@
                                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                                 </a>
                             </div>
+                        <span class="left">
+                            {% if exercise.exercise.level == "easy" %}
+                                <span class="btn btn-success btn-xs"
+                                      title="{% trans 'For all' %}">
+                                    {% trans 'Easy Level' %}
+                                </span>
+                            {% elif exercise.exercise.level == "medium" %}
+                                <span class="btn btn-warning btn-xs"
+                                      title="{% trans 'For anyone intermediate and people of advanced level' %}">
+                                    {% trans 'Medium Level' %}
+                                </span>
+                            {% else %}
+                                <span class="btn btn-danger btn-xs"
+                                      title="For people of advanced level">
+                                    {% trans 'Hard Level' %}
+                                </span>
+                            {% endif %}
+                        </span>
+                        <article class="panel-body">
+                            <p class="text-justify">{{ exercise.exercise.description }}</p>
                         </article>
+                        <div class="panel-footer small-background-opacity">
+
+                            <h4>
+                                <a href="{% url 'exercise' slug=exercise.exercise.slug %}" >
+                                    {{ exercise.exercise|capfirst }}
+                                </a>
+                            </h4>
+                        </div>
                     </section>
                 </div>
             {% endfor %}

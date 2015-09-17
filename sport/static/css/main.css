@@ -197,6 +197,14 @@ Images
     margin-top: 10px;
 }
 
+.bg-img-adjust {
+    background-size: 80px 80px;
+}
+
+.small-background-opacity {
+    opacity: 0.65;
+}
+
 .superposition {
     position: absolute;
     top: 0px;
@@ -211,6 +219,13 @@ Images
 #exercises-grid {
     margin-top: 20px;
     width: 90%;
+}
+
+#category-main-menu-sticky {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 10px;
 }
 
 .fixed {
