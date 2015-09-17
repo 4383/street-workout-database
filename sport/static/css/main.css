@@ -168,6 +168,11 @@ Images
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
+    width: 80px;
+}
+
+.img-xs-min-width {
+    width: 100px;
 }
 
 .img-xl {
@@ -198,6 +203,21 @@ Images
     left: 0px;
 }
 
+#exercises-list {
+    margin-top: 20px;
+    width: 90%;
+}
+
+#exercises-grid {
+    margin-top: 20px;
+    width: 90%;
+}
+
+.fixed {
+    position: fixed;
+    right: 10px;
+}
+
 /************************************************
 Margin and spacing
 ************************************************/
@@ -223,6 +243,10 @@ Margin and spacing
     margin-top: 10px;
 }
 
+.margin-right-xs {
+    margin-right: 10px;
+}
+
 .no-margin {
     margin: 0px;
 }
@@ -237,6 +261,14 @@ Margin and spacing
 
 .padding-top-xs {
     padding-top: 10px;
+}
+
+.padding-bottom-xs {
+    padding-bottom: 10px;
+}
+
+.padding-right-xs {
+    padding-right: 10px;
 }
 
 .left-spaced-xl {
