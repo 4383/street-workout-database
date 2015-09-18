@@ -202,7 +202,25 @@ Images
 }
 
 .small-background-opacity {
-    opacity: 0.65;
+    background-color: rgba(250, 250, 250, 0.7);
+}
+
+.easy-level-color {
+    background-color: #5cb85c;
+}
+
+.medium-level-color {
+    background-color: #f0ad4e;
+}
+
+.hard-level-color {
+    background-color: #d9534f;
+}
+
+.diagonal-label {
+    -ms-transform: rotate(-30deg);
+    -webkit-transform: rotate(-30deg);
+    transform: rotate(-30deg);
 }
 
 .superposition {
@@ -278,8 +296,20 @@ Margin and spacing
     padding-top: 10px;
 }
 
+.padding-top-l {
+    padding-top: 15px;
+}
+
+.padding-top-xl {
+    padding-top: 20px;
+}
+
 .padding-bottom-xs {
     padding-bottom: 10px;
+}
+
+.padding-bottom-xl {
+    padding-bottom: 20px;
 }
 
 .padding-right-xs {

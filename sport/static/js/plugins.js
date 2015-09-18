@@ -22,3 +22,9 @@
 }());
 
 // Place any jQuery/helper plugins in here.
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+});
+$(function () {
+    $('[data-toggle="popover"]').popover()
+});

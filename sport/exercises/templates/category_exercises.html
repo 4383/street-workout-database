@@ -32,30 +32,36 @@
 
     <menu class="right fixed">
         <div class="btn-group-vertical" role="group" aria-label="exercise-explorer">
-            <a href="#" title="{% trans "Display Exercises In Grid Format" %}"
+            <button type="button" title="{% trans "Display Exercises In Grid Format" %}"
+               data-toggle="tooltip" data-placement="bottom"
                id="show-grid" class="btn btn-primary btn-lg">
                 <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
-            </a>
-            <a href="#" title="{% trans "Display Exercises In List Format" %}"
+            </button>
+            <button type="button" title="{% trans "Display Exercises In List Format" %}"
+               data-toggle="tooltip" data-placement="bottom"
                id="show-list" class="btn btn-default btn-lg">
                 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-            </a>
-            <a href="#" title="{% trans "Show All Levels Exercises" %}"
+            </button>
+            <button type="button" title="{% trans "Show All Levels Exercises" %}"
+               data-toggle="tooltip" data-placement="bottom"
                id="level-all" class="btn btn-default btn-lg text-left">
                 <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
-            </a>
-            <a href="#" title="{% trans "Shown Only Easy Level Exercises" %}"
+            </button>
+            <button type="button" title="{% trans "Shown Only Easy Level Exercises" %}"
+               data-toggle="tooltip" data-placement="bottom"
                id="level-easy" class="btn btn-success btn-lg text-left">
                 <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
-            </a>
-            <a href="#" title="{% trans "Shown Only Medium Level Exercises" %}"
+            </button>
+            <button type="button" href="#" title="{% trans "Shown Only Medium Level Exercises" %}"
+               data-toggle="tooltip" data-placement="bottom"
                id="level-medium" class="btn btn-warning btn-lg text-left" >
                 <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
-            </a>
-            <a href="#" title="{% trans "Shown Only Hard Level Exercises" %}"
+            </button>
+            <button type="button" title="{% trans "Shown Only Hard Level Exercises" %}"
+               data-toggle="tooltip" data-placement="bottom"
                id="level-hard" class="btn btn-danger btn-lg text-left">
                 <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
-            </a>
+            </button>
         </div>
         <script>
             $('#show-list').click(function() {
@@ -90,9 +96,6 @@
                 $('.medium').css('display', 'none');
                 $('.hard').css('display', 'block');
             });
-            $(document).scroll(function() {
-                $logo.css({display: $(this).scrollTop()>100 ? "block":"none"});
-            });
         </script>
     </menu>
     {% if exercises_list %}
@@ -105,25 +108,31 @@
                                    background-size: 100% 100%;
                                    background-position: center;"
                         {% endif %}
+                            data-toggle="popover"
+                             title="Exercise Description"
+                             data-content="{{ exercise.exercise.description|truncatewords:15 }}"
                         >
-                        <div class="btn-group-vertical right" role="group" aria-label="exercise-explorer">
-                                <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}"
-                                   title="{% trans "See how to do a" %} {{ exercise.exercise|capfirst }}"
-                                   class="btn btn-default btn-lg">
-                                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                                </a>
-                                <a href="{% url 'exercise_videos' slug=exercise.exercise.slug %}"
-                                   title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'videos' %}"
-                                   class="btn btn-default btn-lg">
-                                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                                </a>
-                                <a href="{% url 'exercise_images' slug=exercise.exercise.slug %}"
-                                   title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'images' %}"
-                                   class="btn btn-default btn-lg">
-                                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        <span class="left">
+                        <div class="btn-group-vertical right padding-bottom-xl" role="group" aria-label="exercise-explorer">
+                            <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}"
+                               title="{% trans "How-to" %}"
+                                data-toggle="tooltip" data-placement="right"
+                               class="btn btn-default btn-lg">
+                                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                            </a>
+                            <a href="{% url 'exercise_videos' slug=exercise.exercise.slug %}"
+                               title="{% trans 'videos' %}"
+                                data-toggle="tooltip" data-placement="right"
+                               class="btn btn-default btn-lg">
+                                <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                            </a>
+                            <a href="{% url 'exercise_images' slug=exercise.exercise.slug %}"
+                               title="{% trans 'Images' %}"
+                                data-toggle="tooltip" data-placement="right"
+                               class="btn btn-default btn-lg">
+                                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <span class="left diagonal-label padding-top-xl">
                             {% if exercise.exercise.level == "easy" %}
                                 <span class="btn btn-success btn-xs"
                                       title="{% trans 'For all' %}">
@@ -142,10 +151,13 @@
                             {% endif %}
                         </span>
                         <article class="panel-body">
-                            <p class="text-justify">{{ exercise.exercise.description }}</p>
                         </article>
                         <div class="panel-footer small-background-opacity">
-
+                            <button type="button" class="btn btn-default right"
+                                    title="{% trans 'Display/Hide a short description' %}"
+                                    data-toggle="tooltip" data-placement="bottom">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            </button>
                             <h4>
                                 <a href="{% url 'exercise' slug=exercise.exercise.slug %}" >
                                     {{ exercise.exercise|capfirst }}
@@ -159,10 +171,18 @@
         <section id="exercises-list" class="hidden">
             {% for exercise in exercises_list %}
                 {% if forloop.first %}
-                    <table class="table">
+                    <table class="table table-hover">
                         <tbody>
                 {% endif %}
                 <tr class="{{ exercise.exercise.level }}">
+                    <td class="{% if exercise.exercise.level == "easy" %}
+                                    easy-level-color
+                                {% elif exercise.exercise.level == "medium" %}
+                                    medium-level-color
+                                {% else %}
+                                    hard-level-color
+                                {% endif %}
+                            "></td>
                     <td>
                         <a class="left" href="{% url 'exercise' slug=exercise.exercise.slug %}">
                             {% if exercise.main_image %}
@@ -211,7 +231,7 @@
                             <a href="{% url 'exercise_videos' slug=exercise.exercise.slug %}"
                                title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'videos' %}"
                                class="btn btn-default">
-                                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
                             </a>
                             <a href="{% url 'exercise_images' slug=exercise.exercise.slug %}"
                                title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'images' %}"
