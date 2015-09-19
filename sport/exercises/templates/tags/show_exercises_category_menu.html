@@ -51,15 +51,3 @@
         {% endif %}
     </ul>
 </nav>
-<nav id="category-main-menu-sticky" class="right">
-    <button title="{% trans "Display main menu" %}"
-       data-toggle="tooltip" data-placement="bottom"
-       id="show-category-menu" class="btn btn-info btn-lg">
-        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-    </button>
-</nav>
-<script>
-    $(document).scroll(function() {
-        $('#category-main-menu-sticky').css({display: $(this).scrollTop()>100 ? "block":"none"});
-    });
-</script>
