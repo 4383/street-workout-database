@@ -98,154 +98,155 @@
             });
         </script>
     </menu>
+
     {% if exercises_list %}
-        <section id="exercises-grid">
-            {% for exercise in exercises_list %}
-                <div class="col-md-3 no-padding-left padding-top-xs {{ exercise.exercise.level }}">
-                    <section id="{{ exercise.exercise.slug }}" class="bg-img-adjust panel panel-default"
-                        {% if exercise.main_image %}
-                            style="background: url('{% get_media_prefix %}{{ exercise.main_image.image }}') no-repeat;
-                                   background-size: 100% 100%;
-                                   background-position: center;"
-                        {% endif %}
-                            data-toggle="popover"
-                             title="Exercise Description"
-                             data-content="{{ exercise.exercise.description|truncatewords:15 }}"
-                        >
-                        <div class="btn-group-vertical right padding-bottom-xl" role="group" aria-label="exercise-explorer">
-                            <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}"
-                               title="{% trans "How-to" %}"
-                                data-toggle="tooltip" data-placement="right"
-                               class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                            </a>
-                            <a href="{% url 'exercise_videos' slug=exercise.exercise.slug %}"
-                               title="{% trans 'videos' %}"
-                                data-toggle="tooltip" data-placement="right"
-                               class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
-                            </a>
-                            <a href="{% url 'exercise_images' slug=exercise.exercise.slug %}"
-                               title="{% trans 'Images' %}"
-                                data-toggle="tooltip" data-placement="right"
-                               class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                        <span class="left diagonal-label padding-top-xl">
-                            {% if exercise.exercise.level == "easy" %}
-                                <span class="btn btn-success btn-xs"
-                                      title="{% trans 'For all' %}">
-                                    {% trans 'Easy Level' %}
-                                </span>
-                            {% elif exercise.exercise.level == "medium" %}
-                                <span class="btn btn-warning btn-xs"
-                                      title="{% trans 'For anyone intermediate and people of advanced level' %}">
-                                    {% trans 'Medium Level' %}
-                                </span>
-                            {% else %}
-                                <span class="btn btn-danger btn-xs"
-                                      title="For people of advanced level">
-                                    {% trans 'Hard Level' %}
-                                </span>
-                            {% endif %}
-                        </span>
-                        <article class="panel-body">
-                        </article>
-                        <div class="panel-footer small-background-opacity">
-                            <button type="button" class="btn btn-default right"
-                                    title="{% trans 'Display/Hide a short description' %}"
-                                    data-toggle="tooltip" data-placement="bottom">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                            </button>
-                            <h4>
-                                <a href="{% url 'exercise' slug=exercise.exercise.slug %}" >
-                                    {{ exercise.exercise|capfirst }}
-                                </a>
-                            </h4>
-                        </div>
-                    </section>
-                </div>
-            {% endfor %}
-        </section>
-        <section id="exercises-list" class="hidden">
-            {% for exercise in exercises_list %}
-                {% if forloop.first %}
-                    <table class="table table-hover">
-                        <tbody>
-                {% endif %}
-                <tr class="{{ exercise.exercise.level }}">
-                    <td class="{% if exercise.exercise.level == "easy" %}
-                                    easy-level-color
-                                {% elif exercise.exercise.level == "medium" %}
-                                    medium-level-color
-                                {% else %}
-                                    hard-level-color
-                                {% endif %}
-                            "></td>
-                    <td>
-                        <a class="left" href="{% url 'exercise' slug=exercise.exercise.slug %}">
+        <div class="grid-list-gallery">
+            {% comment %}************* Grid *****************{% endcomment %}
+            <section id="exercises-grid">
+                {% for exercise in exercises_list %}
+                    <div class="col-md-3 no-padding-left padding-top-xs {{ exercise.exercise.level }}">
+                        <section id="{{ exercise.exercise.slug }}" class="panel panel-default grid"
                             {% if exercise.main_image %}
-                                <img src="{% get_media_prefix %}{{ exercise.main_image.image }}"
-                                     alt="{{ exercise.main_image.alt }}"
-                                     class="pull-left img-thumbnail img-xs img-xs-min-width">
-                            {% else %}
-                                <img src="{% static "img/design/image-not-available.png" %}"
-                                     alt="{{ exercise.main_image.alt }}"
-                                     class="pull-left img-thumbnail img-xs img-xs-min-width">
-                            {% endif %}
-                        </a>
-                        <span class="right padding-top-xs">
-                            {% if exercise.exercise.level == "easy" %}
-                                <span class="btn btn-success btn-xs margin-right-xs"
-                                      title="{% trans 'For all' %}">
-                                    {% trans 'Easy Level' %}
-                                </span>
-                            {% elif exercise.exercise.level == "medium" %}
-                                <span class="btn btn-warning btn-xs margin-right-xs"
-                                      title="{% trans 'For anyone intermediate and people of advanced level' %}">
-                                    {% trans 'Medium Level' %}
-                                </span>
-                            {% else %}
-                                <span class="btn btn-danger btn-xs margin-right-xs"
-                                      title="For people of advanced level">
-                                    {% trans 'Hard Level' %}
-                                </span>
-                            {% endif %}
-                        </span>
-                        <a href="{% url 'exercise' slug=exercise.exercise.slug %}">
-                            <h4 class="media-heading padding-top-xs">{{ exercise.exercise|capfirst }}</h4>
-                        </a>
-                        <p>
-                            {{ exercise.exercise.description|truncatechars:150|capfirst }}
-                            <a href="{% url 'exercise' slug=exercise.exercise.slug %}">{% trans "Read More" %}</a>
-                        </p>
-                    </td>
-                    <td>
-                        <div class="btn-group padding-bottom-xs" role="group" aria-label="exercise-explorer">
-                            <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}"
-                               title="{% trans "See how to do a" %} {{ exercise.exercise|capfirst }}"
-                               class="btn btn-default">
-                                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                            style="background-image: url('{% get_media_prefix %}{{ exercise.main_image.image }}');"
+                            {% endif %}>
+                            <div class="btn-group right padding-bottom-xl"
+                                 role="group" aria-label="exercise-explorer">
+                                <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}"
+                                   title="{% trans "How-to" %}"
+                                    data-toggle="tooltip" data-placement="right"
+                                   class="btn btn-default">
+                                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                </a>
+                                <a href="{% url 'exercise_videos' slug=exercise.exercise.slug %}"
+                                   title="{% trans 'videos' %}"
+                                    data-toggle="tooltip" data-placement="right"
+                                   class="btn btn-default">
+                                    <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                                </a>
+                                <a href="{% url 'exercise_images' slug=exercise.exercise.slug %}"
+                                   title="{% trans 'Images' %}"
+                                    data-toggle="tooltip" data-placement="right"
+                                   class="btn btn-default">
+                                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                            <span class="left diagonal-label padding-top-xl">
+                                {% if exercise.exercise.level == "easy" %}
+                                    <span class="btn btn-success btn-xs"
+                                          title="{% trans 'For all' %}">
+                                        {% trans 'Easy Level' %}
+                                    </span>
+                                {% elif exercise.exercise.level == "medium" %}
+                                    <span class="btn btn-warning btn-xs"
+                                          title="{% trans 'For anyone intermediate and people of advanced level' %}">
+                                        {% trans 'Medium Level' %}
+                                    </span>
+                                {% else %}
+                                    <span class="btn btn-danger btn-xs"
+                                          title="For people of advanced level">
+                                        {% trans 'Hard Level' %}
+                                    </span>
+                                {% endif %}
+                            </span>
+                            <article class="panel-body">
+                            </article>
+                            <div class="panel-footer">
+                                <button type="button" class="btn btn-default right"
+                                        title="{% trans 'Description' %}"
+                                        data-toggle="popover"
+                                        data-content="{{ exercise.exercise.description|truncatewords:15 }}">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </button>
+                                <h4>
+                                    <a href="{% url 'exercise' slug=exercise.exercise.slug %}" >
+                                        {{ exercise.exercise|capfirst }}
+                                    </a>
+                                </h4>
+                            </div>
+                        </section>
+                    </div>
+                {% endfor %}
+            </section>
+            {% comment %}************ List ****************{% endcomment %}
+            <section id="exercises-list" class="hidden">
+                {% for exercise in exercises_list %}
+                    {% if forloop.first %}
+                        <table class="table table-hover">
+                            <tbody>
+                    {% endif %}
+                    <tr class="{{ exercise.exercise.level }}">
+                        <td class="{% if exercise.exercise.level == "easy" %}
+                                        easy-level-color
+                                    {% elif exercise.exercise.level == "medium" %}
+                                        medium-level-color
+                                    {% else %}
+                                        hard-level-color
+                                    {% endif %}
+                                "></td>
+                        <td>
+                            <a class="left" href="{% url 'exercise' slug=exercise.exercise.slug %}">
+                                {% if exercise.main_image %}
+                                    <img src="{% get_media_prefix %}{{ exercise.main_image.image }}"
+                                         alt="{{ exercise.main_image.alt }}"
+                                         class="pull-left img-thumbnail img-xs img-xs-min-width">
+                                {% else %}
+                                    <img src="{% static "img/design/image-not-available.png" %}"
+                                         alt="{{ exercise.main_image.alt }}"
+                                         class="pull-left img-thumbnail img-xs img-xs-min-width">
+                                {% endif %}
                             </a>
-                            <a href="{% url 'exercise_videos' slug=exercise.exercise.slug %}"
-                               title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'videos' %}"
-                               class="btn btn-default">
-                                <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                            <span class="right padding-top-xs">
+                                {% if exercise.exercise.level == "easy" %}
+                                    <span class="btn btn-success btn-xs margin-right-xs"
+                                          title="{% trans 'For all' %}">
+                                        {% trans 'Easy Level' %}
+                                    </span>
+                                {% elif exercise.exercise.level == "medium" %}
+                                    <span class="btn btn-warning btn-xs margin-right-xs"
+                                          title="{% trans 'For anyone intermediate and people of advanced level' %}">
+                                        {% trans 'Medium Level' %}
+                                    </span>
+                                {% else %}
+                                    <span class="btn btn-danger btn-xs margin-right-xs"
+                                          title="For people of advanced level">
+                                        {% trans 'Hard Level' %}
+                                    </span>
+                                {% endif %}
+                            </span>
+                            <a href="{% url 'exercise' slug=exercise.exercise.slug %}">
+                                <h4 class="media-heading padding-top-xs">{{ exercise.exercise|capfirst }}</h4>
                             </a>
-                            <a href="{% url 'exercise_images' slug=exercise.exercise.slug %}"
-                               title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'images' %}"
-                               class="btn btn-default">
-                                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                {% if forloop.last %}
-                        </tbody>
-                    </table>
-                {% endif %}
-            {% endfor %}
-        </section>
+                            <p>
+                                {{ exercise.exercise.description|truncatechars:150|capfirst }}
+                                <a href="{% url 'exercise' slug=exercise.exercise.slug %}">{% trans "Read More" %}</a>
+                            </p>
+                        </td>
+                        <td>
+                            <div class="btn-group padding-bottom-xs" role="group" aria-label="exercise-explorer">
+                                <a href="{% url 'exercise_how_to' slug=exercise.exercise.slug %}"
+                                   title="{% trans "See how to do a" %} {{ exercise.exercise|capfirst }}"
+                                   class="btn btn-default">
+                                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                </a>
+                                <a href="{% url 'exercise_videos' slug=exercise.exercise.slug %}"
+                                   title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'videos' %}"
+                                   class="btn btn-default">
+                                    <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                                </a>
+                                <a href="{% url 'exercise_images' slug=exercise.exercise.slug %}"
+                                   title="{% trans "Watch" %} {{ exercise.exercise|capfirst }} {% trans 'images' %}"
+                                   class="btn btn-default">
+                                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% if forloop.last %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            </section>
+        </div>
     {% endif %}
 {% endblock %}<!-- End Content -->
