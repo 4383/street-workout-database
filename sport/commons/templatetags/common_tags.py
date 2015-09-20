@@ -24,11 +24,12 @@ def images_gallery(images):
 
 
 @register.inclusion_tag('common_tags/grid-list-gallery.html')
-def grid_list_gallery(items, display_level=True, display_menu=True, shortcut_menu=True):
+def grid_list_gallery(items, display_level=True, display_menu=True, shortcut_menu=True, semantic_type="exercise"):
     return {"items": items,
             "display_level": display_level,
             "display_menu": display_menu,
-            "shortcut_menu": shortcut_menu
+            "shortcut_menu": shortcut_menu,
+            "semantic_type": semantic_type
     }
 
 

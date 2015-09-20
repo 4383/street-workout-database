@@ -97,21 +97,21 @@ def categories(request):
     for active_category in actives_categories:
         try:
             category_data = {
-                'category': active_category,
+                'information': active_category,
                 'total_exercises': Exercise.objects.filter(category=active_category).count(),
-                'random_selected_exercises': Exercise.objects.filter(category=active_category)[:10],
+                'random_selected_exercises': Exercise.objects.filter(category=active_category)[:3],
                 'main_image': ImageCategory.objects.filter(active=True, main=True, binding=active_category)[0],
             }
         except IndexError:
             category_data = {
-                'category': active_category,
+                'information': active_category,
                 'total_exercises': Exercise.objects.filter(category=active_category).count(),
-                'random_selected_exercises': Exercise.objects.filter(category=active_category)[:10],
+                'random_selected_exercises': Exercise.objects.filter(category=active_category)[:3],
                 'main_image': None,
             }
         categories_list.append(category_data)
 
-    context = {'categories': row_builder(categories_list), }
+    context = {'categories': categories_list, }
     return render(request, "categories.html", context)
 
 

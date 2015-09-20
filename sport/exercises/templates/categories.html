@@ -3,6 +3,7 @@
 {% load staticfiles %}
 {% load static %}
 {% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
 
 {% block title %}{% trans "Exercises Categories Overview" %}{% endblock %}
 {% block meta_description %}
@@ -17,83 +18,12 @@
 {% endblock %}
 
 {% block content %}
-<aside class="right list-group fixed">
-    <ul class="nav nav-pills nav-stacked">
-        {% for row in categories %}
-            {% for selected_category in row %}
-                {% if forloop.first %}
-                    <a href="#{{ selected_category.category.slug }}" class="active list-group-item">
-                        {{ selected_category.category }}
-                    </a>
-                {% else %}
-                    <a href="#{{ selected_category.category.slug }}" class="list-group-item">
-                        {{ selected_category.category }}
-                    </a>
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-    </ul>
-</aside>
+
 <h1>
     {% trans "Exercises Categories List" %}<br>
     <small>{{ categories|length }} {% trans "Defined" %} Categor{{ categories|pluralize:"y,ies" }} </small>
 </h1>
 
-{% for row in categories %}
-    <div class="row">
-        {% for selected_category in row %}
-        <div class="col-md-3">
-            <section id="{{ category.slug }}" class="panel panel-default media">
-                <div class="panel-heading">
-                    <h4>
-                        <a href="{% url 'exercises_category' slug=selected_category.category.slug %}" >
-                            {{ selected_category.category|capfirst }}
-                            <small>
-                                ({{ selected_category.total_exercises }}
-                                Exercise{{ selected_category.total_exercises|pluralize }})
-                            </small>
-                        </a>
-                    </h4>
-                </div>
-                {% if selected_category.main_image %}
-                    <img src="{% get_media_prefix %}{{ selected_category.main_image.image }}"
-                         alt="{{ selected_category.main_image.alt }}" class="pull-left img-thumbnail img-xs">
-                {% else %}
-                    <img src="{% static "img/design/image-not-available.png" %}"
-                         alt="{{ selected_category.main_image.alt }}" class="pull-left img-thumbnail img-xs">
-                {% endif %}
-                <article class="panel-body">
-                    <p class="text-justify">{{ selected_category.category.description }}<br>
-                        <a href="{% url 'exercises_category_exercises' slug=selected_category.category.slug %}">
-                            {% trans "See" %} {{ selected_category.total_exercises }} {{ selected_category.category }}
-                            Variation{{ selected_category.total_exercises|pluralize }}
-                            Exercise{{ selected_category.total_exercises|pluralize }}...
-                        </a>
-                    </p>
-                    {% if selected_category.random_selected_exercises %}
-                        <hr>
-                        <h5 class="underline">
-                            <u>
-                                {% trans "Related Random" %}
-                                Exercise{{ selected_category.random_selected_exercises|pluralize }}:
-                            </u>
-                        <h5>
-                    {% endif %}
-                    <p>
-                        <small>
-                            {% for exercise in selected_category.random_selected_exercises %}
-                            <a class="btn btn-primary btn-xs"
-                               role="button"
-                               href="{% url 'exercise' slug=exercise.slug %}">
-                                {{ exercise }}
-                            </a>
-                            {% endfor %}
-                        </small>
-                    </p>
-                </article>
-            </section>
-        </div>
-        {% endfor %}
-    </div>
-{% endfor %}
+{% grid_list_gallery categories display_level=False display_menu=True shortcut_menu=False semantic_type="category"%}
+
 {% endblock %}<!-- End Content -->

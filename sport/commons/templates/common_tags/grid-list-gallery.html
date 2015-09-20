@@ -6,7 +6,7 @@
 {% include "common_tags/grid-list-gallery-menu.html" %}
 
 {% if items %}
-    <div class="grid-list-gallery">
+    <div class="grid-list-gallery" xmlns="http://www.w3.org/1999/html">
         {% comment %}************* Grid *****************{% endcomment %}
         <section id="exercises-grid">
             {% for item in items %}
@@ -69,9 +69,18 @@
                                     data-content="{{ item.information.description|truncatewords:15 }}">
                                     <span class="glyphicon glyphicon-eye-open"></span>
                                 </button>
-                                <a href="{% url 'exercise' slug=item.information.slug %}" >
-                                    {{ item.information.name|capfirst }}
-                                </a>
+                                {% if semantic_type == 'exercise' %}
+                                    <a href="{% url 'exercise' slug=item.information.slug %}">
+                                        {{ item.information.name|capfirst }}
+                                    </a>
+                                {% elif semantic_type == 'category' %}
+                                    <a href="{% url 'exercises_category' slug=item.information.slug %}">
+                                        {{ item.information.name|capfirst }}
+                                        <span class="badge" title="Available variations for this category">
+                                            {{ item.total_exercises }}
+                                        </span>
+                                    </a>
+                                {% endif %}
                             </h4>
                         </div>
                     </section>
@@ -100,7 +109,11 @@
                     <tr>
                 {% endif %}
                     <td>
-                        <a class="left" href="{% url 'exercise' slug=item.information.slug %}">
+                        {% if semantic_type == 'exercise' %}
+                            <a class="left" href="{% url 'exercise' slug=item.information.slug %}">
+                        {% elif semantic_type == 'category' %}
+                            <a href="{% url 'exercises_category' slug=item.information.slug %}">
+                        {% endif %}
                             {% if item.main_image %}
                                 <img src="{% get_media_prefix %}{{ item.main_image.image }}"
                                      alt="{{ item.main_image.alt }}"
@@ -130,14 +143,28 @@
                                 {% endif %}
                             </span>
                         {% endif %}
-                        <a href="{% url 'exercise' slug=item.information.slug %}">
-                            <h4 class="media-heading padding-top-xs">{{ item.information.name|capfirst }}</h4>
+                        {% if semantic_type == 'exercise' %}
+                            <a href="{% url 'exercise' slug=item.information.slug %}">
+                        {% elif semantic_type == 'category' %}
+                            <a href="{% url 'exercises_category' slug=item.information.slug %}">
+                        {% endif %}
+                            <h4 class="media-heading padding-top-xs">
+                                {{ item.information.name|capfirst }}
+                                <span class="badge" title="Available variations for this category">
+                                    {{ item.total_exercises }}
+                                </span>
+                            </h4>
                         </a>
                         <p>
                             {{ item.information.description|truncatechars:150|capfirst }}
-                            <a href="{% url 'exercise' slug=item.information.slug %}">{% trans "Read More" %}</a>
+                            {% if semantic_type == 'exercise' %}
+                                <a href="{% url 'exercise' slug=item.information.slug %}">{% trans "Read More" %}</a>
+                            {% elif semantic_type == 'category' %}
+                                <a href="{% url 'exercises_category' slug=item.information.slug %}"></a>
+                            {% endif %}
                         </p>
                     </td>
+                    {% if shortcut_menu %}
                     <td>
                         <div class="btn-group padding-bottom-xs" role="group" aria-label="exercise-explorer">
                             <a href="{% url 'exercise_how_to' slug=item.information.slug %}"
@@ -157,6 +184,7 @@
                             </a>
                         </div>
                     </td>
+                    {% endif %}
                 </tr>
                 {% if forloop.last %}
                         </tbody>
