@@ -1,0 +1,75 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+
+<menu class="right fixed">
+    <div class="btn-group-vertical" role="group" aria-label="exercise-explorer">
+        <button type="button" title="{% trans "Display Exercises In Grid Format" %}"
+           data-toggle="tooltip" data-placement="bottom"
+           id="show-grid" class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+        </button>
+        <button type="button" title="{% trans "Display Exercises In List Format" %}"
+           data-toggle="tooltip" data-placement="bottom"
+           id="show-list" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+        </button>
+        {% if display_level %}
+            <button type="button" title="{% trans "Show All Levels Exercises" %}"
+               data-toggle="tooltip" data-placement="bottom"
+               id="level-all" class="btn btn-default btn-lg text-left">
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+            </button>
+            <button type="button" title="{% trans "Shown Only Easy Level Exercises" %}"
+               data-toggle="tooltip" data-placement="bottom"
+               id="level-easy" class="btn btn-success btn-lg text-left">
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+            </button>
+            <button type="button" href="#" title="{% trans "Shown Only Medium Level Exercises" %}"
+               data-toggle="tooltip" data-placement="bottom"
+               id="level-medium" class="btn btn-warning btn-lg text-left" >
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+            </button>
+            <button type="button" title="{% trans "Shown Only Hard Level Exercises" %}"
+               data-toggle="tooltip" data-placement="bottom"
+               id="level-hard" class="btn btn-danger btn-lg text-left">
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+            </button>
+        {% endif %}
+    </div>
+    <script>
+        $('#show-list').click(function() {
+            document.getElementById("exercises-grid").className = "hidden";
+            document.getElementById("exercises-list").className = "visible";
+            document.getElementById("show-list").className = "btn btn-primary btn-lg";
+            document.getElementById("show-grid").className = "btn btn-default btn-lg";
+        });
+        $('#show-grid').click(function() {
+            document.getElementById("exercises-grid").className = "visible";
+            document.getElementById("exercises-list").className = "hidden";
+            document.getElementById("show-list").className = "btn btn-default btn-lg";
+            document.getElementById("show-grid").className = "btn btn-primary btn-lg";
+        });
+        $('#level-all').click(function() {
+            $('.easy').css('display', 'block');
+            $('.medium').css('display', 'block');
+            $('.hard').css('display', 'block');
+        });
+        $('#level-easy').click(function() {
+            $('.easy').css('display', 'block');
+            $('.medium').css('display', 'none');
+            $('.hard').css('display', 'none');
+        });
+        $('#level-medium').click(function() {
+            $('.easy').css('display', 'none');
+            $('.medium').css('display', 'block');
+            $('.hard').css('display', 'none');
+        });
+        $('#level-hard').click(function() {
+            $('.easy').css('display', 'none');
+            $('.medium').css('display', 'none');
+            $('.hard').css('display', 'block');
+        });
+    </script>
+</menu>

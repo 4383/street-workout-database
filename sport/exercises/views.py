@@ -21,12 +21,12 @@ def get_full_exercises_representation_for_a_category(current_category, limit=Non
     for active_exercise in exercises:
         try:
             exercises_data = {
-                'exercise': active_exercise,
+                'information': active_exercise,
                 'main_image': ImageExercise.objects.filter(active=True, main=True, binding=active_exercise)[0],
                 }
         except IndexError:
             exercises_data = {
-                'exercise': active_exercise,
+                'information': active_exercise,
                 'main_image': None,
                 }
         exercises_list.append(exercises_data)

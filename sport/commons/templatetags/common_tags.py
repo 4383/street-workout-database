@@ -23,9 +23,23 @@ def images_gallery(images):
     return {"images": images}
 
 
+@register.inclusion_tag('common_tags/grid-list-gallery.html')
+def grid_list_gallery(items, display_level=True, display_menu=True, shortcut_menu=True):
+    return {"items": items,
+            "display_level": display_level,
+            "display_menu": display_menu,
+            "shortcut_menu": shortcut_menu
+    }
+
+
 @register.inclusion_tag('common_tags/video_gallery.html')
 def videos_gallery(videos):
     return {"videos": videos}
+
+
+@register.inclusion_tag('common_tags/grid-list-gallery-menu.html')
+def grid_list_gallery_menu():
+    return {}
 
 
 @register.inclusion_tag('common_tags/display_information_message.html', takes_context=True)
