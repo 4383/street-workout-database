@@ -163,12 +163,6 @@ def category_videos(request, slug):
     return render(request, "categories/category_videos.html", context)
 
 
-def category_muscles(request, slug):
-    current_category = get_object_or_404(Category, active=True, slug=slug)
-    context = {'category': current_category, }
-    return render(request, "categories/category_muscles.html", context)
-
-
 def muscles(request):
     return render(request, "muscles.html")
 
