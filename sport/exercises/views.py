@@ -112,7 +112,7 @@ def categories(request):
         categories_list.append(category_data)
 
     context = {'categories': categories_list, }
-    return render(request, "categories.html", context)
+    return render(request, "categories/categories.html", context)
 
 
 def category(request, slug):
@@ -137,14 +137,14 @@ def category(request, slug):
                'main_video': main_video,
                'muscles_list': get_full_muscles_representation_for_a_category(current_category),
                'mapping': mapping, }
-    return render(request, "category.html", context)
+    return render(request, "categories/category.html", context)
 
 
 def category_exercises(request, slug):
     current_category = get_object_or_404(Category, active=True, slug=slug)
     context = {'category': current_category,
                'exercises_list': get_full_exercises_representation_for_a_category(current_category)}
-    return render(request, "category_exercises.html", context)
+    return render(request, "categories/category_exercises.html", context)
 
 
 def category_images(request, slug):
@@ -152,7 +152,7 @@ def category_images(request, slug):
     images = ImageCategory.objects.filter(active=True, binding=current_category)
     context = {'category': current_category,
                'images': images, }
-    return render(request, "category_images.html", context)
+    return render(request, "categories/category_images.html", context)
 
 
 def category_videos(request, slug):
@@ -160,13 +160,13 @@ def category_videos(request, slug):
     videos = VideoCategory.objects.filter(active=True, binding=current_category)
     context = {'category': current_category,
                'videos': videos, }
-    return render(request, "category_videos.html", context)
+    return render(request, "categories/category_videos.html", context)
 
 
 def category_muscles(request, slug):
     current_category = get_object_or_404(Category, active=True, slug=slug)
     context = {'category': current_category, }
-    return render(request, "category_muscles.html", context)
+    return render(request, "categories/category_muscles.html", context)
 
 
 def muscles(request):
