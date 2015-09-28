@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from exercises.models import Category
 from exercises.models import Exercise
+from exercises.models import ExerciseSet
 from exercises.models import ImageCategory
 from exercises.models import ImageExercise
 from exercises.models import ImageMuscle
@@ -76,19 +77,40 @@ def row_builder(items, maximum=3):
 
 
 def exercise(request, slug):
-    return render(request, "exercise.html")
+    current_exercise = get_object_or_404(Exercise, active=True, slug=slug)
+    try:
+        main_image = ImageExercise.objects.filter(active=True, binding=current_exercise, main=True)[0]
+    except IndexError:
+        main_image = None
+    try:
+        main_exercise_set = ExerciseSet.objects.filter(how_to__active=True,
+                                                       how_to__exercise=current_exercise, how_to__main=True)
+    except IndexError:
+        main_exercise_set = None
+
+    try:
+        mapping = Mapping.objects.get(name="category_muscle_mapping")
+    except ObjectDoesNotExist:
+        mapping = None
+
+    context = {'exercise': current_exercise,
+               'main_image': main_image,
+               'main_exercise_set': main_exercise_set,
+               #'mapping': mapping,
+               }
+    return render(request, "exercises/exercise.html", context)
 
 
 def exercise_how_to(request, slug):
-    return render(request, "exercise_how_to.html")
+    return render(request, "exercises/exercise_how_to.html")
 
 
 def exercise_images(request, slug):
-    return render(request, "exercise_images.html")
+    return render(request, "exercises/exercise_images.html")
 
 
 def exercise_videos(request, slug):
-    return render(request, "exercise_videos.html")
+    return render(request, "exercises/exercise_videos.html")
 
 
 def categories(request):

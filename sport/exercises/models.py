@@ -143,14 +143,60 @@ class Exercise(models.Model):
     have_related_exercises.boolean = True
 
 
+# class Step(models.Model):
+#     name = models.CharField(max_length=300, unique=True)
+#     description = models.TextField()
+#     active = models.BooleanField(default=False)
+#     index = models.IntegerField(default=0)
+#     image = models.ImageField(upload_to='upload/exercises', null=True, default=None, blank=True)
+#
+#     def __str__(self):
+#         return "{0}. {1}".format(self.index, self.name)
+#
+#
+# class ExerciseSet(models.Model):
+#     name = models.CharField(max_length=300, unique=True)
+#     description = models.TextField()
+#     exercise = models.ForeignKey(Exercise)
+#     active = models.BooleanField(default=False)
+#     steps = models.ManyToManyField(Step)
+#     main = models.BooleanField(default=False)
+#
+#     def __str__(self):
+#         return self.name
+
+
 class Step(models.Model):
     name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
-    exercise = models.ForeignKey(Exercise)
-    active = models.BooleanField(default=False)
+    image = models.ImageField(upload_to="upload/exercises", null=True, default=None, blank=True)
 
     def __str__(self):
         return self.name
+
+
+class HowTo(models.Model):
+    name = models.CharField(max_length=300)
+    exercise = models.ForeignKey(Exercise)
+    steps = models.ManyToManyField(Step, through='ExerciseSet')
+    description = models.TextField()
+    active = models.BooleanField(default=False)
+    main = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+
+class ExerciseSet(models.Model):
+    how_to = models.ForeignKey(HowTo, default=0)
+    step = models.ForeignKey(Step, default=0)
+    position_step = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "{0}. {1}".format(self.how_to, self.position_step)
+
+    class Meta:
+        ordering = ['position_step']
 
 
 class Image(models.Model):

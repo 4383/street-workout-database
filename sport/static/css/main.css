@@ -213,6 +213,18 @@ Images
     background-color: #d9534f;
 }
 
+.label-easy {
+    background-color: #5cb85c;
+}
+
+.label-medium {
+    background-color: #f0ad4e;
+}
+
+.label-hard {
+    background-color: #d9534f;
+}
+
 .diagonal-label {
     -ms-transform: rotate(-30deg);
     -webkit-transform: rotate(-30deg);

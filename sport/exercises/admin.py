@@ -3,12 +3,13 @@ from exercises.models import Category
 from exercises.models import CommonsPagesAttributes
 from exercises.models import Equipment
 from exercises.models import Exercise
+from exercises.models import ExerciseSet
 from exercises.models import ImageExercise
 from exercises.models import ImageEquipment
 from exercises.models import ImageCategory
 from exercises.models import ImageMuscle
 from exercises.models import ImageMuscleGroup
-from exercises.models import ImageStep
+from exercises.models import HowTo
 from exercises.models import MappingAreaMuscles
 from exercises.models import Mapping
 from exercises.models import MuscleGroup
@@ -43,11 +44,6 @@ class ImageMuscleGroupInLine(admin.StackedInline):
     extra = 2
 
 
-class ImageStepInline(admin.StackedInline):
-    model = ImageStep
-    extra = 1
-
-
 class ImageEquipmentInline(admin.StackedInline):
     model = ImageEquipment
     extra = 1
@@ -68,19 +64,13 @@ class VideoCategoryInline(admin.StackedInline):
     extra = 1
 
 
-class StepAdminInline(admin.TabularInline):
-    model = Step
-    extra = 3
-    inlines = [ImageStepInline]
-
-
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug')
     inlines = [ImageCategoryInLine, VideoCategoryInline]
 
 
 class ExerciseAdmin(admin.ModelAdmin):
-    inlines = [StepAdminInline, ImageExerciseInLine, VideoExerciseInline]
+    inlines = [ImageExerciseInLine, VideoExerciseInline]
     list_display = ('name', 'level', 'category', 'have_related_exercises')
     fieldsets = (
         ('General', {'fields': ('name', 'description', 'link_title', 'level', 'active', 'slug')}),
@@ -111,4 +101,7 @@ admin.site.register(Muscle, MuscleAdmin)
 admin.site.register(MuscleGroup, MuscleGroupAdmin)
 admin.site.register(MuscleType)
 admin.site.register(Mapping)
+admin.site.register(Step)
+admin.site.register(HowTo)
+admin.site.register(ExerciseSet)
 admin.site.register(CommonsPagesAttributes, CommonsPagesAttributesAdmin)
