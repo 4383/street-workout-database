@@ -34,11 +34,11 @@ def get_full_exercises_representation_for_a_category(current_category, limit=Non
     return exercises_list
 
 
-def get_full_muscles_representation_for_a_category(current_category, limit=None):
+def retrieve_all_muscles_information(specified_object, limit=None):
     if limit:
-        actives_muscles = Muscle.objects.filter(id__in=current_category.muscles.all, active=True)[:limit]
+        actives_muscles = Muscle.objects.filter(id__in=specified_object.muscles.all, active=True)[:limit]
     else:
-        actives_muscles = Muscle.objects.filter(id__in=current_category.muscles.all, active=True)
+        actives_muscles = Muscle.objects.filter(id__in=specified_object.muscles.all, active=True)
 
     if actives_muscles:
         muscles_list = []
@@ -88,16 +88,9 @@ def exercise(request, slug):
     except IndexError:
         main_exercise_set = None
 
-    try:
-        mapping = Mapping.objects.get(name="category_muscle_mapping")
-    except ObjectDoesNotExist:
-        mapping = None
-
     context = {'exercise': current_exercise,
                'main_image': main_image,
-               'main_exercise_set': main_exercise_set,
-               #'mapping': mapping,
-               }
+               'main_exercise_set': main_exercise_set, }
     return render(request, "exercises/exercise.html", context)
 
 
@@ -148,17 +141,10 @@ def category(request, slug):
     except IndexError:
         main_video = None
 
-    try:
-        mapping = Mapping.objects.get(name="category_muscle_mapping")
-    except ObjectDoesNotExist:
-        mapping = None
-
     context = {'category': current_category,
                'main_image': main_image,
                'exercises_list': get_full_exercises_representation_for_a_category(current_category),
-               'main_video': main_video,
-               'muscles_list': get_full_muscles_representation_for_a_category(current_category),
-               'mapping': mapping, }
+               'main_video': main_video,}
     return render(request, "categories/category.html", context)
 
 
