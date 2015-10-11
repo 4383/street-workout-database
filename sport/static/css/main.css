@@ -263,6 +263,34 @@ Images
     height: 150px;
 }
 
+
+        .margin {
+            margin: 20px;
+        }
+        .margin-bottom-xs {
+            margin-bottom: 10px;
+        }
+        .padding-bottom-xl {
+            padding-bottom: 20px;
+        }
+        .border-left-gray {
+            border-left: thin double #CCCCCC;
+            padding-left : 25px;
+        }
+        .border-bottom-gray {
+            border-bottom: thin double #CCCCCC;
+            padding-bottom : 10px;
+        }
+        .img-medium {
+            width: 50px;
+            height: 50px;
+        }
+        .height-small {
+            max-height: 60px;
+        }
+        .underline {
+            text-decoration: underline;
+        }
 /************************************************
 Margin and spacing
 ************************************************/
