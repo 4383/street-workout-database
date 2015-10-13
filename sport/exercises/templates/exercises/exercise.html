@@ -34,11 +34,19 @@
                 <h3 class="text-center underline padding-bottom-xl">{% trans "How to do a" %} {{ exercise }} ?</h3>
             {% endif %}
                 {% if not forloop.last %}
-                    <div class="row margin-bottom-xs border-bottom-gray">
+                    <div class="row margin-bottom-xs border-bottom-gray grid"
+                         style="background-image: url('{% get_media_prefix %}{{ set.step.image }}');
+                                background-repeat: no-repeat;
+                                background-size: 100% 100%;
+                                background-position: center;">
                 {% else %}
-                    <div class="row margin-bottom-xs">
+                    <div class="row margin-bottom-xs"
+                         style="background-image: url('{% get_media_prefix %}{{ set.step.image }}');
+                                background-repeat: no-repeat;
+                                background-size: 100% 100%;
+                                background-position: center;">
                 {% endif %}
-                    <div class="col-md-3 height-small">
+                    <div class="col-md-3 medium">
                         <svg>
                             <circle
                                     cx="25"
@@ -50,32 +58,37 @@
                             <text x="17" y="35" font-size="30" fill="black" >{{ forloop.counter }}</text>
                         </svg>
                     </div>
-                    <div class="col-sm-6 text-center">
-                        <h5>
-                            <strong>{{ set.step.name }}</strong>&nbsp;
-                            <a class="btn btn-default show-step-description"
-                               role="button" data-toggle="collapse" href="#collapseDescription{{ forloop.counter0 }}"
-                               aria-expanded="false" aria-controls="collapseExample1" id="showStepBtn1">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                            </a>
-                            <a class="btn btn-default show-step-description"
-                               role="button" data-toggle="collapse" href="#collapseDescription{{ forloop.counter0 }}"
-                               aria-expanded="false" aria-controls="collapseExample1" id="collapseStepBtn1">
-                                <span id="collapseStepBtnSpan1" class="glyphicon glyphicon-resize-full"></span>
-                            </a>
-                        </h5>
-
-                    </div>
-                    <div class="col-md-3 text-center height-small">
-                        <img src="{% get_media_prefix %}{{ set.step.image }}" class="img-medium" />
+                    <div class="col-sm-9 text-center">
+                        <a class="btn btn-default show-step-description"
+                           role="button" data-toggle="collapse" href="#collapseDescription{{ forloop.counter0 }}"
+                           aria-expanded="false" aria-controls="collapseDescription{{ forloop.counter0 }}"
+                           id="collapseStepBtn{{ forloop.counter0 }}">
+                            <span id="collapseStepBtnSpan{{ forloop.counter0 }}"
+                                  class="glyphicon glyphicon-resize-full"></span>
+                        </a>
                     </div>
                 </div>
                 <div id="collapseDescription{{ forloop.counter0 }}" class="collapse">
-                    <p class="well">{{ set.step.description }}</p>
+                    <div class="well text-justify">
+                        <h5><strong>{{ set.step.name }}</strong></h5>
+                        <p>{{ set.step.description }}</p>
+                    </div>
                 </div>
             {% if forloop.last %}
                 </div>
             {% endif %}
+            <script>
+                $(".show-step-description").click(function(event){
+                    var id = event.target.id.substr(event.target.id.length - 1);
+                    var class_type = "glyphicon glyphicon-resize-small";
+                    console.log("#collapseDescription" + id);
+                    console.log($("#collapseDescription" + id).attr("class"));
+                    if ("collapse in" == $("#collapseDescription" + id).attr("class")) {
+                        class_type = "glyphicon glyphicon-resize-full";
+                    }
+                    $("#collapseStepBtnSpan" + id).attr("class", class_type);
+                });
+            </script>
         {% endfor %}
     {% endif %}
 
