@@ -111,10 +111,15 @@ separator: #E7E7E7
     clear:both;
     border-top: 1px solid #E7E7E7;
     padding: 30px;
-    background-image: url("../img/design/brand-xs.png");
-    background-repeat: no-repeat;
-    background-position: center;
     color: #767676;
+}
+
+@media (min-width: 768px) {
+    .main-footer {
+        background-image: url("../img/design/brand-xs.png");
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 }
 
 .main-footer .footer-col {
