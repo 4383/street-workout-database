@@ -21,7 +21,7 @@
         <li class="active">{% trans "Description" %}</li>
     </ol>
     {% endcomment %}
-    <h1>{{ exercise|capfirst }} <span class="label label-{{ exercise.level }}">{{ exercise.level }}</span></h1>
+
 
     {% comment %}{% show_exercises_category_menu category "description" %}{% endcomment %}
 
@@ -31,22 +31,22 @@
         {% for set in main_exercise_set %}
             {% if forloop.first %}
             <div class="margin col-md-3 right border-left-gray">
-                <h3 class="text-center underline padding-bottom-xl">{% trans "How to do a" %} {{ exercise }} ?</h3>
+                <h3 class="text-right sub-section-title">{% trans "How to do a" %} {{ exercise }} ?</h3>
             {% endif %}
                 {% if not forloop.last %}
-                    <div class="row margin-bottom-xs border-bottom-gray grid"
+                    <div class="row margin-bottom-xs border-bottom-gray grid blur-out"
                          style="background-image: url('{% get_media_prefix %}{{ set.step.image }}');
                                 background-repeat: no-repeat;
                                 background-size: 100% 100%;
                                 background-position: center;">
                 {% else %}
-                    <div class="row margin-bottom-xs"
+                    <div class="row margin-bottom-xs grid blur-out"
                          style="background-image: url('{% get_media_prefix %}{{ set.step.image }}');
                                 background-repeat: no-repeat;
                                 background-size: 100% 100%;
                                 background-position: center;">
                 {% endif %}
-                    <div class="col-md-3 medium">
+                    <div class="col-md-3 medium padding-top-xl">
                         <svg>
                             <circle
                                     cx="25"
@@ -58,7 +58,7 @@
                             <text x="17" y="35" font-size="30" fill="black" >{{ forloop.counter }}</text>
                         </svg>
                     </div>
-                    <div class="col-sm-9 text-center">
+                    <div class="col-sm-9 text-right padding-top-xs">
                         <a class="btn btn-default show-step-description"
                            role="button" data-toggle="collapse" href="#collapseDescription{{ forloop.counter0 }}"
                            aria-expanded="false" aria-controls="collapseDescription{{ forloop.counter0 }}"
@@ -71,7 +71,7 @@
                 <div id="collapseDescription{{ forloop.counter0 }}" class="collapse">
                     <div class="well text-justify">
                         <h5><strong>{{ set.step.name }}</strong></h5>
-                        <p>{{ set.step.description }}</p>
+                        <p class="break-words">{{ set.step.description }}</p>
                     </div>
                 </div>
             {% if forloop.last %}
@@ -91,6 +91,8 @@
             </script>
         {% endfor %}
     {% endif %}
+
+    <h1>{{ exercise|capfirst }} <span class="label label-{{ exercise.level }}">{{ exercise.level }}</span></h1>
 
     {% show_muscles_mapping exercise %}
 

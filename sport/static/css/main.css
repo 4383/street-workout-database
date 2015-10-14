@@ -165,6 +165,34 @@ area:hover {
     cursor: pointer;
 }
 
+.vertical {
+    writing-modes: vertical-lr;
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.break-words {
+    word-break: break-all;
+}
+
+.blur-out {
+    opacity: 0.8;
+}
+
+.blur-out:hover {
+    opacity: 1;
+    box-shadow: 1px 1px 12px #555;
+}
+
+.sub-section-title {
+    font-size: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+
 /**********************************************
 Images
 ***********************************************/
