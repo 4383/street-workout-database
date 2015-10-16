@@ -26,32 +26,65 @@
                 {% endif %}
             {% endfor %}
 
+            {% for muscle in muscles_list %}
+                {% if muscle.area %}
+                    {% for area in muscle.area %}
+                        {% if area.mapping == mapping %}
+                            {% if forloop.first %}
+                                var reverse_gallery_content = '{' +
+                            {% endif %}
+                            '"{{ muscle.muscle }}" : {"image1" : "{% get_media_prefix %}{{ area.first_image_hover }}", ' +
+                            '"image2" : "{% get_media_prefix %}{{ area.second_image_hover }}", ' +
+                            '"area" : "{{ area.name }}"}' +
+                            {% if not forloop.last %}
+                                ',' +
+                            {% else %}
+                                '}';
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
             var json_images_data = JSON.parse(gallery_content);
+            var reverse_json_images_data = JSON.parse(reverse_gallery_content)
 
             var MappingManager = MappingManager || {};
             MappingManager.Mapping = function() {
 
                 var overArea = function(area_id) {
-                    console.log(area_id);
                     image = json_images_data[area_id]['image2'];
                     muscle_link = json_images_data[area_id]['muscle'] + '_link';
-                    console.log(image);
                     document.getElementById(area_id + "_img").src = image;
                     document.getElementById(muscle_link).className = "btn btn-xs btn-danger";
                 };
 
                 var outArea = function(area_id) {
-                    console.log(area_id);
                     image = json_images_data[area_id]['image1'];
                     muscle_link = json_images_data[area_id]['muscle'] + '_link';
-                    console.log(image);
                     document.getElementById(area_id + "_img").src = image;
                     document.getElementById(muscle_link).className = "btn btn-xs btn-success";
                 };
 
+                var btnHover = function(muscle_id) {
+                    image = reverse_json_images_data[muscle_id]['image2'];
+                    area_link = reverse_json_images_data[muscle_id]['area'] + '_img';
+                    document.getElementById(area_link).src = image;
+                    document.getElementById(muscle_id + "_link").className = "btn btn-xs btn-danger";
+                }
+
+                var btnOut = function(muscle_id) {
+                    image = reverse_json_images_data[muscle_id]['image1'];
+                    area_link = reverse_json_images_data[muscle_id]['area'] + '_img';
+                    document.getElementById(area_link).src = image;
+                    document.getElementById(muscle_id + "_link").className = "btn btn-xs btn-success";
+                }
+
                 var oPublic = {
                     overArea: overArea,
-                    outArea: outArea
+                    outArea: outArea,
+                    btnHover: btnHover,
+                    btnOut: btnOut
                 }
 
                 return oPublic;
@@ -96,7 +129,6 @@
                 {% endfor %}
             </map>
             <script>
-
             $('.mapping_area').mouseover(function (event) {
                 area_id = event.target.id;
                 MappingManager.Mapping.overArea(area_id);
@@ -111,9 +143,21 @@
         <p>
             {% for muscle in muscles_list %}
                 <a id="{{ muscle.muscle }}_link"
-                   class="btn btn-xs btn-success"
+                   class="btn btn-xs btn-success muscle-link"
                    href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
             {% endfor %}
         </p>
+        <script>
+            $('.muscle-link').mouseover(function (event) {
+                btn_id = event.target.id;
+                btn_id = btn_id.replace("_link", "");
+                MappingManager.Mapping.btnHover(btn_id);
+            });
+            $('.muscle-link').mouseout(function (event) {
+                btn_id = event.target.id;
+                btn_id = btn_id.replace("_link", "");
+                MappingManager.Mapping.btnOut(btn_id);
+            });
+        </script>
     </section>
 {% endif %}
