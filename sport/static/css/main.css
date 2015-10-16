@@ -165,6 +165,10 @@ separator: #E7E7E7
     font-size: 16px;
 }
 
+.text-xxl {
+    font-size: 22px;
+}
+
 area:hover {
     cursor: pointer;
 }

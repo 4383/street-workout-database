@@ -88,9 +88,14 @@ def exercise(request, slug):
     except IndexError:
         main_exercise_set = None
 
+    if current_exercise.have_related_exercises():
+        related_exercises_image = ImageExercise.objects.filter(active=True,
+                                                               binding__in=current_exercise.related_exercises.all())
+
     context = {'exercise': current_exercise,
                'main_image': main_image,
-               'main_exercise_set': main_exercise_set, }
+               'main_exercise_set': main_exercise_set,
+               'related_exercises_image': related_exercises_image}
     return render(request, "exercises/exercise.html", context)
 
 
