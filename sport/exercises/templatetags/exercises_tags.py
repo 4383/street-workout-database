@@ -3,10 +3,12 @@ from django import template
 from django.core.exceptions import ObjectDoesNotExist
 from exercises.models import Exercise
 from exercises.models import ImageCategory
+from exercises.models import ImageExercise
 from exercises.models import MappingAreaMuscles
 from exercises.models import Mapping
 from exercises.models import Muscle
 from exercises.models import VideoCategory
+from exercises.models import VideoExercise
 
 register = template.Library()
 
@@ -21,6 +23,16 @@ def show_exercises_category_menu(category, active="exercises"):
             'total_videos': total_videos,
             'active': active,
             'category': category, }
+
+
+@register.inclusion_tag('tags/show_exercise_menu.html')
+def show_exercise_menu(exercise, active="description"):
+    total_images = ImageExercise.objects.filter(active=True, binding=exercise).count()
+    total_videos = VideoExercise.objects.filter(active=True, binding=exercise).count()
+    return {'total_images': total_images,
+            'total_videos': total_videos,
+            'active': active,
+            'exercise': exercise, }
 
 
 @register.inclusion_tag('tags/show_muscles_mapping.html')

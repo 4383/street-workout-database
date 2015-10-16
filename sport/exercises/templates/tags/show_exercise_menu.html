@@ -1,0 +1,40 @@
+{% load i18n %}
+<nav id="exercise-main-menu" class="margin-bottom-xl">
+    <ul class="nav nav-pills">
+        {% if active == "description" %}
+            <li role="presentation" class="active">
+        {% else %}
+            <li role="presentation">
+        {% endif %}
+            <a href="{% url 'exercise' slug=exercise.slug %}" class="list-group-item">
+                {% trans "Description" %}
+            </a>
+        </li>
+        {% comment %}***** images link *****{% endcomment %}
+        {% if total_images > 0 %}
+            {% if active == "images" %}
+                <li role="presentation" class="active">
+            {% else %}
+                <li role="presentation">
+            {% endif %}
+                <a href="{% url 'exercise_images' slug=exercise.slug %}" class="list-group-item">
+                    {% trans "Images" %}
+                    <span class="badge badge-success left-spaced-xs">{{ total_images }}</span>
+                </a>
+            </li>
+        {% endif %}
+        {% comment %}***** videos link *****{% endcomment %}
+        {% if total_videos > 0 %}
+            {% if active == "videos" %}
+                <li role="presentation" class="active">
+            {% else %}
+                <li role="presentation">
+            {% endif %}
+                <a href="{% url 'exercise_videos' slug=exercise.slug %}" class="list-group-item">
+                    {% trans "Videos" %}
+                    <span class="badge badge-success left-spaced-xs">{{ total_videos }}</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

@@ -120,6 +120,10 @@ separator: #E7E7E7
         background-repeat: no-repeat;
         background-position: center;
     }
+
+    .rise {
+        top: -150px;
+    }
 }
 
 .main-footer .footer-col {
@@ -191,7 +195,6 @@ area:hover {
     font-weight: bold;
     color: #d9534f;
 }
-
 
 /**********************************************
 Images

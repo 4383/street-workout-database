@@ -22,30 +22,20 @@
     </ol>
     {% endcomment %}
 
-
-    {% comment %}{% show_exercises_category_menu category "description" %}{% endcomment %}
-
-
+    <h1>{{ exercise|capfirst }} <span class="label label-{{ exercise.level }}">{{ exercise.level }}</span></h1>
+    {% show_exercise_menu exercise "description" %}
 
     {% if main_exercise_set %}
         {% for set in main_exercise_set %}
             {% if forloop.first %}
-            <div class="margin col-md-3 right border-left-gray">
+            <div class="margin col-md-3 right border-left-gray rise">
                 <h3 class="text-right sub-section-title">{% trans "How to do a" %} {{ exercise }} ?</h3>
             {% endif %}
-                {% if not forloop.last %}
-                    <div class="row margin-bottom-xs border-bottom-gray grid blur-out"
-                         style="background-image: url('{% get_media_prefix %}{{ set.step.image }}');
-                                background-repeat: no-repeat;
-                                background-size: 100% 100%;
-                                background-position: center;">
-                {% else %}
-                    <div class="row margin-bottom-xs grid blur-out"
-                         style="background-image: url('{% get_media_prefix %}{{ set.step.image }}');
-                                background-repeat: no-repeat;
-                                background-size: 100% 100%;
-                                background-position: center;">
-                {% endif %}
+                <div class="row margin-bottom-xs grid blur-out"
+                     style="background-image: url('{% get_media_prefix %}{{ set.step.image }}');
+                            background-repeat: no-repeat;
+                            background-size: 100% 100%;
+                            background-position: center;">
                     <div class="col-md-3 medium padding-top-xl">
                         <svg>
                             <circle
@@ -92,10 +82,7 @@
         {% endfor %}
     {% endif %}
 
-    <h1>{{ exercise|capfirst }} <span class="label label-{{ exercise.level }}">{{ exercise.level }}</span></h1>
-
     {% show_muscles_mapping exercise %}
-
     {% comment %}{% if main_image %}
         <section class="right right-spaced-xl panel panel-default padding-xl left-spaced-xl" id="media">
             <img class="img-xl"
