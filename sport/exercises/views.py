@@ -11,6 +11,7 @@ from exercises.models import Mapping
 from exercises.models import MappingAreaMuscles
 from exercises.models import Muscle
 from exercises.models import VideoCategory
+from exercises.models import VideoExercise
 
 
 def get_full_exercises_representation_for_a_category(current_category, limit=None):
@@ -104,11 +105,17 @@ def exercise_how_to(request, slug):
 
 
 def exercise_images(request, slug):
-    return render(request, "exercises/exercise_images.html")
+    current_exercise = get_object_or_404(Exercise, active=True, slug=slug)
+    images = ImageExercise.objects.filter(active=True, binding=current_exercise)
+    context = {'exercise': current_exercise, 'images': images}
+    return render(request, "exercises/exercise_images.html", context)
 
 
 def exercise_videos(request, slug):
-    return render(request, "exercises/exercise_videos.html")
+    current_exercise = get_object_or_404(Exercise, active=True, slug=slug)
+    videos = VideoExercise.objects.filter(active=True, binding=current_exercise)
+    context = {'exercise': current_exercise, 'videos': videos}
+    return render(request, "exercises/exercise_videos.html", context)
 
 
 def categories(request):

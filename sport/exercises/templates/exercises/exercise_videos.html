@@ -1,0 +1,39 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load exercises_tags %}
+{% load common_tags %}
+
+{% block title %}{{ exercise|capfirst }} {% trans "Exercise" %}{% endblock %}
+{% block meta_description %}{{ exercise.common_page_attribute.description }}{% endblock %}
+{% block meta_keywords %}{{ exercise.common_page_attribute.keywords }}{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+    {% comment %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
+        <li>{{ category|capfirst }}</li>
+        <li class="active">{% trans "Description" %}</li>
+    </ol>
+    {% endcomment %}
+
+    <h1>{{ exercise|capfirst }}
+        <span class="label label-{{ exercise.level }}">{{ exercise.level }}</span>
+        <small>
+            <a href="{% url "exercises_category_exercises" slug=exercise.category.slug %}">
+                ({{ exercise.category }} category)
+            </a>
+        </small>
+    </h1>
+    {% show_exercise_menu exercise "videos" %}
+
+    {% videos_gallery videos %}
+
+
+{% endblock %}<!-- End Content -->
