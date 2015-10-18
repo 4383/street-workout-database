@@ -38,38 +38,4 @@
             </button>
         {% endif %}
     </div>
-    <script>
-        $('#show-list').click(function() {
-            document.getElementById("exercises-grid").className = "hidden";
-            document.getElementById("exercises-list").className = "visible";
-            document.getElementById("show-list").className = "btn btn-primary btn-lg";
-            document.getElementById("show-grid").className = "btn btn-default btn-lg";
-        });
-        $('#show-grid').click(function() {
-            document.getElementById("exercises-grid").className = "visible";
-            document.getElementById("exercises-list").className = "hidden";
-            document.getElementById("show-list").className = "btn btn-default btn-lg";
-            document.getElementById("show-grid").className = "btn btn-primary btn-lg";
-        });
-        $('#level-all').click(function() {
-            $('.easy').css('display', 'block');
-            $('.medium').css('display', 'block');
-            $('.hard').css('display', 'block');
-        });
-        $('#level-easy').click(function() {
-            $('.easy').css('display', 'block');
-            $('.medium').css('display', 'none');
-            $('.hard').css('display', 'none');
-        });
-        $('#level-medium').click(function() {
-            $('.easy').css('display', 'none');
-            $('.medium').css('display', 'block');
-            $('.hard').css('display', 'none');
-        });
-        $('#level-hard').click(function() {
-            $('.easy').css('display', 'none');
-            $('.medium').css('display', 'none');
-            $('.hard').css('display', 'block');
-        });
-    </script>
 </menu>

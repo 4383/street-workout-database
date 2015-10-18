@@ -4,6 +4,7 @@
 {% load static %}
 {% get_media_prefix as MEDIA_PREFIX %}
 {% load exercises_tags %}
+{% load ui %}
 
 {% block title %}{{ exercise|capfirst }} {% trans "Exercise" %}{% endblock %}
 {% block meta_description %}{{ exercise.common_page_attribute.description }}{% endblock %}
@@ -14,14 +15,6 @@
 {% endblock %}
 
 {% block content %}
-    {% comment %}
-    <ol class="breadcrumb">
-        <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
-        <li>{{ category|capfirst }}</li>
-        <li class="active">{% trans "Description" %}</li>
-    </ol>
-    {% endcomment %}
-
     <h1>{{ exercise|capfirst }}
         <span class="label label-{{ exercise.level }}">{{ exercise.level }}</span>
         <small>
@@ -31,7 +24,6 @@
         </small>
     </h1>
     {% show_exercise_menu exercise "description" %}
-
     {% if main_exercise_set %}
         {% for set in main_exercise_set %}
             {% if forloop.first %}
@@ -74,30 +66,10 @@
             {% if forloop.last %}
                 </div>
             {% endif %}
-            <script>
-                $(".show-step-description").click(function(event){
-                    var id = event.target.id.substr(event.target.id.length - 1);
-                    var class_type = "glyphicon glyphicon-resize-small";
-                    console.log("#collapseDescription" + id);
-                    console.log($("#collapseDescription" + id).attr("class"));
-                    if ("collapse in" == $("#collapseDescription" + id).attr("class")) {
-                        class_type = "glyphicon glyphicon-resize-full";
-                    }
-                    $("#collapseStepBtnSpan" + id).attr("class", class_type);
-                });
-            </script>
         {% endfor %}
     {% endif %}
 
     {% show_muscles_mapping exercise %}
-    {% comment %}{% if main_image %}
-        <section class="right right-spaced-xl panel panel-default padding-xl left-spaced-xl" id="media">
-            <img class="img-xl"
-                 src="{% get_media_prefix %}{{ main_image.image }}"
-                 alt="{{ main_image.alt }}"
-                 title="{{ main_image.name }}" />
-        </section>
-    {% endif %}{% endcomment %}
 
     <section id="description">
         <p class="text-justify text-xl">{{ exercise.description|capfirst }}</p>
@@ -109,70 +81,7 @@
             <h4><u>{% trans "Related Exercises" %}</u></h4>
             {% for related_exercise in exercise.related_exercises.all %}
                 {% if related_exercise.active %}
-                    <div class="col-md-3
-                                no-padding-left
-                                padding-top-xs
-                                {{ related_exercise.level }}">
-                        <section id="{{ related_exercise.slug }}" class="panel panel-default grid"
-                            {% for image in related_exercises_image %}
-                                {% if image.binding == related_exercise %}
-                                    style="background-image: url('{% get_media_prefix %}{{ image.image }}');"
-                                {% endif %}
-                            {% endfor %}>
-                            <div class="btn-group right padding-bottom-xl"
-                                 role="group" aria-label="exercise-explorer">
-                                <a href="{% url 'exercise_how_to' slug=related_exercise.slug %}"
-                                   title="{% trans "How-to" %}"
-                                    data-toggle="tooltip" data-placement="right"
-                                   class="btn btn-default">
-                                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                                </a>
-                                <a href="{% url 'exercise_videos' slug=related_exercise.slug %}"
-                                   title="{% trans 'videos' %}"
-                                    data-toggle="tooltip" data-placement="right"
-                                   class="btn btn-default">
-                                    <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
-                                </a>
-                                <a href="{% url 'exercise_images' slug=related_exercise.slug %}"
-                                   title="{% trans 'Images' %}"
-                                    data-toggle="tooltip" data-placement="right"
-                                   class="btn btn-default">
-                                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                            <span class="left diagonal-label padding-top-xl">
-                                {% if related_exercise.level == "easy" %}
-                                    <span class="btn btn-success btn-xs"
-                                          title="{% trans 'For all' %}">
-                                        {% trans 'Easy Level' %}
-                                    </span>
-                                {% elif related_exercise.level == "medium" %}
-                                    <span class="btn btn-warning btn-xs"
-                                          title="{% trans 'For anyone intermediate and people of advanced level' %}">
-                                        {% trans 'Medium Level' %}
-                                    </span>
-                                {% else %}
-                                    <span class="btn btn-danger btn-xs"
-                                          title="For people of advanced level">
-                                        {% trans 'Hard Level' %}
-                                    </span>
-                                {% endif %}
-                            </span>
-                            <div class="panel-footer">
-                                <h4>
-                                    <button type="button" class="btn btn-default right"
-                                        title="{% trans 'Description' %}"
-                                        data-toggle="popover"
-                                        data-content="{{ related_exercise.description|truncatewords:15 }}">
-                                        <span class="glyphicon glyphicon-eye-open"></span>
-                                    </button>
-                                    <a href="{% url 'exercise' slug=related_exercise.slug %}">
-                                        {{ related_exercise.name|capfirst }}
-                                    </a>
-                                </h4>
-                            </div>
-                        </section>
-                    </div>
+                    {% exercise_preview related_exercise %}
                 {% endif %}
             {% endfor %}
         </section>

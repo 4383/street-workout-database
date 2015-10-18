@@ -15,14 +15,6 @@
 {% endblock %}
 
 {% block content %}
-    {% comment %}
-    <ol class="breadcrumb">
-        <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
-        <li>{{ category|capfirst }}</li>
-        <li class="active">{% trans "Description" %}</li>
-    </ol>
-    {% endcomment %}
-
     <h1>{{ exercise|capfirst }}
         <span class="label label-{{ exercise.level }}">{{ exercise.level }}</span>
         <small>
@@ -32,8 +24,5 @@
         </small>
     </h1>
     {% show_exercise_menu exercise "videos" %}
-
     {% videos_gallery videos %}
-
-
 {% endblock %}<!-- End Content -->
