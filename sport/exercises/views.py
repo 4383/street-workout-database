@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from exercises.models import Category
@@ -100,13 +101,11 @@ def exercise(request, slug):
     return render(request, "exercises/exercise.html", context)
 
 
-def exercise_how_to(request, slug):
-    return render(request, "exercises/exercise_how_to.html")
-
-
 def exercise_images(request, slug):
     current_exercise = get_object_or_404(Exercise, active=True, slug=slug)
     images = ImageExercise.objects.filter(active=True, binding=current_exercise)
+    if len(images) < 1:
+        return redirect('exercise', slug=slug)
     context = {'exercise': current_exercise, 'images': images}
     return render(request, "exercises/exercise_images.html", context)
 
@@ -114,6 +113,8 @@ def exercise_images(request, slug):
 def exercise_videos(request, slug):
     current_exercise = get_object_or_404(Exercise, active=True, slug=slug)
     videos = VideoExercise.objects.filter(active=True, binding=current_exercise)
+    if len(videos) < 1:
+        return redirect('exercise', slug=slug)
     context = {'exercise': current_exercise, 'videos': videos}
     return render(request, "exercises/exercise_videos.html", context)
 

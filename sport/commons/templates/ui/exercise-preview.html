@@ -12,10 +12,6 @@
                      ">
         <div class="btn-group right padding-bottom-xl"
              role="group" aria-label="exercise-explorer">
-            <a href="{% url 'exercise_how_to' slug=item.slug %}" title="{% trans "How-to" %}" data-toggle="tooltip"
-               data-placement="right" class="btn btn-default">
-                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-            </a>
             <a href="{% url 'exercise_videos' slug=item.slug %}" title="{% trans 'videos' %}" data-toggle="tooltip"
                data-placement="right" class="btn btn-default">
                 <span class="glyphicon glyphicon-film" aria-hidden="true"></span>

@@ -6,7 +6,6 @@ from . import views
 urlpatterns = [
     # Exercises
     url(r'^exercise/(?P<slug>[a-z\-0-9]+)/$', views.exercise, name='exercise'),
-    url(r'^exercise/(?P<slug>[a-z\-0-9]+)/how-to-do/$', views.exercise_how_to, name='exercise_how_to'),
     url(r'^exercise/(?P<slug>[a-z\-0-9]+)/images/$', views.exercise_images, name='exercise_images'),
     url(r'^exercise/(?P<slug>[a-z\-0-9]+)/videos/$', views.exercise_videos, name='exercise_videos'),
     # Categories
