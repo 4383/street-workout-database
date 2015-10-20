@@ -448,6 +448,10 @@ Margin and spacing
     margin-bottom: 20px;
 }
 
+.margin-bottom-xxxl {
+    margin-bottom: 40px;
+}
+
 .padding-xl {
     padding: 20px;
 }
