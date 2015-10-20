@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load static %}
 {% get_media_prefix as MEDIA_PREFIX %}
-<div class="col-md-3 no-padding-left padding-top-xs {{ item.level }} margin-bottom-xxxl">
+<div class="col-md-2 no-padding-left padding-top-xs {{ item.level }} margin-bottom-xxxl">
     <section id="{{ item.slug }}" class="panel panel-default grid-list-gallery grid"
              style="background-image: url('{% get_media_prefix %}{{ image.image }}');
                     min-height: 80px;
