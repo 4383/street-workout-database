@@ -24,14 +24,24 @@
 </h1>
 
 {% if mapping %}
-    <section class="right-spaced-xl left-spaced-xl well well-lg padding-xl" id="muscles">
+    <div class="right">
+        <p>
+            {% for muscle in muscles_list %}
+                <a id="{{ muscle.muscle }}_link"
+                   class="btn btn-xs btn-success muscle-link"
+                   href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
+            {% endfor %}
+        </p>
+    </div>
+    <section class="right-spaced-xl left-spaced-xl well well-lg padding-xl" id="muscles"
+             style="min-height: {{ mapping.height }}px;width: {{ maxwidth }}px;">
         <script>
             {% autoescape off %}
             var gallery_content = JSON.stringify({{ json_data }});
             var reverse_gallery_content = JSON.stringify({{ reverse_json_data }})
             {% endautoescape %}
         </script>
-        <div class="panel-body"
+        <div class="panel-body  "
              style="background: url('{% get_media_prefix %}{{ mapping.image }}') no-repeat;
                      min-height: {{ mapping.height }}px;
                      width: {{ mapping.width }}px;
@@ -70,13 +80,6 @@
                 {% endfor %}
             </map>
         </div>
-        <p>
-            {% for muscle in muscles_list %}
-                <a id="{{ muscle.muscle }}_link"
-                   class="btn btn-xs btn-success muscle-link"
-                   href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
-            {% endfor %}
-        </p>
     </section>
 {% endif %}
 {% endblock %}

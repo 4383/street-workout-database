@@ -226,7 +226,7 @@ def muscles(request):
     context = {"muscles_list": muscles_list,
             "mapping": mapping,
             "json_data": json.dumps(json_data),
-            "reverse_json_data": reverse_json_data}
+            "reverse_json_data": reverse_json_data, "maxwidth": mapping.width + 50}
 
     return render(request, "muscles/muscles.html", context)
 
