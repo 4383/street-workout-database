@@ -1,6 +1,8 @@
 __author__ = 'herve'
+import json
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 from exercises.models import Exercise
 from exercises.models import ImageCategory
 from exercises.models import ImageExercise
@@ -44,23 +46,39 @@ def show_muscles_mapping(specified_object):
     if not actives_muscles:
         return
 
-    muscles_list = []
-    for active_muscle in actives_muscles:
-        try:
-            muscles_data = {
-                'muscle': active_muscle,
-                'area': MappingAreaMuscles.objects.filter(binding=active_muscle),
-                }
-        except IndexError:
-            muscles_data = {
-                'muscle': active_muscle,
-                'area': MappingAreaMuscles.objects.filter(binding=active_muscle),
-                }
-        muscles_list.append(muscles_data)
-
     try:
         mapping = Mapping.objects.get(name="category_muscle_mapping")
     except ObjectDoesNotExist:
         mapping = None
 
-    return {"muscles_list": muscles_list, "mapping": mapping}
+    muscles_list = []
+    json_data = {}
+    reverse_json_data = {}
+    for active_muscle in actives_muscles:
+        areas = MappingAreaMuscles.objects.filter(binding=active_muscle)
+        muscles_data = {
+            'muscle': active_muscle,
+            'area': areas,
+        }
+
+        for area in areas:
+            if area.mapping == mapping:
+                entry = {area.name: {
+                    "image1": settings.MEDIA_URL + str(area.first_image_hover),
+                    "image2": settings.MEDIA_URL + str(area.second_image_hover),
+                    "muscle": active_muscle.name,
+                }}
+                reverse_entry = {active_muscle.name: {
+                    "image1": settings.MEDIA_URL + str(area.first_image_hover),
+                    "image2": settings.MEDIA_URL + str(area.second_image_hover),
+                    "area": area.name,
+                }}
+                json_data.update(entry)
+                reverse_json_data.update(reverse_entry)
+
+        muscles_list.append(muscles_data)
+
+    return {"muscles_list": muscles_list,
+            "mapping": mapping,
+            "json_data": json.dumps(json_data),
+            "reverse_json_data": reverse_json_data}

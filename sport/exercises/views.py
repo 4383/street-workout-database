@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+import json
+from django.conf import settings
 from exercises.models import Category
 from exercises.models import Exercise
 from exercises.models import ExerciseSet
@@ -185,7 +187,48 @@ def category_videos(request, slug):
 
 
 def muscles(request):
-    return render(request, "muscles.html")
+    actives_muscles = Muscle.objects.filter(active=True)
+    if not actives_muscles:
+        return
+
+    try:
+        mapping = Mapping.objects.get(name="main_muscle_mapping")
+    except ObjectDoesNotExist:
+        mapping = None
+
+    muscles_list = []
+    json_data = {}
+    reverse_json_data = {}
+    for active_muscle in actives_muscles:
+        areas = MappingAreaMuscles.objects.filter(binding=active_muscle)
+        muscles_data = {
+            'muscle': active_muscle,
+            'area': areas,
+        }
+
+        for area in areas:
+            if area.mapping == mapping:
+                entry = {area.name: {
+                    "image1": settings.MEDIA_URL + str(area.first_image_hover),
+                    "image2": settings.MEDIA_URL + str(area.second_image_hover),
+                    "muscle": active_muscle.name,
+                }}
+                reverse_entry = {active_muscle.name: {
+                    "image1": settings.MEDIA_URL + str(area.first_image_hover),
+                    "image2": settings.MEDIA_URL + str(area.second_image_hover),
+                    "area": area.name,
+                }}
+                json_data.update(entry)
+                reverse_json_data.update(reverse_entry)
+
+        muscles_list.append(muscles_data)
+
+    context = {"muscles_list": muscles_list,
+            "mapping": mapping,
+            "json_data": json.dumps(json_data),
+            "reverse_json_data": reverse_json_data}
+
+    return render(request, "muscles/muscles.html", context)
 
 
 def muscle(request, slug):

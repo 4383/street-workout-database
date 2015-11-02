@@ -71,7 +71,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class ExerciseAdmin(admin.ModelAdmin):
     inlines = [ImageExerciseInLine, VideoExerciseInline]
-    list_display = ('name', 'level', 'category', 'have_related_exercises')
+    list_display = ('name', 'level', 'category', 'have_related_exercises', 'is_active')
     fieldsets = (
         ('General', {'fields': ('name', 'description', 'link_title', 'level', 'active', 'slug')}),
         ('Organisation', {'classes': ('collapse', ), 'fields': ('category', 'muscles', 'related_exercises')}),

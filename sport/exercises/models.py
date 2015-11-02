@@ -142,6 +142,10 @@ class Exercise(models.Model):
         return False if not self.related_exercises.all() else True
     have_related_exercises.boolean = True
 
+    def is_active(self):
+        return self.active
+    is_active.boolean = True
+
 
 class Step(models.Model):
     name = models.CharField(max_length=300, unique=True)

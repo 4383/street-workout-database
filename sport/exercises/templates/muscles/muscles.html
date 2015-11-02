@@ -1,10 +1,30 @@
+{% extends "common/base.html" %}
 {% load i18n %}
 {% load staticfiles %}
 {% load static %}
 {% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
+
+{% block title %}{% trans "Muscles Overview" %}{% endblock %}
+{% block meta_description %}
+    {% trans "List all exercises classified by muscles" %}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "muscles, muscle, skeleton, smooth, cardiac, exercises, exercise" %}
+{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+<h1>
+    {% trans "Retrieve Exercises By Muscles" %}<br>
+    <small>{{ muscles_list|length }} {% trans "Defined" %} Muscle{{ muscles_list|pluralize }} </small>
+</h1>
 
 {% if mapping %}
-    <section class="right right-spaced-xl left-spaced-xl well well-lg padding-xl" id="muscles">
+    <section class="right-spaced-xl left-spaced-xl well well-lg padding-xl" id="muscles">
         <script>
             {% autoescape off %}
             var gallery_content = JSON.stringify({{ json_data }});
@@ -59,3 +79,4 @@
         </p>
     </section>
 {% endif %}
+{% endblock %}

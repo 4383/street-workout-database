@@ -52,67 +52,19 @@ $('#level-hard').click(function() {
     $('.hard').css('display', 'block');
 });
 
-//---------------------
-// Image Gallery
-//---------------------
-var json_images_data = JSON.parse(gallery_content);
 
-/**
- * Listen display event on modalImageViewer.
- * Get ID of clicked thumbnail and update modal content
- */
-$('#modalImageViewer').on('show.bs.modal', function (event) {
-    updateImageViewerContent(event.relatedTarget.id);
-});
-
-/**
- * Select the corresponding JSON entry (by index) and update modal content.
- * @param image_id The JSON entry index for the current image
- */
-function updateImageViewerContent(image_id) {
-    var json_entry = json_images_data.gallery[image_id];
-    document.getElementById("modalImageViewerTitle").innerHTML = json_entry.title;
-    document.getElementById("modalImageViewerDescription").innerHTML = json_entry.description;
-    document.getElementById("modalImageViewerImage").alt = json_entry.alt;
-    document.getElementById("modalImageViewerImage").src = json_entry.image;
-}
-//---------------------
-// Video gallery
-//---------------------
-var json_videos_data = JSON.parse(gallery_content);
-
-/**
- * Listen display event on modalVideoViewer.
- * Get ID of clicked thumbnail and update modal content
- */
-$('#modalVideoViewer').on('show.bs.modal', function (event) {
-    updateVideoViewerContent(event.relatedTarget.id);
-});
-
-/**
- * Select the corresponding JSON entry (by index) and update modal content.
- * @param video_id The JSON entry index for the current video
- */
-function updateVideoViewerContent(video_id) {
-    var json_entry = json_videos_data.gallery[video_id];
-    document.getElementById("modalVideoViewerTitle").innerHTML = json_entry.title;
-    document.getElementById("modalVideoViewerDescription").innerHTML = json_entry.description;
-    document.getElementById("modalVideoViewerVideo").width = json_entry.player_width;
-    document.getElementById("modalVideoViewerVideo").height = json_entry.player_height;
-    document.getElementById("modalVideoViewerVideo").src = json_entry.embedded_url;
-    document.getElementById("modalVideoViewerOriginalLink").href = json_entry.origin_url;
-    document.getElementById("modalVideoViewerOriginalLink").innerHTML = json_entry.origin_url;
-}
 //----------------------
 // Muscle mapping
 //----------------------
 var json_images_data = JSON.parse(gallery_content);
-var reverse_json_images_data = JSON.parse(reverse_gallery_content)
+var reverse_json_images_data = JSON.parse(reverse_gallery_content);
 
 var MappingManager = MappingManager || {};
 MappingManager.Mapping = function() {
 
     var overArea = function(area_id) {
+        console.log("areahover");
+        console.log(area_id);
         image = json_images_data[area_id]['image2'];
         muscle_link = json_images_data[area_id]['muscle'] + '_link';
         document.getElementById(area_id + "_img").src = image;
@@ -120,6 +72,7 @@ MappingManager.Mapping = function() {
     };
 
     var outArea = function(area_id) {
+        console.log(area_id);
         image = json_images_data[area_id]['image1'];
         muscle_link = json_images_data[area_id]['muscle'] + '_link';
         document.getElementById(area_id + "_img").src = image;
@@ -127,6 +80,7 @@ MappingManager.Mapping = function() {
     };
 
     var btnHover = function(muscle_id) {
+        console.log("btnhover");
         image = reverse_json_images_data[muscle_id]['image2'];
         area_link = reverse_json_images_data[muscle_id]['area'] + '_img';
         document.getElementById(area_link).src = image;
