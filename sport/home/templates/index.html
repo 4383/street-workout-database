@@ -1,0 +1,54 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
+
+{% block title %}{% trans "Welcome To The Street Workout Database" %}{% endblock %}
+{% block meta_description %}
+    {% trans "The Street Workout Database" %}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "muscle, exercises, exercise, " %}{{ muscle }}
+{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Welcome On The World Biggest Street Workout Database" %}</h1>
+<section>
+    <div class="col-md-4">
+        <img class="img-xxl img-thumbnail" src="{% static 'img/design/index3.jpg' %}"/>
+    </div>
+
+    <div class="col-md-7">
+        <h2>{% trans "Find All Body Weight Exercises" %}</h2>
+        <p class="text-xxl">The Street Workout Database reference all body weight variations exercises.<br>
+            Exercises are classified by categories, by muscles, by level.<br>
+            The Street Workout Database is entirely free and should remain so.<br>
+            Simple way to use it:</p>
+        <ol class="text-xxl">
+            <li>search an exercise</li>
+            <li>read the how-to do this</li>
+            <li>perform.</li>
+        </ol>
+    </div>
+</section>
+<section>
+    <div class="col-md-5">
+        <h2>{% trans "Put Focus On One Muscular Group" %}</h2>
+        <p class="text-xxl">With the Street Workout Database you can retrieve all exercises who soliciting muscular group.<br>
+        Select one muscle and highlight a lot kinds of training practices<br>
+        <br>
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </ol>
+    </div>
+
+    <div class="col-md-3">
+        <img class="right img-xxl img-thumbnail" src="{% static 'img/design/index2.jpg' %}"/>
+    </div>
+</section>
+{% endblock %}

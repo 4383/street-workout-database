@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'exercises',
     'commons',
     'community',
+    'home',
 )
 
 
@@ -74,7 +75,8 @@ DIRS = [os.path.join(BASE_DIR, 'templates'),
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates'),
                  os.path.join(BASE_DIR, 'commons', 'templates'),
-                 os.path.join(BASE_DIR, 'exercises', 'templates'), ]
+                 os.path.join(BASE_DIR, 'exercises', 'templates'),
+                 os.path.join(BASE_DIR, 'home', 'templates')]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
