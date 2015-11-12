@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^category/(?P<slug>[a-z\-0-9]+)/videos/$', views.category_videos, name='exercises_category_videos'),
     # Muscles
     url(r'^muscles/$', views.muscles, name='exercises_muscles'),
+    url(r'^muscles/ajax-exercises-by-muscles/$', views.ajax_exercises_by_muscles, name='ajax_exercises_by_muscles'),
     url(r'^muscle/(?P<slug>[a-z\-0-9]+)/$', views.muscle, name='exercises_muscle'),
     # Muscles-Groups
     url(r'^muscles-groups/$', views.muscles_groups, name='exercises_muscles_groups'),

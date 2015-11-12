@@ -24,14 +24,25 @@
 </h1>
 
 {% if mapping %}
-    <div class="right">
-        <p>
+    <div class="right half-width">
+        <p class="text-left text-xxl" >
+            <span class="label label-info">
+                {% trans "Place your mouse hover the muscle mapping to see details" %}
+            </span>
+        </p>
+        <h3 id="muscle-name"></h3>
+        <p id="muscle-description"></p>
+        <p><span id="muscle-type" class="badge"></span> <span id="muscle-group" class="badge"></span></p>
+        <p id="loader-message" class="hidden" >{% trans "Loading information..." %}</p>
+        <img id="loader" class="hidden" src="{% static 'img/design/loader.gif' %}"/>
+        <a id="exercises-count" href="" class="text-xxl"></a>
+        {% comment %}<p>
             {% for muscle in muscles_list %}
                 <a id="{{ muscle.muscle }}_link"
                    class="btn btn-xs btn-success muscle-link"
                    href="{% url 'exercises_muscle' slug=muscle.muscle.slug %}">{{ muscle.muscle }}</a>
             {% endfor %}
-        </p>
+        </p>{% endcomment %}
     </div>
     <section class="right-spaced-xl left-spaced-xl well well-lg padding-xl" id="muscles"
              style="min-height: {{ mapping.height }}px;width: {{ maxwidth }}px;">
@@ -81,5 +92,6 @@
             </map>
         </div>
     </section>
+    <script src="{% static 'js/ajax.js' %}" type="text/javascript"></script>
 {% endif %}
 {% endblock %}

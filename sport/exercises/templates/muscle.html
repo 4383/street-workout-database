@@ -1,0 +1,30 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
+
+{% block title %}{% trans "All exercises soliciting the " %}{{ muscle|capfirst }}{% endblock %}
+{% block meta_description %}
+    {% trans "List all exercises who soliciting the " %}{{ muscle|capfirst }}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "muscle, exercises, exercise, " %}{{ muscle }}
+{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+<h1>
+    {% trans "Exercises soliciting the" %} {{ muscle|capfirst }}<br>
+    <small>{{ exercises_list|length }} {% trans "Defined" %} Exercise{{ exercises_list|pluralize }} </small>
+</h1>
+
+<div>
+{% grid_list_gallery exercises_list display_level=True display_menu=True shortcut_menu=True margin_bottom=True%}
+</div>
+
+{% endblock %}

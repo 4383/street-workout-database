@@ -63,12 +63,18 @@ var MappingManager = MappingManager || {};
 MappingManager.Mapping = function() {
 
     var overArea = function(area_id) {
-        console.log("areahover");
-        console.log(area_id);
         image = json_images_data[area_id]['image2'];
         muscle_link = json_images_data[area_id]['muscle'] + '_link';
         document.getElementById(area_id + "_img").src = image;
-        document.getElementById(muscle_link).className = "btn btn-xs btn-danger";
+        if (document.getElementById(muscle_link) != null) {
+            document.getElementById(muscle_link).className = "btn btn-xs btn-danger";
+        }
+        muscle = json_images_data[area_id]['muscle'];
+        if (typeof ajax_exercises_by_muscles == 'function') {
+            ajax_exercises_by_muscles(muscle);
+            display_muscle_details(area_id);
+        }
+
     };
 
     var outArea = function(area_id) {
@@ -76,22 +82,31 @@ MappingManager.Mapping = function() {
         image = json_images_data[area_id]['image1'];
         muscle_link = json_images_data[area_id]['muscle'] + '_link';
         document.getElementById(area_id + "_img").src = image;
-        document.getElementById(muscle_link).className = "btn btn-xs btn-success";
+        if (document.getElementById(muscle_link) != null) {
+            document.getElementById(muscle_link).className = "btn btn-xs btn-success";
+        }
     };
 
     var btnHover = function(muscle_id) {
-        console.log("btnhover");
+        console.log(muscle_id);
         image = reverse_json_images_data[muscle_id]['image2'];
         area_link = reverse_json_images_data[muscle_id]['area'] + '_img';
         document.getElementById(area_link).src = image;
-        document.getElementById(muscle_id + "_link").className = "btn btn-xs btn-danger";
+        if (document.getElementById(muscle_id + "_link") != null) {
+                document.getElementById(muscle_id + "_link").className = "btn btn-xs btn-danger";
+        }
+        if (typeof ajax_exercises_by_muscles == 'function') {
+            count = ajax_exercises_by_muscles(muscle_id);
+        }
     }
 
     var btnOut = function(muscle_id) {
         image = reverse_json_images_data[muscle_id]['image1'];
         area_link = reverse_json_images_data[muscle_id]['area'] + '_img';
         document.getElementById(area_link).src = image;
-        document.getElementById(muscle_id + "_link").className = "btn btn-xs btn-success";
+        if (document.getElementById(muscle_id + "_link") != null) {
+            document.getElementById(muscle_id + "_link").className = "btn btn-xs btn-success";
+        }
     }
 
     var oPublic = {
@@ -103,6 +118,14 @@ MappingManager.Mapping = function() {
 
     return oPublic;
 }();
+
+function display_muscle_details(area_id) {
+    var muscle = json_images_data[area_id];
+    $("#muscle-name").text(muscle['muscle']);
+    $("#muscle-description").text(muscle['muscle_description']);
+    $("#muscle-type").text(muscle['muscle_type']);
+    $("#muscle-group").text(muscle['muscle_group']);
+}
 
 $('.mapping_area').mouseover(function (event) {
     area_id = event.target.id;
@@ -123,4 +146,34 @@ $('.muscle-link').mouseout(function (event) {
     btn_id = event.target.id;
     btn_id = btn_id.replace("_link", "");
     MappingManager.Mapping.btnOut(btn_id);
+});
+
+//---------- AJAX ----------
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
 });

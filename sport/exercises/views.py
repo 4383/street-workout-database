@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
+from django.shortcuts import HttpResponse
+from django.utils.translation import ugettext as _
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_protect
+from django.core.urlresolvers import reverse
 import json
 from django.conf import settings
 from exercises.models import Category
@@ -22,6 +26,27 @@ def get_full_exercises_representation_for_a_category(current_category, limit=Non
         exercises = Exercise.objects.filter(active=True, category=current_category)[:limit]
     else:
         exercises = Exercise.objects.filter(active=True, category=current_category)
+    exercises_list = []
+    for active_exercise in exercises:
+        try:
+            exercises_data = {
+                'information': active_exercise,
+                'main_image': ImageExercise.objects.filter(active=True, main=True, binding=active_exercise)[0],
+                }
+        except IndexError:
+            exercises_data = {
+                'information': active_exercise,
+                'main_image': None,
+                }
+        exercises_list.append(exercises_data)
+    return exercises_list
+
+
+def get_full_exercises_representation_for_a_muscle(current_muscle, limit=None):
+    if limit:
+        exercises = Exercise.objects.filter(active=True, muscles=current_muscle)[:limit]
+    else:
+        exercises = Exercise.objects.filter(active=True, muscles=current_muscle)
     exercises_list = []
     for active_exercise in exercises:
         try:
@@ -212,11 +237,17 @@ def muscles(request):
                     "image1": settings.MEDIA_URL + str(area.first_image_hover),
                     "image2": settings.MEDIA_URL + str(area.second_image_hover),
                     "muscle": active_muscle.name,
+                    "muscle_description": active_muscle.description,
+                    "muscle_type": active_muscle.type_of_muscle.name,
+                    "muscle_group": active_muscle.group.name
                 }}
                 reverse_entry = {active_muscle.name: {
                     "image1": settings.MEDIA_URL + str(area.first_image_hover),
                     "image2": settings.MEDIA_URL + str(area.second_image_hover),
                     "area": area.name,
+                    "muscle_description": active_muscle.description,
+                    "muscle_type": active_muscle.type_of_muscle.name,
+                    "muscle_group": active_muscle.group.name
                 }}
                 json_data.update(entry)
                 reverse_json_data.update(reverse_entry)
@@ -230,9 +261,43 @@ def muscles(request):
 
     return render(request, "muscles/muscles.html", context)
 
+@csrf_protect
+def ajax_exercises_by_muscles(request):
+    if request.method == 'POST':
+        selected_muscle = request.POST.get('muscle')
+        object_muscle = get_object_or_404(Muscle, active=True, name=selected_muscle)
+        response_data = {}
+
+        exercises_count = Exercise.objects.filter(active=True, muscles__name=selected_muscle).count()
+        display_text = "{0} ({1} {2})".format(
+            _("Show all exercises related to this muscle"),
+            exercises_count,
+            _("Exercises")
+        )
+        link = reverse('exercises_muscle',  kwargs={'slug': object_muscle.slug})
+
+        response_data['count'] = display_text
+        response_data['link'] = link
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
+
 
 def muscle(request, slug):
-    return render(request, "muscle.html")
+    selected_muscle = get_object_or_404(Muscle, active=True, slug=slug)
+    exercises_list = get_full_exercises_representation_for_a_muscle(selected_muscle)
+    context = {
+        "muscle": selected_muscle,
+        'exercises_list': exercises_list
+    }
+    return render(request, "muscle.html", context)
 
 
 def muscles_groups(request):
