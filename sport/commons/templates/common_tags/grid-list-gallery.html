@@ -13,7 +13,7 @@
                 <div class="col-md-3
                             no-padding-left
                             padding-top-xs
-                            {% if margin_bottom %} margin-bottom-xxxl {% endif %}
+                            {% if margin_bottom %} margin-bottom-xxxl {% else %} margin-bottom-xxxl {% endif %}
                             {% if display_level %}{{ item.information.level }}{% endif %}">
                     <section id="{{ item.information.slug }}" class="panel panel-default grid"
                         {% if item.main_image %}

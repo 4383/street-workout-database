@@ -1,0 +1,45 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
+
+{% block title %}{% trans "Welcome To The Street Workout Database" %}{% endblock %}
+{% block meta_description %}
+    {% trans "The Street Workout Database" %}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "muscle, exercises, exercise, " %}{{ muscle }}
+{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Welcome Everybody" %}</h1>
+<img class="left img-xl img-circle " src="{% static 'img/design/myself.png' %}">
+<p class="text-xxl">
+    Hi ! I've created this website to share my passion and my hobby.<br>
+    I'm a French IT programmer, I practice street workout since 2 years and I would create a centralized database
+    to offer a lot of contents about this purpose on the internet.<br>
+    <strong>This website is entirely free and should remain so.</strong>
+</p>
+<img class="right img-xxl img-thumbnail" src="{% static 'img/design/index3.jpg' %}"/>
+<p class="text-xxl">
+    The Street Workout Database reference all body weight variations exercises.<br>
+    Exercises are classified <a href="{% url 'exercises_categories' %}">by categories</a>,
+    <a href="{% url 'exercises_muscles' %}">by muscles</a>, by level.<br>
+    Simple way to use it:
+</p>
+<ol class="text-xxl">
+    <li>search an exercise.</li>
+    <li>read the how-to do this.</li>
+    <li>perform this exercise.</li>
+</ol>
+<p class="text-xxl">
+    With the Street Workout Database you can retrieve all exercises who soliciting muscular group.<br>
+    Select one muscle and highlight a lot kinds of training practices<br>
+</p>
+{% endblock %}

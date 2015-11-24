@@ -13,42 +13,47 @@
     {% trans "muscle, exercises, exercise, " %}{{ muscle }}
 {% endblock %}
 
-{% block main_menu_exercises_active %}
-<li class="dropdown active">
+{% block style %}
+    .navbar {
+        margin-bottom: 0px;
+    }
+
+    .main-content {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .jumbotron {
+        padding-left: 2%;
+        padding-right: 2%;
+        background-image: url('{% static "img/design/index4.jpg" %}');
+        background-color: black;
+        background-repeat: no-repeat;
+        background-size: 40% 100%;
+        background-position: right;
+        color: white;
+    }
 {% endblock %}
 
+
 {% block content %}
-<h1>{% trans "Welcome On The World Biggest Street Workout Database" %}</h1>
-<section>
-    <div class="col-md-4">
-        <img class="img-xxl img-thumbnail" src="{% static 'img/design/index3.jpg' %}"/>
-    </div>
-
-    <div class="col-md-7">
-        <h2>{% trans "Find All Body Weight Exercises" %}</h2>
-        <p class="text-xxl">The Street Workout Database reference all body weight variations exercises.<br>
-            Exercises are classified by categories, by muscles, by level.<br>
-            The Street Workout Database is entirely free and should remain so.<br>
-            Simple way to use it:</p>
-        <ol class="text-xxl">
-            <li>search an exercise</li>
-            <li>read the how-to do this</li>
-            <li>perform.</li>
-        </ol>
-    </div>
-</section>
-<section>
-    <div class="col-md-5">
-        <h2>{% trans "Put Focus On One Muscular Group" %}</h2>
-        <p class="text-xxl">With the Street Workout Database you can retrieve all exercises who soliciting muscular group.<br>
-        Select one muscle and highlight a lot kinds of training practices<br>
-        <br>
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </ol>
-    </div>
-
-    <div class="col-md-3">
-        <img class="right img-xxl img-thumbnail" src="{% static 'img/design/index2.jpg' %}"/>
-    </div>
-</section>
+<div class="jumbotron">
+    <h1>Here we build your body !</h1>
+    <p>Already {{ exercises_number }} referenced exercise{{ exercises_number|pluralize }}</p>
+    <p>
+        <a class="btn btn-primary btn-lg" href="{% url 'exercises_categories' %}" role="button">
+            Find exercises by categories
+        </a>
+        <a class="btn btn-danger btn-lg" href="{% url 'exercises_muscles' %}" role="button">
+            Find exercises by muscles
+        </a>
+    </p>
+</div>
+<div class="text-center">
+    <h2>Retrieve a large variety of body weight exercises</h2>
+    <img src="{% static 'img/design/index1.jpg' %}" class="img-circle img-xl"/>
+    <img src="{% static 'img/design/index2.jpg' %}" class="img-circle img-xl"/>
+    <img src="{% static 'img/design/index3.jpg' %}" class="img-circle img-xl"/>
+    <p class="text-xl padding-top-xl">The Street Workout Database is built by an enthusiast for enthusiasts</p>
+</div>
 {% endblock %}

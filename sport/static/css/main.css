@@ -102,15 +102,17 @@ separator: #E7E7E7
  Global
 -----------------*/
 .main-content {
-    padding-top: 1%;
+    /*padding-top: 1%;*/
     padding-right: 2%;
     padding-bottom: 2%;
+    margin-bottom: 4%;
     padding-left: 2%;
 }
 .main-footer {
     clear:both;
     border-top: 1px solid #E7E7E7;
     padding: 30px;
+    margin-top: 50px;
     color: #767676;
 }
 
@@ -385,6 +387,7 @@ Margin and spacing
     margin-top: 80px;
     background-color: rgba(250, 250, 250, 0.7);
 }
+
 
 .grid-list-gallery .grid {
     background-repeat: no-repeat;
