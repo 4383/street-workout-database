@@ -67,11 +67,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
 }
 
-DIRS = [os.path.join(BASE_DIR, 'templates'),
-        os.path.join(BASE_DIR, 'exercises', 'templates'),]
+
+DIRS = [
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'exercises', 'templates'),
+]
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates'),
                  os.path.join(BASE_DIR, 'commons', 'templates'),
