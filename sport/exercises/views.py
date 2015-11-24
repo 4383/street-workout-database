@@ -153,15 +153,15 @@ def categories(request):
         try:
             category_data = {
                 'information': active_category,
-                'total_exercises': Exercise.objects.filter(category=active_category).count(),
-                'random_selected_exercises': Exercise.objects.filter(category=active_category)[:3],
+                'total_exercises': Exercise.objects.filter(category=active_category, active=True).count(),
+                'random_selected_exercises': Exercise.objects.filter(category=active_category, active=True)[:3],
                 'main_image': ImageCategory.objects.filter(active=True, main=True, binding=active_category)[0],
             }
         except IndexError:
             category_data = {
                 'information': active_category,
-                'total_exercises': Exercise.objects.filter(category=active_category).count(),
-                'random_selected_exercises': Exercise.objects.filter(category=active_category)[:3],
+                'total_exercises': Exercise.objects.filter(category=active_category, active=True).count(),
+                'random_selected_exercises': Exercise.objects.filter(category=active_category, active=True)[:3],
                 'main_image': None,
             }
         categories_list.append(category_data)
