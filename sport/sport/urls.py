@@ -3,7 +3,8 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from home import views as home_view
-from exercises import views as exercises_view
+from django.conf.urls import handler404
+from django.conf.urls import handler500
 
 urlpatterns = [
     url(r"^admin/", include(admin.site.urls)),
@@ -15,3 +16,6 @@ urlpatterns = [
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'home.views.page_not_found'
+handler500 = 'home.views.server_error'

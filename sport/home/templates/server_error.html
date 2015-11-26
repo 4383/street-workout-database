@@ -1,0 +1,30 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
+
+{% block title %}{% trans "Ooops... Page Not Found" %}{% endblock %}
+{% block style %}
+@media (min-width: 768px) {
+    .main-content {
+        height: 600px;
+        background-image: url("{% static 'img/design/server-error.jpg' %}");
+        background-repeat: no-repeat;
+        background-size: 80% 100%;
+        background-align: center;
+    }
+
+    h1 {
+        font-size: 50px;
+    }
+}
+{% endblock %}
+{% block content %}
+    <h1 class="text-center">
+        <strong>{% trans "Ooops... Sorry, something went wrong" %}</strong><br>
+        {% trans "We hope to have it fixed soon." %}<br>
+        {% trans "Please try again later!" %}
+    </h1>
+{% endblock %}

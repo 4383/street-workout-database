@@ -1,0 +1,27 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
+
+{% block title %}{% trans "Ooops... Page Not Found" %}{% endblock %}
+{% block style %}
+@media (min-width: 768px) {
+    .main-content {
+        height: 600px;
+        background-image: url("{% static 'img/design/page-not-found.jpg' %}");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-align: center;
+    }
+
+    h1 {
+        color: red;
+        font-size: 50px;
+    }
+}
+{% endblock %}
+{% block content %}
+    <h1 class="text-center"><strong>{% trans "Ooops... Sorry Page Not Found" %}</strong></h1>
+{% endblock %}
