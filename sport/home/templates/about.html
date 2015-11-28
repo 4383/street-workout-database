@@ -5,41 +5,52 @@
 {% get_media_prefix as MEDIA_PREFIX %}
 {% load common_tags %}
 
-{% block title %}{% trans "Welcome To The Street Workout Database" %}{% endblock %}
+{% block title %}{% trans "All About The Street Workout Database" %}{% endblock %}
 {% block meta_description %}
-    {% trans "The Street Workout Database" %}
+    {% trans "All About The Street Workout Database. Hervé Beraud was the CEO, main founder, technical lead and lead developer" %}
 {% endblock %}
 {% block meta_keywords %}
-    {% trans "muscle, exercises, exercise, " %}{{ muscle }}
+    {% trans "About us, hervé beraud, beraud, CEO, founder, technical lead, lead developer" %}{{ muscle }}
 {% endblock %}
 
-{% block main_menu_exercises_active %}
-<li class="dropdown active">
+{% block style %}
+    .main-content {
+        margin: 0 auto;
+        width: 996px;
+    }
 {% endblock %}
 
 {% block content %}
-<h1>{% trans "Welcome Everybody" %}</h1>
-<img class="left img-xl img-circle " src="{% static 'img/design/myself.png' %}">
-<p class="text-xxl">
-    Hi ! I've created this website to share my passion and my hobby.<br>
-    I'm a French IT programmer, I practice street workout since 2 years and I would create a centralized database
-    to offer a lot of contents about this purpose on the internet.<br>
-    <strong>This website is entirely free and should remain so.</strong>
+<h1>{% trans "About us" %}</h1>
+<!--<img class="left img-xl img-circle " src="{% static 'img/design/myself.png' %}">-->
+<h2>Team</h2>
+<img src="{% static 'img/design/myself.png' %}"
+     alt="{% trans 'Hervé Beraud CEO, founder, technical lead of The Street Workout Database' %}"
+     class="img-xl img-thumbnail right">
+<h3>Hervé BERAUD ({% trans 'CEO, founder, technical lead' %})</h3>
+<p class="text-justify">
+    <strong>Hervé Beraud</strong>{% blocktrans %} is the CEO and the founder of The Street Workout Database,
+    a community who practice
+    Street Workout and Fitness. He is responsible for the company's overall vision and strategy as
+    well as day-to-day operations.
+    {% endblocktrans %}
 </p>
-<img class="right img-xxl img-thumbnail" src="{% static 'img/design/index3.jpg' %}"/>
-<p class="text-xxl">
-    The Street Workout Database reference all body weight variations exercises.<br>
-    Exercises are classified <a href="{% url 'exercises_categories' %}">by categories</a>,
-    <a href="{% url 'exercises_muscles' %}">by muscles</a>, by level.<br>
-    Simple way to use it:
+<p class="text-justify">
+    {% blocktrans %}
+    Since the beginning, Kevin has focused on simplicity and inspiring creativity through solving
+    problems with thoughtful product design.
+    As a result, The Street Workout has become the home for passionate who practice body weight exercises.
+    Everyone can find a lot of exercises related to his level and share with his friends.
+    {% endblocktrans %}
 </p>
-<ol class="text-xxl">
-    <li>search an exercise.</li>
-    <li>read the how-to do this.</li>
-    <li>perform this exercise.</li>
-</ol>
-<p class="text-xxl">
-    With the Street Workout Database you can retrieve all exercises who soliciting muscular group.<br>
-    Select one muscle and highlight a lot kinds of training practices<br>
+<p>
+    {% blocktrans %}
+    The Street Workout Database place focus on muscular groups and classify exercises by categories.
+    {% endblocktrans %}
+</p>
+    {% blocktrans %}
+    A few words of the creator : <i>"Hi everybody ! I've created this website to share my passion and my hobby. I hope you
+    found pleasure to use our product. Thanks to visit us, enjoy and have fun !"</i>
+    {% endblocktrans %}
 </p>
 {% endblock %}
