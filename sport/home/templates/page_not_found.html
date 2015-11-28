@@ -7,21 +7,16 @@
 
 {% block title %}{% trans "Ooops... Page Not Found" %}{% endblock %}
 {% block style %}
-@media (min-width: 768px) {
-    .main-content {
-        height: 600px;
-        background-image: url("{% static 'img/design/page-not-found.jpg' %}");
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        background-align: center;
-    }
-
-    h1 {
-        color: red;
-        font-size: 50px;
-    }
+.main-content {
+    margin: 0 auto;
+    width: 996px;
 }
 {% endblock %}
 {% block content %}
-    <h1 class="text-center"><strong>{% trans "Ooops... Sorry Page Not Found" %}</strong></h1>
+<img src="{% static 'img/design/404.png' %}" alt="404 page not found">
+<h1 class="text-center"><strong>{% trans "Ooops sorry... Page Not Found !" %}</strong></h1>
+<p class="text-center">
+    Your request return a page not found (error 404). We can't find the page<br>
+    Are you sure you type is correct ?
+</p>
 {% endblock %}

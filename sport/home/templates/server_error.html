@@ -7,24 +7,20 @@
 
 {% block title %}{% trans "Ooops... Page Not Found" %}{% endblock %}
 {% block style %}
-@media (min-width: 768px) {
-    .main-content {
-        height: 600px;
-        background-image: url("{% static 'img/design/server-error.jpg' %}");
-        background-repeat: no-repeat;
-        background-size: 80% 100%;
-        background-align: center;
-    }
-
-    h1 {
-        font-size: 50px;
-    }
+.main-content {
+    margin: 0 auto;
+    width: 996px;
 }
 {% endblock %}
 {% block content %}
-    <h1 class="text-center">
-        <strong>{% trans "Ooops... Sorry, something went wrong" %}</strong><br>
+
+    <h1 class="text-center" style="font-size: 150px">
+        <img class="left" src="{% static 'img/design/500.png' %}" alt="500 server error">
+        Error 500
+    </h1>
+    <h3 class="text-center">
+        <strong>{% trans "Ooops... sorry, something went wrong" %}</strong><br>
         {% trans "We hope to have it fixed soon." %}<br>
         {% trans "Please try again later!" %}
-    </h1>
+    </h3>
 {% endblock %}
