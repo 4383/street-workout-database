@@ -10,3 +10,4 @@ lib64
 pip-selfcheck.json
 *.sqlite3
 core.txt
+core.sh
