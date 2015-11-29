@@ -6,6 +6,7 @@ from fabric.api import run
 from fabric.api import settings
 from fabric.api import cd
 from fabric.api import sudo
+from fabric.api import put
 
 
 class Project:
@@ -54,15 +55,23 @@ def nginx(project):
         for line in template.readlines():
             line = line.replace('$site_domain', project.domain)
             line = line.replace('$gunicorn_port', project.port)
+            line = line.replace('$path_site', project.full_path())
             nginx_file_content.append(line)
 
     output_filename = '{0}.conf'.format(project.name)
-    with open(os.path.join(project.publish_dependencies_path, output_filename), 'w+') as output_file:
+    output_file_path = os.path.join(project.publish_dependencies_path, output_filename)
+    with open(output_file_path, 'w+') as output_file:
         for line in nginx_file_content:
             output_file.write(line)
 
+    put(output_file_path, '/etc/nginx/site-available')
+    run('ln -s /etc/nginx/site-available/{0} /etc/nginx/site-enabled'.format(output_filename))
+    run('service nginx restart')
+
+
 def install():
     project = Project()
+    postgres(project)
     with settings(sudo_user=project.username, password=project.password):
         # prepare commands
         create_virtualenv = "{0} {1}".format(project.virtualenv, project.install_path())
@@ -76,12 +85,17 @@ def install():
             run(clone_project_branch)
             run(pip_install_requirements)
 
-    postgres(project)
+        start(project)
+    nginx(project)
 
 
 def update():
-    pass
+    project = Project()
+    with settings(sudo_user=project.username, password=project.password):
+        with cd(project.install_path()):
+            run("git pull origin {0}".format(project.branch))
 
+        start(project)
 
 def restart():
     pass
@@ -91,5 +105,28 @@ def stop():
     pass
 
 
-def start():
-    pass
+#def is_already_running(project):
+#    if project.port in gunicorn_instances():
+#        return True
+#    return False
+
+
+#def gunicorn_instances():
+#    instances = run('ps ax | grep gunicorn | grep -v grep')
+#    return instances
+
+
+#def pids(project):
+#    pids_list = []
+#    for instance in gunicorn_instances():
+#        if project.port in instance:
+#            pids_list.append(instance.split(' ')[0])
+
+
+def start(project):
+    #if is_already_running(project):
+    #    print("This project is already running")
+    start_gunicorn = "python ../../bin/gunicorn -b 127.0.0.1:{0} sport.wsgi:application".format(project.port)
+    with cd(project.full_path()):
+        run("python manage.py collectstatic")
+        run(start_gunicorn)
