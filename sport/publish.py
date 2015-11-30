@@ -7,12 +7,13 @@ from fabric.api import settings
 from fabric.api import cd
 from fabric.api import sudo
 from fabric.api import put
+from fabric.api import env
 
 
 class Project:
     def __init__(self):
-        self.username = input("Server username : ")
-        self.password = input("Server password : ")
+        self.username = raw_input("Server username : ")
+        self.password = raw_input("Server password : ")
         self.github = 'https://github.com/4383/street-workout-database.git'
         self.branch = 'prodV0'
         self.domain = 'the-street-workout-database.ovh'
@@ -21,14 +22,14 @@ class Project:
         self.path = 'street-workout-database/sport/'
         self.static_path = '{0}static/'.format(self.path)
         self.media_path = '{0}media/'.format(self.path)
-        self.virtualenv = 'virtualenv-3.2'
+        self.virtualenv = 'virtualenv'
         self.publish_dependencies_path = os.path.dirname(os.path.dirname(__file__))
 
     def is_initialized(self):
-        return self.server_username is not None
+        return self.username is not None
 
     def home_path(self):
-        return "/home/{0}/".format(self.server_username)
+        return "/home/{0}/".format(self.username)
 
     def install_path(self):
         return "{0}{1}/".format(self.home_path(), self.name)
@@ -71,19 +72,23 @@ def nginx(project):
 
 def install():
     project = Project()
-    postgres(project)
+    env.user = project.username
+    env.password = project.password
+    #postgres(project)
     with settings(sudo_user=project.username, password=project.password):
         # prepare commands
-        create_virtualenv = "{0} {1}".format(project.virtualenv, project.install_path())
+        create_virtualenv = "{0} --python=python2.7 {1}".format(project.virtualenv, project.install_path())
         activate_venv = "source bin/activate".format(project.install_path())
         clone_project_branch = "git clone -b {0} {1}".format(project.branch, project.github)
-        pip_install_requirements = "pip install -r {0}requirements.txt".format(project.full_path())
+        pip_install_requirements = "{1}bin/pip install -r {0}requirements.txt".format(project.full_path(), project.install_path())
+        decrypt_conf = "gpg -d core.txt.gpg >> {0}bin/activate".format(project.install_path())
         # run commands
         run(create_virtualenv)
         with cd(project.install_path()):
             run(activate_venv)
             run(clone_project_branch)
             run(pip_install_requirements)
+            run(decrypt_conf)
 
         start(project)
     nginx(project)
@@ -126,7 +131,7 @@ def stop():
 def start(project):
     #if is_already_running(project):
     #    print("This project is already running")
-    start_gunicorn = "python ../../bin/gunicorn -b 127.0.0.1:{0} sport.wsgi:application".format(project.port)
+    start_gunicorn = "{1}bin/python ../../bin/gunicorn -b 127.0.0.1:{0} sport.wsgi:application".format(project.port, project.install_path())
     with cd(project.full_path()):
         run("python manage.py collectstatic")
         run(start_gunicorn)
