@@ -9,6 +9,7 @@ from fabric.api import cd
 from fabric.api import sudo
 from fabric.api import put
 from fabric.api import env
+from fabric.api import prefix
 
 
 class Project:
@@ -89,10 +90,18 @@ def install():
             run(activate_venv)
             run(clone_project_branch)
             run(pip_install_requirements)
-            #run(decrypt_conf)
 
-        #start(project)
     nginx(project)
+    demonized(project)
+
+
+def demonized(project=None):
+    if not project:
+        project = Project()
+    demon = 'echo "cd {0} && source bin/activate && cd {1} && {0}bin/python {0}bin/gunicorn -b 127.0.0.1:3333 sport.wsgi:application &" > /etc/init.d/{2}'.format(project.install_path(), project.full_path(), project.name)
+    chmod = 'chmod ugo+x /etc/init.d/{0}'.format(project.name)
+    run(demon)
+    run(chmod)
 
 
 def update():
@@ -133,13 +142,18 @@ def start():
     #if is_already_running(project):
     #    print("This project is already running")
     project = Project()
-    activate_venv = "source {0}bin/activate".format(project.install_path())
-    start_gunicorn = "{1}bin/python {1}bin/gunicorn -b 127.0.0.1:{0} sport.wsgi:application".format(
+    activate = 'source bin/activate'
+    collect_static = '{0}bin/python2.7 {1}manage.py collectstatic'.format(project.install_path(), project.full_path())
+    makemigrations = '{0}bin/python2.7 {1}manage.py makemigrations'.format(project.install_path(), project.full_path())
+    migrate = '{0}bin/python2.7 {1}manage.py migrate'.format(project.install_path(), project.full_path())
+    start_gunicorn = "{1}bin/python2.7 {1}bin/gunicorn -b 127.0.0.1:{0} sport.wsgi:application &".format(
         project.port,
         project.install_path()
     )
+    start_gunicorn = "/etc/init.d/{0}".format(project.name)
     with cd(project.install_path()):
-        run(activate_venv)
-        with cd(project.full_path()):
-            #run("{0}bin/python manage.py collectstatic".format(project.install_path()))
-            run(start_gunicorn)
+        with prefix(activate):
+            run(collect_static)
+            run(makemigrations)
+            run(migrate)
+            #run(start_gunicorn)
