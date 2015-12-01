@@ -11,3 +11,11 @@ def index(request):
     exercises_number = Exercise.objects.filter(active=True).count()
     context = {"exercises_number": exercises_number}
     return render(request, "index.html", context)
+
+
+def page_not_found(request):
+    return render(request, "page_not_found.html")
+
+
+def server_error(request):
+    return render(request, "server_error.html")

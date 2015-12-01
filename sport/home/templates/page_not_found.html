@@ -1,0 +1,22 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
+
+{% block title %}{% trans "Ooops... Page Not Found" %}{% endblock %}
+{% block style %}
+.main-content {
+    margin: 0 auto;
+    width: 996px;
+}
+{% endblock %}
+{% block content %}
+<img src="{% static 'img/design/404.png' %}" alt="404 page not found">
+<h1 class="text-center"><strong>{% trans "Ooops sorry... Page Not Found !" %}</strong></h1>
+<p class="text-center">
+    Your request return a page not found (error 404). We can't find the page<br>
+    Are you sure you type is correct ?
+</p>
+{% endblock %}

@@ -17,14 +17,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7s!np928y+@%)sy(fw0vxj=1(f)8n#c)o_1n*#iqt81jscn7jo'
+SECRET_KEY = os.environ.get("SWD_DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.the-street-workout-database.ovh', 'the-street-workout-database.ovh']
 
 
 # Application definition
@@ -65,8 +65,8 @@ WSGI_APPLICATION = 'sport.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ.get("SWD_DJANGO_DATABASE_ENGINE"),
+        'NAME': os.path.join(BASE_DIR, os.environ.get("SWD_DJANGO_DATABASE_NAME")),
     },
 }
 
@@ -111,8 +111,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+SITE_DOMAIN = os.environ.get('SWD_DJANGO_SITE_DOMAIN')
 
-MEDIA_URL = '/media/'
+STATIC_URL = 'http://static.{0}/'.format(SITE_DOMAIN)
+if DEBUG:
+    STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static_prod')
+
+MEDIA_URL = 'http://media.{0}/'.format(SITE_DOMAIN)
+if DEBUG:
+    MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
