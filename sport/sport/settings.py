@@ -10,8 +10,17 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from os.path import expanduser
+
+HOME_DIR = expanduser("~")
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+RELEASE_DEPENDENCIES_DIR = os.path.join(HOME_DIR, 'www', 'swd')
+
+SITE_DOMAIN = os.environ.get('SWD_DJANGO_SITE_DOMAIN')
+
+CURRENT_VERSION = "v1.1"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -20,9 +29,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = os.environ.get("SWD_DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.the-street-workout-database.ovh', 'the-street-workout-database.ovh']
 
@@ -61,14 +70,20 @@ WSGI_APPLICATION = 'sport.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get("SWD_DJANGO_DATABASE_ENGINE"),
         'NAME': os.path.join(BASE_DIR, os.environ.get("SWD_DJANGO_DATABASE_NAME")),
     },
 }
+
+if not DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get("SWD_DJANGO_DATABASE_ENGINE"),
+            'NAME': os.path.join(RELEASE_DEPENDENCIES_DIR, os.environ.get("SWD_DJANGO_DATABASE_NAME")),
+        },
+    }
 
 
 DIRS = [
@@ -92,7 +107,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages')
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
 LANGUAGE_CODE = 'en-us'
 
 gettext = lambda s: s
@@ -110,17 +124,15 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
-SITE_DOMAIN = os.environ.get('SWD_DJANGO_SITE_DOMAIN')
-
-STATIC_URL = 'http://static.{0}/'.format(SITE_DOMAIN)
-if DEBUG:
-    STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static_prod')
+    STATIC_URL = 'http://static.{0}/'.format(SITE_DOMAIN)
+    STATIC_ROOT = os.path.join(RELEASE_DEPENDENCIES_DIR, 'static')
 
-MEDIA_URL = 'http://media.{0}/'.format(SITE_DOMAIN)
-if DEBUG:
-    MEDIA_URL = '/media/'
+
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+if not DEBUG:
+    MEDIA_ROOT = os.path.join(RELEASE_DEPENDENCIES_DIR, 'media')
+    MEDIA_URL = 'http://media.{0}/'.format(SITE_DOMAIN)
