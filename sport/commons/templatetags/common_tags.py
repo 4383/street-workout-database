@@ -2,6 +2,7 @@ __author__ = 'herve.beraud'
 from datetime import datetime, timedelta
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 from community.models import InformationMessage
 from exercises.models import Category
 from exercises.models import MuscleGroup
@@ -70,3 +71,9 @@ def display_information_message(context):
     except ObjectDoesNotExist:
         information_message = None
     return {"information_message": information_message, "expiration_date": expiration_date.strftime(cookie_date_format)}
+
+
+@register.simple_tag
+def current_version():
+    return settings.CURRENT_VERSION
+

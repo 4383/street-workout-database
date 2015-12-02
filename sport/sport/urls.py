@@ -13,9 +13,10 @@ urlpatterns = [
     url(r"^$", home_view.index, name="index"),
     url(r"^about/$", home_view.about, name="about"),
     url(r"^about$", home_view.about, name="about"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
 
-urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'home.views.page_not_found'
 handler500 = 'home.views.server_error'
