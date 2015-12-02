@@ -20,7 +20,7 @@ RELEASE_DEPENDENCIES_DIR = os.path.join(HOME_DIR, 'www', 'swd')
 
 SITE_DOMAIN = os.environ.get('SWD_DJANGO_SITE_DOMAIN')
 
-CURRENT_VERSION = "v1.0"
+CURRENT_VERSION = "v1.1"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
