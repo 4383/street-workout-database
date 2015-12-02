@@ -17,7 +17,7 @@ class Project:
         self.username = raw_input("Server username : ")
         self.password = raw_input("Server password : ")
         self.github = 'https://github.com/4383/street-workout-database.git'
-        self.branch = 'prodV0'
+        self.branch = 'master'
         self.domain = 'the-street-workout-database.ovh'
         self.port = 3333
         self.name = 'swd'
@@ -25,6 +25,7 @@ class Project:
         self.static_path = '{0}static/'.format(self.path)
         self.media_path = '{0}media/'.format(self.path)
         self.virtualenv = 'virtualenv'
+        self.python = 'python3.2'
         self.publish_dependencies_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'sport', 'publish-dependencies')
 
     def is_initialized(self):
@@ -58,7 +59,7 @@ def nginx():
     for line in io.open(nginx_template, 'r+'):
         line = line.replace('$site_domain', project.domain)
         line = line.replace('$gunicorn_port', str(project.port))
-        line = line.replace('$path_site', project.full_path())
+        line = line.replace('$path_site', '/home/{0}/www/{1}'.format(project.username, project.name))
         nginx_file_content.append(line)
 
     output_filename = '{0}.conf'.format(project.name)
@@ -79,11 +80,11 @@ def install():
     #postgres(project)
     with settings(sudo_user=project.username, password=project.password):
         # prepare commands
-        create_virtualenv = "{0} --python=python2.7 {1}".format(project.virtualenv, project.install_path())
+        create_virtualenv = "{0} --python={2} {1}".format(project.virtualenv, project.install_path(), project.python)
         activate_venv = "source bin/activate"
         clone_project_branch = "git clone -b {0} {1}".format(project.branch, project.github)
         pip_install_requirements = "{1}bin/pip install -r {0}requirements.txt".format(project.full_path(), project.install_path())
-        decrypt_conf = "gpg -d core.txt.gpg >> {0}bin/activate".format(project.install_path())
+        #decrypt_conf = "gpg -d core.txt.gpg >> {0}bin/activate".format(project.install_path())
         # run commands
         run(create_virtualenv)
         with cd(project.install_path()):
@@ -98,62 +99,43 @@ def install():
 def demonized(project=None):
     if not project:
         project = Project()
-    demon = 'echo "cd {0} && source bin/activate && cd {1} && {0}bin/python {0}bin/gunicorn -b 127.0.0.1:3333 sport.wsgi:application &" > /etc/init.d/{2}'.format(project.install_path(), project.full_path(), project.name)
-    chmod = 'chmod ugo+x /etc/init.d/{0}'.format(project.name)
+    service_file = '/etc/init.d/{0}'.format(project.name)
+    demon = 'echo "cd {0} && source {0}bin/activate && cd {1} && {0}bin/{3} {0}bin/gunicorn -b 127.0.0.1:3333 sport.wsgi:application &" > {2}'.format(
+        project.install_path(),
+        project.full_path(),
+        service_file,
+        project.python
+    )
+    chmod = 'chmod ugo+x {0}'.format(service_file)
     run(demon)
     run(chmod)
 
 
 def update():
     project = Project()
-    with settings(sudo_user=project.username, password=project.password):
-        with cd(project.install_path()):
-            run("git pull origin {0}".format(project.branch))
-
-        start(project)
-
-def restart():
-    pass
-
-
-def stop():
-    pass
-
-
-#def is_already_running(project):
-#    if project.port in gunicorn_instances():
-#        return True
-#    return False
-
-
-#def gunicorn_instances():
-#    instances = run('ps ax | grep gunicorn | grep -v grep')
-#    return instances
-
-
-#def pids(project):
-#    pids_list = []
-#    for instance in gunicorn_instances():
-#        if project.port in instance:
-#            pids_list.append(instance.split(' ')[0])
-
-
-def start():
-    #if is_already_running(project):
-    #    print("This project is already running")
-    project = Project()
     activate = 'source bin/activate'
-    collect_static = '{0}bin/python2.7 {1}manage.py collectstatic'.format(project.install_path(), project.full_path())
-    makemigrations = '{0}bin/python2.7 {1}manage.py makemigrations'.format(project.install_path(), project.full_path())
-    migrate = '{0}bin/python2.7 {1}manage.py migrate'.format(project.install_path(), project.full_path())
-    start_gunicorn = "{1}bin/python2.7 {1}bin/gunicorn -b 127.0.0.1:{0} sport.wsgi:application &".format(
-        project.port,
-        project.install_path()
+    collect_static = '{0}bin/{2} {1}manage.py collectstatic'.format(
+        project.install_path(),
+        project.full_path(),
+        project.python
     )
-    start_gunicorn = "/etc/init.d/{0}".format(project.name)
+    makemigrations = '{0}bin/{2} {1}manage.py makemigrations'.format(
+        project.install_path(),
+        project.full_path(),
+        project.python
+    )
+    migrate = '{0}bin/{2} {1}manage.py migrate'.format(
+        project.install_path(),
+        project.full_path(),
+        project.python
+    )
     with cd(project.install_path()):
         with prefix(activate):
             run(collect_static)
             run(makemigrations)
             run(migrate)
-            #run(start_gunicorn)
+
+
+def start():
+    runserver = "sh /etc/init.d/{0}".format(project.name)
+    run(runserver)
