@@ -11,6 +11,7 @@ from fabric.api import put
 from fabric.api import env
 from fabric.api import prefix
 
+RELEASE_CANDIDATE = True
 
 class Project:
     def __init__(self):
@@ -22,11 +23,13 @@ class Project:
         self.port = 3333
         self.name = 'swd'
         self.path = 'street-workout-database/sport/'
-        self.static_path = '{0}static/'.format(self.path)
-        self.media_path = '{0}media/'.format(self.path)
         self.virtualenv = 'virtualenv'
         self.python = 'python3.2'
-        self.publish_dependencies_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'sport', 'publish-dependencies')
+        self.publish_dependencies_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)),
+            'sport',
+            'publish-dependencies'
+        )
 
     def is_initialized(self):
         return self.username is not None
@@ -54,12 +57,16 @@ def postgres(project):
 
 def nginx():
     project = Project()
-    nginx_template = os.path.join(project.publish_dependencies_path, 'nginx.conf')
+    nginx_template = os.path.join(project.publish_dependencies_path, 'release.nginx.conf')
     nginx_file_content = []
     for line in io.open(nginx_template, 'r+'):
         line = line.replace('$site_domain', project.domain)
+        line = line.replace('$prefixed_site_domain', project.domain)
         line = line.replace('$gunicorn_port', str(project.port))
-        line = line.replace('$path_site', '/home/{0}/www/{1}'.format(project.username, project.name))
+        line = line.replace('$media_dir', '/home/{0}/www/{1}/media'.format(project.username, project.name))
+        line = line.replace('$static_dir', '/home/{0}/www/{1}/static'.format(project.username, project.name))
+        line = line.replace('$static_domain', 'static.{0}'.format(project.domain))
+        line = line.replace('$media_domain', 'media.{0}'.format(project.domain))
         nginx_file_content.append(line)
 
     output_filename = '{0}.conf'.format(project.name)
