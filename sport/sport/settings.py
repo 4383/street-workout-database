@@ -11,10 +11,24 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from os.path import expanduser
-
-HOME_DIR = expanduser("~")
+import configparser
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+import getpass
+username = getpass.getuser()
+environment = {
+    "production": "production.ini",
+    "staging": "staging.ini",
+    "development": "development.ini"
+}
+configfile = os.path.join(BASE_DIR, 'sport', 'settings', environment.get(username, "development.ini"))
+print(configfile)
+config = configparser.RawConfigParser()
+config.read(configfile)
+
+HOME_DIR = expanduser("~")
+print(config.getboolean('SETTINGS', 'TEMPLATE_DEBUG'))
 
 RELEASE_DEPENDENCIES_DIR = os.path.join(HOME_DIR, 'www', 'swd')
 
