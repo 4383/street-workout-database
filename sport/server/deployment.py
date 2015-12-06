@@ -90,7 +90,7 @@ def install():
         create_virtualenv = "{0} --python={2} {1}".format(project.virtualenv, project.install_path(), project.python)
         activate_venv = "source bin/activate"
         clone_project_branch = "git clone -b {0} {1}".format(project.branch, project.github)
-        pip_install_requirements = "{1}bin/pip install -r {0}requirements.txt".format(project.full_path(), project.install_path())
+        pip_install_requirements = "{1}bin/pip install -r {0}staging.requirements.txt".format(project.full_path(), project.install_path())
         #decrypt_conf = "gpg -d core.txt.gpg >> {0}bin/activate".format(project.install_path())
         # run commands
         run(create_virtualenv)
