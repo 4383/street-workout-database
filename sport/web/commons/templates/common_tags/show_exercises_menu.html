@@ -1,0 +1,21 @@
+{% load i18n %}
+<ul class="dropdown-menu">
+    {% if categories > 0 %}
+        <li><a href="{% url 'exercises_categories' %}">{% trans "Show Exercises By Categories" %}</a></li>
+        {% comment %}{% for category in categories %}
+            <li>
+                <a href="{% url 'exercises_category' slug=category.slug %}">
+                    {{ category.name|capfirst }}
+                </a>
+            </li>
+        {% endfor %}{% endcomment %}
+    {% endif %}
+    {% if muscles_groups > 0 %}
+        <li role="separator" class="divider"></li>
+        <li><a href="{% url 'exercises_muscles_groups' %}">{% trans "Show Exercises By Muscles Groups" %}</a></li>
+    {% endif %}
+    {% if muscles > 0 %}
+        <li role="separator" class="divider"></li>
+        <li><a href="{% url 'exercises_muscles' %}">{% trans "Show Exercises By Muscles" %}</a></li>
+    {% endif %}
+</ul>
