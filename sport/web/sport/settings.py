@@ -10,10 +10,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from os.path import expanduser
 import configparser
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
 
 import getpass
 username = getpass.getuser()
@@ -23,16 +23,10 @@ environment = {
     "development": "development.ini"
 }
 configfile = os.path.join(BASE_DIR, 'sport', 'settings', environment.get(username, "development.ini"))
-print(configfile)
 config = configparser.RawConfigParser()
 config.read(configfile)
 
-HOME_DIR = expanduser("~")
-print(config.getboolean('SETTINGS', 'TEMPLATE_DEBUG'))
-
-RELEASE_DEPENDENCIES_DIR = os.path.join(HOME_DIR, 'www', 'swd')
-
-SITE_DOMAIN = os.environ.get('SWD_DJANGO_SITE_DOMAIN')
+CURRENT_ENVIRONMENT = config.get('SETTINGS', 'CURRENT_ENVIRONMENT')
 
 CURRENT_VERSION = "v1.1"
 
@@ -40,14 +34,17 @@ CURRENT_VERSION = "v1.1"
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SWD_DJANGO_SECRET_KEY")
+SECRET_KEY_VALUE = config.get('SETTINGS', 'SECRET_KEY')
+if "{UNDEFINED}" == SECRET_KEY_VALUE:
+    SECRET_KEY_VALUE = os.environ.get('SECRET_KEY')
+SECRET_KEY = SECRET_KEY_VALUE
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config.getboolean('SETTINGS', 'DEBUG')
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = config.getboolean('SETTINGS', 'TEMPLATE_DEBUG')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.the-street-workout-database.ovh', 'the-street-workout-database.ovh']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', config.get('SETTINGS', 'ALLOWED_HOSTS')]
 
 
 # Application definition
@@ -78,32 +75,36 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+SESSION_COOKIE_SECURE = config.getboolean('SETTINGS', 'SESSION_COOKIE_SECURE')
+
 ROOT_URLCONF = 'sport.urls'
 
 WSGI_APPLICATION = 'sport.wsgi.application'
 
+CSRF_COOKIE_SECURE = config.getboolean('SETTINGS', 'CSRF_COOKIE_SECURE')
+
+CSRF_COOKIE_HTTPONLY = config.getboolean('SETTINGS', 'CSRF_COOKIE_HTTPONLY')
+
+X_FRAME_OPTIONS = config.get('SETTINGS', 'X_FRAME_OPTIONS')
 
 # Database
+DATABASE_DEFAULT_PASSWORD = config.get('SETTINGS', 'DATABASE_DEFAULT_PASSWORD')
+if "{UNDEFINED}" == DATABASE_DEFAULT_PASSWORD:
+    DATABASE_DEFAULT_PASSWORD = os.environ.get('DATABASE_DEFAULT_PASSWORD')
+
+DATABASE_DEFAULT_USER = config.get('SETTINGS', 'DATABASE_DEFAULT_USER')
+if "{UNDEFINED}" == DATABASE_DEFAULT_USER:
+    DATABASE_DEFAULT_USER = os.environ.get('DATABASE_DEFAULT_USER')
+
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get("SWD_DJANGO_DATABASE_ENGINE"),
-        'NAME': os.path.join(BASE_DIR, os.environ.get("SWD_DJANGO_DATABASE_NAME")),
+        'ENGINE': config.get('SETTINGS', 'DATABASE_DEFAULT_ENGINE'),
+        'NAME': config.get('SETTINGS', 'DATABASE_DEFAULT_NAME'),
+        'HOST': config.get('SETTINGS', 'DATABASE_DEFAULT_HOST'),
+        'PASSWORD': DATABASE_DEFAULT_PASSWORD,
+        'USER': DATABASE_DEFAULT_USER,
     },
 }
-
-if not DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': os.environ.get("SWD_DJANGO_DATABASE_ENGINE"),
-            'NAME': os.path.join(RELEASE_DEPENDENCIES_DIR, os.environ.get("SWD_DJANGO_DATABASE_NAME")),
-        },
-    }
-
-
-DIRS = [
-    os.path.join(BASE_DIR, 'templates'),
-    os.path.join(BASE_DIR, 'exercises', 'templates'),
-]
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates'),
                  os.path.join(BASE_DIR, 'commons', 'templates'),
@@ -136,17 +137,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-if not DEBUG:
-    STATIC_URL = 'http://static.{0}/'.format(SITE_DOMAIN)
-    STATIC_ROOT = os.path.join(RELEASE_DEPENDENCIES_DIR, 'static')
+STATIC_URL = config.get('SETTINGS', 'STATIC_URL')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, config.get('SETTINGS', 'STATICFILES_DIRS')),)
+STATIC_ROOT = config.get('SETTINGS', 'STATIC_ROOT')
 
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-if not DEBUG:
-    MEDIA_ROOT = os.path.join(RELEASE_DEPENDENCIES_DIR, 'media')
-    MEDIA_URL = 'http://media.{0}/'.format(SITE_DOMAIN)
+# Media (user uploads)
+MEDIA_URL = config.get('SETTINGS', 'MEDIA_URL')
+MEDIA_ROOT = os.path.join(BASE_DIR, config.get('SETTINGS', 'MEDIA_ROOT'))
