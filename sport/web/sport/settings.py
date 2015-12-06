@@ -75,9 +75,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-SESSION_COOKIE_SECURE = config.getboolean('SETTINGS', 'SESSION_COOKIE_SECURE')
-
 ROOT_URLCONF = 'sport.urls'
+
+SESSION_COOKIE_SECURE = config.getboolean('SETTINGS', 'SESSION_COOKIE_SECURE')
 
 WSGI_APPLICATION = 'sport.wsgi.application'
 
