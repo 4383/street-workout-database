@@ -65,5 +65,5 @@ def setup_project_environment():
         run("mkdir -p /home/{1}/www/{0}/media".format(project_name, username))
         run("mkdir -p /home/{1}/logs/{0}".format(project_name, username))
         run("virtualenv-3.2 /home/{1}/projects/{0}".format(project_name, username))
-        with cd("/home/{1}/git/{0}.{1}.git".format(project_name, username)):
+        with cd("/home/{1}/git/{0}.git".format(project_name, username)):
             run("git init --bare")
