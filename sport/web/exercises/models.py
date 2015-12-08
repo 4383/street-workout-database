@@ -80,7 +80,7 @@ class Category(models.Model):
     muscles = models.ManyToManyField(Muscle)
     active = models.BooleanField(default=False)
     slug = models.SlugField(default='', unique=True)
-    related_category = models.ManyToManyField('self', blank=True, default=None, null=True)
+    related_category = models.ManyToManyField('self', blank=True, default=None)
     common_page_attribute = models.ForeignKey(CommonsPagesAttributes)
 
     def __str__(self):
@@ -129,9 +129,9 @@ class Exercise(models.Model):
     link_title = models.CharField(max_length=80, blank=True, default=_("See This Exercise"))
     category = models.ForeignKey(Category)
     muscles = models.ManyToManyField(Muscle)
-    related_exercises = models.ManyToManyField('self', blank=True, default=None, null=True)
+    related_exercises = models.ManyToManyField('self', blank=True, default=None)
     level = models.CharField(max_length=15, choices=DIFFICULTY)
-    equipments = models.ManyToManyField(Equipment, blank=True, default=None, null=True)
+    equipments = models.ManyToManyField(Equipment, blank=True, default=None)
     active = models.BooleanField(default=False)
     slug = models.SlugField(default='', unique=True)
 
