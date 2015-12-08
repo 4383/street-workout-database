@@ -1,5 +1,5 @@
 # The Street Workout Database 
-[![Build Status](https://semaphoreci.com/api/v1/projects/fa9cd815-6233-48a5-8220-6c1cebc61ad2/623926/shields_badge.svg)](https://semaphoreci.com/4383/street-workout-database)
+[![Build Status](https://semaphoreci.com/api/v1/projects/fa9cd815-6233-48a5-8220-6c1cebc61ad2/623926/shields_badge.svg)](https://semaphoreci.com/4383/street-workout-database) [![Codacy Badge](https://api.codacy.com/project/badge/grade/137a8d9d69be427090c59034d2af1ac1)](https://www.codacy.com/app/herveberaud-pro/street-workout-database)
 
 ## Summary
 
