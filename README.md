@@ -31,7 +31,7 @@ Your contributing will be insert in our database
 
 #### Report a bug
 
-You can report a bug by [open an issue](https://github.com/4383/street-workout-database/issues)
+You can report a bug by [opening an issue](https://github.com/4383/street-workout-database/issues)
 
 ### Make a wish
 
