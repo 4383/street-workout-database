@@ -27,7 +27,7 @@ class Project:
         self.python = 'python3.2'
         self.publish_dependencies_path = os.path.join(os.path.dirname(
             os.path.dirname(__file__)),
-            '../',
+            '../../../..///',
             'resources'
         )
 
