@@ -37,6 +37,7 @@ def setup_server_for_projects_workflow_instance():
         sudo("mkdir -p /home/{0}/git".format(username))
         sudo("mkdir -p /home/{0}/logs".format(username))
         sudo("mkdir -p /home/{0}/projects".format(username))
+        sudo("mkdir -p /home/{0}/sockets".format(username))
         sudo("mkdir -p /home/{0}/.ssh".format(username))
         sudo("echo '' | ssh-keygen")
         sudo("cat /home/{0}/.ssh/id_rsa.pub >> /home/{0}/.ssh/authorized_keys".format(username))
@@ -64,6 +65,7 @@ def setup_project_environment():
         run("mkdir -p /home/{1}/www/{0}/static".format(project_name, username))
         run("mkdir -p /home/{1}/www/{0}/media".format(project_name, username))
         run("mkdir -p /home/{1}/logs/{0}".format(project_name, username))
+        run("mkdir -p /home/{1}/sockets/{0}/run".format(project_name, username))
         run("virtualenv-3.2 /home/{1}/projects/{0}".format(project_name, username))
         with cd("/home/{1}/git/{0}.git".format(project_name, username)):
             run("git init --bare")
