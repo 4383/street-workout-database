@@ -10,13 +10,17 @@ __author__ = 'herve'
 # - drop database   : su - postgres -c "dropdb <database name>"
 # - drop role       : su - postgres -c "psql -c 'DROP USER <username>'"
 #
+# Usage:
+# fab -f install install_postgresql -H <ip> --port <port> -u root -p <your_password>
+# fab -f install setup_project_database_on_once_environment -H <ip> --port <port> -u root -p <your_password>
+#
 
 from fabric.api import run
 from fabric.api import settings
 from fabric.api import sudo
 
 
-def setup_server():
+def install_postgresql():
     run("aptitude install postgresql postgresql-contrib")
 
 
