@@ -1,0 +1,39 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load exercises_tags %}
+{% load common_tags %}
+
+{% block title %}{% trans "Videos Related To" %} {{ category|capfirst }} {% trans "Category" %}{% endblock %}
+{% block meta_description %}
+    {% trans "Retrieve videos :" %} {{ category.common_page_attribute.description }}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "video, youtube, dailymotion, play," %}
+    {{ category.common_page_attribute.keywords }}
+{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+    {% comment %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
+    <li><a href="{% url 'exercises_category' slug=category.slug %}">{{ category|capfirst }}</a></li>
+    <li class="active">{% trans "Videos" %}</li>
+</ol>
+{% endcomment %}
+<h1>
+    {{ category|capfirst }} {% trans "Category" %}
+</h1>
+
+{% show_exercises_category_menu category "videos" %}
+
+<section>
+    {% videos_gallery videos %}
+</section>
+{% endblock %}<!-- End Content -->

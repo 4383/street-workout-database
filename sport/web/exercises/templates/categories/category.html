@@ -1,0 +1,56 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load exercises_tags %}
+
+{% block title %}{{ category|capfirst }} {% trans "Category" %}{% endblock %}
+{% block meta_description %}{{ category.common_page_attribute.description }}{% endblock %}
+{% block meta_keywords %}{{ category.common_page_attribute.keywords }}{% endblock %}
+
+{% block main_menu_exercises_active %}
+<li class="dropdown active">
+{% endblock %}
+
+{% block content %}
+    {% comment %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'exercises_categories' %}">{% trans "Categories" %}</a></li>
+        <li>{{ category|capfirst }}</li>
+        <li class="active">{% trans "Description" %}</li>
+    </ol>
+    {% endcomment %}
+    <h1>
+        {{ category|capfirst }} {% trans "Category" %}
+    </h1>
+
+    {% show_exercises_category_menu category "description" %}
+
+    {% show_muscles_mapping category %}
+
+
+    {% if main_image %}
+        <section class="right right-spaced-xl panel panel-default padding-xl left-spaced-xl" id="media">
+            <img class="img-xl"
+                 src="{% get_media_prefix %}{{ main_image.image }}"
+                 alt="{{ main_image.alt }}"
+                 title="{{ main_image.name }}" />
+        </section>
+    {% endif %}
+
+    <section id="description">
+        <p class="text-justify text-xl">{{ category.description|capfirst }}</p>
+    </section>
+
+    {% if category.related_category.all %}
+        <hr>
+        <section id="related-categories">
+            <h4><u>{% trans "Related Categories" %}</u></h4>
+            {% for related_category in category.related_category.all %}
+                <a href="{% url 'exercises_category' slug=related_category.slug %}"
+                class="btn btn-success">{{ related_category|capfirst }}</a>
+            {% endfor %}
+        </section>
+    {% endif %}
+{% endblock %}<!-- End Content -->
