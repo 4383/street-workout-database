@@ -25,6 +25,7 @@ cd $PROJECTDIR/$PROJECT || exit
 git pull origin 2>> $LOGERROR_FILE
 
 source $PROJECTDIR/bin/activate 2>> $LOGERROR_FILE
+pip install -r $DJANGODIR/sport/fixtures/staging.requirements.txt 2>> $LOGERROR_FILE
 cd $DJANGODIR
 
 python manage.py makemigrations 2>> $LOGERROR_FILE
