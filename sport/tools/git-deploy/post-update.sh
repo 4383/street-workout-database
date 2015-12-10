@@ -6,7 +6,8 @@
 # To enable this hook, rename this file to "post-update".
 
 unset GIT_DIR
-LOG_FILE="~/logs/swd/git.log"
+LOG_FILE="/home/staging/logs/swd/git.log"
+LOGERROR_FILE="/home/staging/logs/swd/git.error.log"
 PROJECT="street-workout-database"
 PROJECTDIR=~/projects/swd
 DJANGODIR=$PROJECTDIR/street-workout-database/sport/web
@@ -16,22 +17,22 @@ echo "**** Pulling changes into Live [Hub's post-update hook]" >> $LOG_FILE
 echo "Starting at: `date`" >> $LOG_FILE
 
 if [ ! -d "$PROJECTDIR" ]; then
-    virtualenv-3.2 $PROJECTDIR
-    git clone -b release-v1.1 ~/git/swd.git $PROJECTDIR/$PROJECT
+    virtualenv-3.2 $PROJECTDIR 2>> $LOGERROR_FILE
+    git clone -b release-v1.1 ~/git/swd.git $PROJECTDIR/$PROJECT 2>> $LOGERROR_FILE
 fi
 
 cd $PROJECTDIR/$PROJECT || exit
-git pull origin
+git pull origin 2>> $LOGERROR_FILE
 
-source $PROJECTDIR/bin/activate
+source $PROJECTDIR/bin/activate 2>> $LOGERROR_FILE
 cd $DJANGODIR
 
-python manage.py makemigrations
-python manage.py migrate
-python manage.py collectstatic
+python manage.py makemigrations 2>> $LOGERROR_FILE
+python manage.py migrate 2>> $LOGERROR_FILE
+python manage.py collectstatic 2>> $LOGERROR_FILE
 
 chmod +x $GUNICORN
-sh $GUNICORN
+sh $GUNICORN 2>> $LOGERROR_FILE
 
 echo "Finish at: `date`" >> $LOG_FILE
 exec git update-server-info
