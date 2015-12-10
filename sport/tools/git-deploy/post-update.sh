@@ -6,8 +6,8 @@
 # To enable this hook, rename this file to "post-update".
 
 unset GIT_DIR
-LOG_FILE="/home/staging/logs/swd/git.log"
-LOGERROR_FILE="/home/staging/logs/swd/git.error.log"
+LOG_FILE="/home/`whoami`/logs/swd/git.log"
+LOGERROR_FILE="/home/`whoami`/logs/swd/git.error.log"
 PROJECT="street-workout-database"
 PROJECTDIR=~/projects/swd
 DJANGODIR=$PROJECTDIR/street-workout-database/sport/web
@@ -25,7 +25,8 @@ cd $PROJECTDIR/$PROJECT || exit
 git pull origin 2>> $LOGERROR_FILE
 
 source $PROJECTDIR/bin/activate 2>> $LOGERROR_FILE
-pip install -r $DJANGODIR/sport/fixtures/staging.requirements.txt 2>> $LOGERROR_FILE
+pip install -r $DJANGODIR/sport/fixtures/`whoami`.requirements.txt 2>> $LOGERROR_FILE
+
 cd $DJANGODIR
 
 python manage.py makemigrations 2>> $LOGERROR_FILE
