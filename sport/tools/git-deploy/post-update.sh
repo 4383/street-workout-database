@@ -45,9 +45,9 @@ $PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requ
 
 cd $DJANGODIR
 
-$PROJECTDIR/bin/python manage.py collectstatic 2>> $LOGERROR_FILE
-$PROJECTDIR/bin/python manage.py makemigrations 2>> $LOGERROR_FILE
-$PROJECTDIR/bin/python manage.py migrate 2>> $LOGERROR_FILE
+$PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
+$PROJECTDIR/bin/python manage.py makemigrations
+$PROJECTDIR/bin/python manage.py migrate
 
 chmod +x $GUNICORN
 
