@@ -18,7 +18,7 @@ echo "Starting at: `date`" >> $LOG_FILE
 
 if [ ! -d "$PROJECTDIR" ]; then
     virtualenv-3.2 $PROJECTDIR 2>> $LOGERROR_FILE
-    git clone -b release-v1.1 /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT 2>> $LOGERROR_FILE
+    git clone /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT 2>> $LOGERROR_FILE
 fi
 
 cd $PROJECTDIR/$PROJECT || exit
