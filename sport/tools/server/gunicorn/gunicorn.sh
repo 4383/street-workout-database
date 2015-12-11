@@ -28,8 +28,6 @@ export PYTHONPATH=$DJANGODIR:$PYTHONPATH
 RUNDIR=$(dirname $SOCKFILE)
 test -d $RUNDIR || mkdir -p $RUNDIR
 
-pwd
-
 # Start your Django Unicorn
 # Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
 exec $PROJECTDIR/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
