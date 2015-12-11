@@ -26,6 +26,7 @@ fi
 
 if [ -d $PROJECTLOGDIR ]; then
     rm -rf $PROJECTLOGDIR
+    mkdir $PROJECTLOGDIR
     touch $PROJECTLOGDIR/gunicorn_supervisor.log
 fi
 
