@@ -25,7 +25,7 @@ cd $PROJECTDIR/$PROJECT || exit
 git pull origin 2>> $LOGERROR_FILE
 
 source $PROJECTDIR/bin/activate 2>> $LOGERROR_FILE
-pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requirements.txt 2>> $LOGERROR_FILE
+$PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requirements.txt 2>> $LOGERROR_FILE
 
 cd $DJANGODIR
 
