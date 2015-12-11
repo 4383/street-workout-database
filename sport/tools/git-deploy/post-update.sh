@@ -34,7 +34,7 @@ python manage.py migrate 2>> $LOGERROR_FILE
 python manage.py collectstatic 2>> $LOGERROR_FILE
 
 chmod +x $GUNICORN
-sh $GUNICORN 2>> $LOGERROR_FILE
+bash $GUNICORN
 
 echo "Finish at: `date`" >> $LOG_FILE
 exec git update-server-info
