@@ -18,11 +18,11 @@ echo "Starting at: `date`" >> $LOG_FILE
 
 if [ ! -d "$PROJECTDIR" ]; then
     virtualenv-3.2 $PROJECTDIR 2>> $LOGERROR_FILE
-    git clone /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT 2>> $LOGERROR_FILE
+    git clone -b `whoami` /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT 2>> $LOGERROR_FILE
 fi
 
 cd $PROJECTDIR/$PROJECT || exit
-git pull origin 2>> $LOGERROR_FILE
+git pull origin `whoami` 2>> $LOGERROR_FILE
 
 source $PROJECTDIR/bin/activate 2>> $LOGERROR_FILE
 $PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requirements.txt 2>> $LOGERROR_FILE
