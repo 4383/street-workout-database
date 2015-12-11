@@ -12,6 +12,7 @@ GROUP=webuser                                                   # the group to r
 NUM_WORKERS=3                                                   # how many worker processes should Gunicorn spawn
 DJANGO_SETTINGS_MODULE=sport.settings                           # which settings file should Django use
 DJANGO_WSGI_MODULE=sport.wsgi                                   # WSGI module name
+$LOGDIR=$ENVIRONMENT/logs/swd/gunicorn.log
 
 echo "*********************************************" >> $STARTLOGFILE
 echo "Starting $NAME as `whoami`" >> $STARTLOGFILE
