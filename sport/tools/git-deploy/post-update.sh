@@ -26,6 +26,9 @@ function rollback () {
     chmod +x $GUNICORN
     supervisorctl start swd_`whoami`
     echo "rollback ok" >> $LOG_FILE
+    echo "Finish at: `date`" >> $LOG_FILE
+    exec git update-server-info
+    exit
 }
 
 if [ -d $PROJECTLOGDIR ]; then
