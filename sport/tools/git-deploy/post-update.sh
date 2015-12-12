@@ -16,6 +16,15 @@ WWWDIR=/home/`whoami`/www/swd
 DJANGODIR=$PROJECTDIR/street-workout-database/sport/web
 GUNICORN=$PROJECTDIR/$PROJECT/sport/tools/server/gunicorn/gunicorn.sh
 
+function rollback () {
+    git reset $CURRENT_REVISION
+    $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
+    $PROJECTDIR/bin/python manage.py makemigrations
+    $PROJECTDIR/bin/python manage.py migrate
+    chmod +x $GUNICORN
+    supervisorctl start swd_`whoami`
+}
+
 echo "**** Pulling changes into Live [Hub's post-update hook]" >> $LOG_FILE
 echo "Starting at: `date`" >> $LOG_FILE
 
@@ -47,24 +56,31 @@ $PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requ
 cd $DJANGODIR
 
 $PROJECTDIR/bin/python manage.py dumpdata > $WWWDIR/backup.json
+if [ $? -eq 1 ]; then
+    rollback
+fi
 $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
+if [ $? -eq 1 ]; then
+    rollback
+fi
 $PROJECTDIR/bin/python manage.py makemigrations
+if [ $? -eq 1 ]; then
+    rollback
+fi
 $PROJECTDIR/bin/python manage.py migrate
+if [ $? -eq 1 ]; then
+    rollback
+fi
 
 chmod +x $GUNICORN
-
 supervisorctl start swd_`whoami`
-
 ERROR_OCCURED=`supervisorctl status swd_\`whoami\` | grep 'STOPPED'`
 
 # rollback if supervirsor start fail
 if [ ! -z $ERROR_OCCURED ]; then
-    git reset $CURRENT_REVISION
-    $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
-    $PROJECTDIR/bin/python manage.py makemigrations
-    $PROJECTDIR/bin/python manage.py migrate
-    chmod +x $GUNICORN
-    supervisorctl start swd_`whoami`
+    if [ $? -eq 1 ]; then
+        rollback
+    fi
 fi
 
 echo "Finish at: `date`" >> $LOG_FILE
