@@ -32,7 +32,6 @@ supervisorctl stop swd_`whoami`
 
 if [ ! -d "$PROJECTDIR" ]; then
     virtualenv-3.2 $PROJECTDIR
-    git clone -b `whoami` /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT
 fi
 
 if [ -d $PROJECTLOGDIR ]; then
@@ -48,8 +47,10 @@ fi
 
 cd $PROJECTDIR/$PROJECT || exit
 CURRENT_REVISION=`git rev-parse HEAD`
-git fetch --all
-git reset --hard origin/`whoami`
+
+cd $PROJECTDIR
+rm -rf $PROJECTDIR/$PROJECT
+git clone -b `whoami` /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT
 
 source $PROJECTDIR/bin/activate
 $PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requirements.txt
