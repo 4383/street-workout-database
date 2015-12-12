@@ -12,6 +12,7 @@ PROJECT="street-workout-database"
 PROJECTDIR=/home/`whoami`/projects/swd
 PROJECTLOGDIR=/home/`whoami`/logs/swd
 SOCKETDIR=/home/`whoami`/sockets/swd
+WWWDIR=/home/`whoami`/www/swd
 DJANGODIR=$PROJECTDIR/street-workout-database/sport/web
 GUNICORN=$PROJECTDIR/$PROJECT/sport/tools/server/gunicorn/gunicorn.sh
 
@@ -20,8 +21,9 @@ echo "Starting at: `date`" >> $LOG_FILE
 
 supervisorctl stop swd_`whoami`
 
-if [ -d "$PROJECTDIR" ]; then
-    rm -rf $PROJECTDIR
+if [ ! -d "$PROJECTDIR" ]; then
+    virtualenv-3.2 $PROJECTDIR
+    git clone -b `whoami` /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT
 fi
 
 if [ -d $PROJECTLOGDIR ]; then
@@ -35,16 +37,16 @@ if [ -d $SOCKETDIR ]; then
     mkdir -p $SOCKETDIR/run
 fi
 
-virtualenv-3.2 $PROJECTDIR 2>> $LOGERROR_FILE
-git clone -b `whoami` /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT 2>> $LOGERROR_FILE
-
 cd $PROJECTDIR/$PROJECT || exit
+CURRENT_REVISION=`git rev-parse HEAD`
+git pull origin `whoami`
 
-source $PROJECTDIR/bin/activate 2>> $LOGERROR_FILE
-$PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requirements.txt 2>> $LOGERROR_FILE
+source $PROJECTDIR/bin/activate
+$PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requirements.txt
 
 cd $DJANGODIR
 
+$PROJECTDIR/bin/python manage.py dumpdata > $WWWDIR/backup.json
 $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
 $PROJECTDIR/bin/python manage.py makemigrations
 $PROJECTDIR/bin/python manage.py migrate
@@ -52,6 +54,18 @@ $PROJECTDIR/bin/python manage.py migrate
 chmod +x $GUNICORN
 
 supervisorctl start swd_`whoami`
+
+ERROR_OCCURED=`supervisorctl status swd_\`whoami\` | grep 'STOPPED'`
+
+# rollback if supervirsor start fail
+if [ ! -z $ERROR_OCCURED ]; then
+    git reset $CURRENT_REVISION
+    $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
+    $PROJECTDIR/bin/python manage.py makemigrations
+    $PROJECTDIR/bin/python manage.py migrate
+    chmod +x $GUNICORN
+    supervisorctl start swd_`whoami`
+fi
 
 echo "Finish at: `date`" >> $LOG_FILE
 exec git update-server-info
