@@ -48,7 +48,8 @@ fi
 
 cd $PROJECTDIR/$PROJECT || exit
 CURRENT_REVISION=`git rev-parse HEAD`
-git pull origin `whoami`
+git fetch --all
+git reset --hard origin/`whoami`
 
 source $PROJECTDIR/bin/activate
 $PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requirements.txt
