@@ -17,16 +17,11 @@ DJANGODIR=$PROJECTDIR/street-workout-database/sport/web
 GUNICORN=$PROJECTDIR/$PROJECT/sport/tools/server/gunicorn/gunicorn.sh
 ENVNAME=`whoami`
 
-function rollback () {
-    echo "rollback require" >> $LOG_FILE
-    git reset $CURRENT_REVISION
-    $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
-    $PROJECTDIR/bin/python manage.py makemigrations
-    $PROJECTDIR/bin/python manage.py migrate
-    chmod +x $GUNICORN
-    supervisorctl start swd_`whoami`
-    echo "rollback ok" >> $LOG_FILE
-}
+if [ -d $PROJECTLOGDIR ]; then
+    rm -rf $PROJECTLOGDIR
+    mkdir $PROJECTLOGDIR
+    touch $PROJECTLOGDIR/gunicorn_supervisor.log
+fi
 
 echo "**** Pulling changes into Live [Hub's post-update hook]" > $LOG_FILE
 echo "Starting at: `date`" >> $LOG_FILE
@@ -37,12 +32,6 @@ echo `supervisorctl status swd_$ENVNAME` >> $LOG_FILE
 if [ ! -d "$PROJECTDIR" ]; then
     echo "create virtualenv" >> $LOG_FILE
     virtualenv-3.2 $PROJECTDIR
-fi
-
-if [ -d $PROJECTLOGDIR ]; then
-    rm -rf $PROJECTLOGDIR
-    mkdir $PROJECTLOGDIR
-    touch $PROJECTLOGDIR/gunicorn_supervisor.log
 fi
 
 if [ -d $SOCKETDIR ]; then
@@ -65,31 +54,24 @@ cd $DJANGODIR
 
 $PROJECTDIR/bin/python manage.py dumpdata > $WWWDIR/backup.json
 if [ $? -eq 1 ]; then
-    rollback
+    echo "rollback require" >> $LOG_FILE
+    git reset $CURRENT_REVISION
+    $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
+    $PROJECTDIR/bin/python manage.py makemigrations
+    $PROJECTDIR/bin/python manage.py migrate
+    chmod +x $GUNICORN
+    supervisorctl start swd_`whoami`
+    echo "rollback ok" >> $LOG_FILE
+    echo "Finish at: `date`" >> $LOG_FILE
+    exec git update-server-info
+    exit
 fi
 $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
-if [ $? -eq 1 ]; then
-    rollback
-fi
 $PROJECTDIR/bin/python manage.py makemigrations
-if [ $? -eq 1 ]; then
-    rollback
-fi
 $PROJECTDIR/bin/python manage.py migrate
-if [ $? -eq 1 ]; then
-    rollback
-fi
 
 chmod +x $GUNICORN
 supervisorctl start swd_`whoami`
-ERROR_OCCURED=`supervisorctl status swd_$ENVNAME | grep 'STOPPED'`
-echo "supervisor status : $ERROR_OCCURED" >> $LOG_FILE
-
-# rollback if supervirsor start fail
-if [ ! -z $ERROR_OCCURED ]; then
-    echo "Supervisor is done but expected to start" >> $LOG_FILE
-    rollback
-fi
 
 echo "Finish at: `date`" >> $LOG_FILE
 exec git update-server-info

@@ -6,3 +6,4 @@ ssh -p <port> staging@<host> 'chmod +x /home/staging/git/staging.swd.git/hooks/p
 git remote rm hub || true
 git remote add hub  ssh://staging@<host>:<port>/home/staging/git/swd.git || true
 git push --force hub $BRANCH_NAME:staging || true
+ssh -p <port> staging@<host> 'bash /home/staging/git/staging.swd.git/hooks/post-update'
