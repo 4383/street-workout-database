@@ -19,7 +19,7 @@ ENVNAME=`whoami`
 
 function rollback () {
     echo "rollback require" >> $LOG_FILE
-    git reset $CURRENT_REVISION
+    git checkout $CURRENT_REVISION
     $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
     $PROJECTDIR/bin/python manage.py makemigrations
     $PROJECTDIR/bin/python manage.py migrate
