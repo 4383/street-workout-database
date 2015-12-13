@@ -75,6 +75,10 @@ $PROJECTDIR/bin/python manage.py makemigrations
 if [ $? -eq 1 ]; then
     rollback
 fi
+$PROJECTDIR/bin/python manage.py migrate auth
+if [ $? -eq 1 ]; then
+    rollback
+fi
 $PROJECTDIR/bin/python manage.py migrate
 if [ $? -eq 1 ]; then
     rollback
