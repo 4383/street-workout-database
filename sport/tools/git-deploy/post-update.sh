@@ -67,14 +67,15 @@ $PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requ
 cd $DJANGODIR
 
 $PROJECTDIR/bin/python manage.py dumpdata > $WWWDIR/backup.json
-if [ $? -eq 1 ]; then
-    rollback
-fi
 $PROJECTDIR/bin/python manage.py collectstatic --clear --noinput
 if [ $? -eq 1 ]; then
     rollback
 fi
 $PROJECTDIR/bin/python manage.py makemigrations
+if [ $? -eq 1 ]; then
+    rollback
+fi
+$PROJECTDIR/bin/python manage.py migrate auth
 if [ $? -eq 1 ]; then
     rollback
 fi
