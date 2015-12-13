@@ -1,17 +1,18 @@
 #!/bin/bash
 
-ENVIRONMENT=/home/production
-NAME="swd_production"                                           # Name of the application
+ENVIRONMENT=/home/`whoami`
+NAME="swd_`whoami`"                                           # Name of the application
 PROJECTDIR=$ENVIRONMENT/projects/swd
 DJANGODIR=$PROJECTDIR/street-workout-database/sport/web         # Django project directory
 SOCKFILE=$ENVIRONMENT/sockets/swd/run/gunicorn.sock             # we will communicte using this unix socket
 LOGFILE=$ENVIRONMENT/logs/swd/gunicorn.log
 STARTLOGFILE=$ENVIRONMENT/logs/swd/gunicorn.launch.log
-USER=production                                                 # the user to run as
+USER=`whoami`                                                 # the user to run as
 GROUP=webuser                                                   # the group to run as
 NUM_WORKERS=3                                                   # how many worker processes should Gunicorn spawn
 DJANGO_SETTINGS_MODULE=sport.settings                           # which settings file should Django use
 DJANGO_WSGI_MODULE=sport.wsgi                                   # WSGI module name
+GUNICORNLOGDIR=$ENVIRONMENT/logs/swd/gunicorn.log
 
 echo "*********************************************" >> $STARTLOGFILE
 echo "Starting $NAME as `whoami`" >> $STARTLOGFILE
@@ -35,4 +36,4 @@ exec $PROJECTDIR/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
   --user=$USER --group=$GROUP \
   --bind=unix:$SOCKFILE \
   --log-level=info \
-  --log-file=$LOGDIR
+  --log-file=$GUNICORNLOGDIR

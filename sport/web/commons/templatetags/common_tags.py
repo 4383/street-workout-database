@@ -79,3 +79,9 @@ def display_information_message(context):
 def current_version():
     return settings.CURRENT_VERSION
 
+
+@register.simple_tag
+def debugging():
+    return settings.DEBUG
+
+
