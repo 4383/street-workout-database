@@ -46,6 +46,13 @@ def setup_server_for_projects_workflow_instance():
         print(stdin)
 
 
+def generate_random_string():
+    import random
+    available_chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+    SECRET_KEY = ''.join([random.SystemRandom().choice(available_chars) for i in range(50)])
+    return SECRET_KEY
+
+
 @root_is_required
 def setup_project_environment():
     """
@@ -68,5 +75,22 @@ def setup_project_environment():
         run("mkdir -p /home/{1}/sockets/{0}/run".format(project_name, username))
         run("touch /home/{0}/sockets/{1}/run/gunicorn.sock".format(username, project_name))
         run("virtualenv-3.2 /home/{1}/projects/{0}".format(project_name, username))
+
+        secret_key = generate_random_string()
+        print(secret_key)
+        run('''echo 'export SECRET_KEY="{2}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
+            project_name,
+            username,
+            secret_key
+        ))
+        run('''echo 'export DATABASE_DEFAULT_USER="{0}{1}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
+            project_name,
+            username,
+        ))
+        run('''echo 'export DATABASE_DEFAULT_PASSWORD="{2}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
+            project_name,
+            username,
+            secret_key
+        ))
         with cd("/home/{1}/git/{1}.{0}.git".format(project_name, username)):
             run("git init --bare")
