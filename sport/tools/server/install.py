@@ -28,7 +28,7 @@ def setup_server_for_projects_workflow_instance():
     """
     username = raw_input("Username to create on server: ")
     password = raw_input("User password: ")
-    run("echo '{0}\n' | adduser {1}".format(password, username))
+    run("echo '{0}\n' | adduser {1} --ingroup webuser".format(password, username))
     with settings(
             password=password,
             sudo_prefix="su {0} -c ".format(username),
@@ -61,11 +61,12 @@ def setup_project_environment():
             password=password,
             sudo_prefix="su {0} -c ".format(username),
     ):
-        run("mkdir -p /home/{1}/git/{0}.{1}.git".format(project_name, username))
+        run("mkdir -p /home/{1}/git/{1}.{0}.git".format(project_name, username))
         run("mkdir -p /home/{1}/www/{0}/static".format(project_name, username))
         run("mkdir -p /home/{1}/www/{0}/media".format(project_name, username))
         run("mkdir -p /home/{1}/logs/{0}".format(project_name, username))
         run("mkdir -p /home/{1}/sockets/{0}/run".format(project_name, username))
+        run("touch /home/{0}/sockets/{1}/run/gunicorn.sock".format(username, project_name))
         run("virtualenv-3.2 /home/{1}/projects/{0}".format(project_name, username))
-        with cd("/home/{1}/git/{0}.git".format(project_name, username)):
+        with cd("/home/{1}/git/{1}.{0}.git".format(project_name, username)):
             run("git init --bare")
