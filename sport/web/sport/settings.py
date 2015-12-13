@@ -31,7 +31,7 @@ config.read(configfile)
 
 CURRENT_ENVIRONMENT = config.get('SETTINGS', 'CURRENT_ENVIRONMENT')
 
-CURRENT_VERSION = "v1.1"
+CURRENT_VERSION = "v2"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
