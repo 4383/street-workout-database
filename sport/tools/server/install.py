@@ -1,6 +1,7 @@
 __author__ = 'herve'
 
 import sys
+import md5
 from fabric.api import run
 from fabric.api import settings
 from fabric.api import cd
@@ -42,6 +43,7 @@ def setup_server_for_projects_workflow_instance():
         sudo("echo '' | ssh-keygen")
         sudo("cat /home/{0}/.ssh/id_rsa.pub >> /home/{0}/.ssh/authorized_keys".format(username))
         stdin = sudo("cat /home/{0}/.ssh/id_rsa".format(username))
+        sudo("chown -R {0}:webuser /home/{0}".format(username))
         print("Save and store your private ssh key:")
         print(stdin)
 
@@ -68,29 +70,35 @@ def setup_project_environment():
             password=password,
             sudo_prefix="su {0} -c ".format(username),
     ):
-        run("mkdir -p /home/{1}/git/{1}.{0}.git".format(project_name, username))
-        run("mkdir -p /home/{1}/www/{0}/static".format(project_name, username))
-        run("mkdir -p /home/{1}/www/{0}/media".format(project_name, username))
-        run("mkdir -p /home/{1}/logs/{0}".format(project_name, username))
-        run("mkdir -p /home/{1}/sockets/{0}/run".format(project_name, username))
-        run("touch /home/{0}/sockets/{1}/run/gunicorn.sock".format(username, project_name))
-        run("virtualenv-3.2 /home/{1}/projects/{0}".format(project_name, username))
+        sudo("mkdir -p /home/{1}/git/{1}.{0}.git".format(project_name, username))
+        sudo("mkdir -p /home/{1}/www/{0}/static".format(project_name, username))
+        sudo("mkdir -p /home/{1}/www/{0}/media".format(project_name, username))
+        sudo("mkdir -p /home/{1}/logs/{0}".format(project_name, username))
+        sudo("mkdir -p /home/{1}/sockets/{0}/run".format(project_name, username))
+        sudo("touch /home/{0}/sockets/{1}/run/gunicorn.sock".format(username, project_name))
+        sudo("virtualenv-3.2 /home/{1}/projects/{0}".format(project_name, username))
 
         secret_key = generate_random_string()
+
+        password = md5.new()
+        password.update(secret_key)
+
         print(secret_key)
-        run('''echo 'export SECRET_KEY="{2}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
+        sudo('''echo 'export SECRET_KEY="{2}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
             project_name,
             username,
             secret_key
         ))
-        run('''echo 'export DATABASE_DEFAULT_USER="{0}{1}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
+        sudo('''echo 'export DATABASE_DEFAULT_USER="{0}{1}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
             project_name,
             username,
         ))
-        run('''echo 'export DATABASE_DEFAULT_PASSWORD="{2}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
+        sudo('''echo 'export DATABASE_DEFAULT_PASSWORD="{2}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
             project_name,
             username,
-            secret_key
+            password.hexdigest()
         ))
         with cd("/home/{1}/git/{1}.{0}.git".format(project_name, username)):
-            run("git init --bare")
+            sudo("git init --bare")
+
+        sudo("chown -R {0}:webuser /home/{0}".format(username))
