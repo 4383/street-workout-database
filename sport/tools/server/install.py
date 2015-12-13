@@ -89,7 +89,7 @@ def setup_project_environment():
             username,
             secret_key
         ))
-        sudo('''echo 'export DATABASE_DEFAULT_USER="{0}{1}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
+        sudo('''echo 'export DATABASE_DEFAULT_USER="{1}_{0}"' >> /home/{1}/projects/{0}/bin/activate'''.format(
             project_name,
             username,
         ))
