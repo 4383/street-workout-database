@@ -137,13 +137,13 @@ $('.mapping_area').mouseout(function (event) {
 
 $('.muscle-link').mouseover(function (event) {
     var btn_id = event.target.id;
-    var btn_id = btn_id.replace("_link", "");
+    btn_id = btn_id.replace("_link", "");
     MappingManager.Mapping.btnHover(btn_id);
 });
 
 $('.muscle-link').mouseout(function (event) {
     var btn_id = event.target.id;
-    var btn_id = btn_id.replace("_link", "");
+    btn_id = btn_id.replace("_link", "");
     MappingManager.Mapping.btnOut(btn_id);
 });
 
