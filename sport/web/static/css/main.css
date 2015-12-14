@@ -179,6 +179,7 @@ area:hover {
     writing-modes: vertical-lr;
     -webkit-transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
 
@@ -254,6 +255,7 @@ Images
 .diagonal-label {
     -ms-transform: rotate(-30deg);
     -webkit-transform: rotate(-30deg);
+    -moz-transform: rotate(-30deg);
     transform: rotate(-30deg);
 }
 
