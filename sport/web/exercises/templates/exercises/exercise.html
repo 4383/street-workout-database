@@ -27,7 +27,7 @@
     {% if main_exercise_set %}
         {% for set in main_exercise_set %}
             {% if forloop.first %}
-            <div class="margin col-md-3 right border-left-gray rise">
+            <div class="margin col-md-3 right border-left-gray raise">
                 <h3 class="text-right sub-section-title">{% trans "How to do a" %} {{ exercise }} ?</h3>
             {% endif %}
                 <div class="row margin-bottom-xs grid blur-out"
@@ -72,7 +72,7 @@
     {% show_muscles_mapping exercise %}
 
     <section id="description">
-        <p class="text-justify text-xl">{{ exercise.description|capfirst }}</p>
+        <p class="text-justify text-xl">{% autoescape off %}{{ exercise.description|capfirst }}{% endautoescape %}</p>
     </section>
 
     {% if exercise.related_exercises.all %}
