@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from subprocess import check_output
 try:
     import configparser
 except ImportError:
@@ -32,6 +33,17 @@ config.read(configfile)
 CURRENT_ENVIRONMENT = config.get('SETTINGS', 'CURRENT_ENVIRONMENT')
 
 CURRENT_VERSION = "v2"
+
+configfile_update = os.path.join(BASE_DIR, 'update.ini')
+config_update = configparser.RawConfigParser()
+config_update.read(configfile_update)
+
+LAST_UPDATE_DATE = config_update.getfloat('UPDATE', 'date')
+
+LAST_UPDATE_STATUS = config_update.get('UPDATE', 'status')
+
+CURRENT_REVISION = check_output(["git", "rev-parse", "HEAD"]).decode('utf8')
+#CURRENT_REVISION = os.popen("git rev-parse HEAD").read()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
