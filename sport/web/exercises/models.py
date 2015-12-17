@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 MUSCLE_TYPE = (('skeleton', _('Skeletal Striated Muscle')),
                ('smooth', _('Smooth Muscle')),
@@ -30,6 +31,12 @@ class Mapping(models.Model):
     def __str__(self):
         return self.name
 
+    def preview(self):
+        if self.image:
+            return '<img src="{0}{1}" />'.format(settings.MEDIA_URL, self.image)
+    preview.short_description = 'Image'
+    preview.allow_tags = True
+
 
 class MappingArea(models.Model):
     name = models.CharField(max_length=150)
@@ -40,6 +47,18 @@ class MappingArea(models.Model):
 
     def __str__(self):
         return self.name
+
+    def preview_first(self):
+        if self.first_image_hover:
+            return '<img src="{0}{1}" />'.format(settings.MEDIA_URL, self.first_image_hover)
+    preview_first.short_description = 'Image'
+    preview_first.allow_tags = True
+
+    def preview_second(self):
+        if self.second_image_hover:
+            return '<img src="{0}{1}" />'.format(settings.MEDIA_URL, self.second_image_hover)
+    preview_second.short_description = 'Image'
+    preview_second.allow_tags = True
 
 
 class MuscleGroup(models.Model):
@@ -190,6 +209,12 @@ class Image(models.Model):
 
     def __str__(self):
         return self.name
+
+    def preview(self):
+        if self.image:
+            return '<img src="{0}{1}" />'.format(settings.MEDIA_URL, self.image)
+    preview.short_description = 'Image'
+    preview.allow_tags = True
 
 
 class MappingAreaMuscles(MappingArea):
