@@ -185,12 +185,14 @@
             </div>-->
             <ul class="right list-unstyled main-footer-links">
                 {% comment %}<li><a href="">{% trans "Roadmap" %}</a></li>
-                <li><a href="">{% trans "Participate" %}</a></li>
-                <li><a href="">{% trans "Help" %}</a></li>{% endcomment %}
+                <li><a href="">{% trans "Participate" %}</a></li>{% endcomment %}
+                <li><a href="{% url 'status' %}">{% trans "Status" %}</a></li>
                 <li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
             </ul>
             <ul class="list-unstyled main-footer-links">
-                <li>&copy; {% now "Y" %} TSWD {% current_version %}</li>
+                <li title="{% trans 'Current system revision:' %} {% current_revision %}">
+                    &copy; {% now "Y" %} TSWD {% current_version %}
+                </li>
                 {% comment %}<li><a href="">{% trans "Terms" %}</a></li>
                 <li><a href="">{% trans "Privacy" %}</a></li>{% endcomment %}
                 <li><a href="mailto:herveberaud.pro@gmail.com">{% trans "Contact" %}</a></li>
