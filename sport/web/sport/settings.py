@@ -64,6 +64,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', config.get('SETTINGS', 'ALLOWED_HOSTS
 
 # Application definition
 INSTALLED_APPS = (
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -134,7 +135,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.template.context_processors.media',
     'django.template.context_processors.static',
     'django.template.context_processors.tz',
-    'django.contrib.messages.context_processors.messages')
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
+)
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'SWD Admin'
+}
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
