@@ -1,0 +1,48 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX %}
+{% load common_tags %}
+
+{% block title %}{% trans "Sytem Status" %}{% endblock %}
+{% block meta_description %}
+    {% trans "System status informations. Technical informations" %}
+{% endblock %}
+{% block meta_keywords %}
+    {% trans "status, information, system" %}{{ muscle }}
+{% endblock %}
+
+{% block style %}
+    .main-content {
+        margin: 0 auto;
+        max-width: 996px;
+    }
+{% endblock %}
+
+{% block content %}
+<h1>
+    {% trans "System Status" %}
+    <small title="{% last_update_date %}" class="right">Updated {% last_update_date_since %}</small>
+</h1>
+<a href='https://semaphoreci.com/4383/street-workout-database'> <img src='https://semaphoreci.com/api/v1/projects/fa9cd815-6233-48a5-8220-6c1cebc61ad2/633021/shields_badge.svg' alt='Build Status'></a>
+<a href="https://www.codacy.com/app/herveberaud-pro/street-workout-database"><img src="https://api.codacy.com/project/badge/grade/137a8d9d69be427090c59034d2af1ac1"/></a>
+<h3>Current version <br><small>{% current_version %}</small></h3>
+<h3>
+    Current revision (git) <br>
+    <small>
+        <a href="https://github.com/4383/street-workout-database/commit/{% current_revision %}" target="_blank">
+            {% current_revision %}
+        </a>
+    </small>
+</h3>
+<h3>Github repository <img src="{% static 'img/design/GitHub-Mark-32px.png' %}"></h3>
+<ul>
+    <li>
+        <a href="https://github.com/4383/street-workout-database:master" target="_blank">Master (Production branch)</a>
+    </li>
+    <li>
+        <a href="https://github.com/4383/street-workout-database/tree/development" target="_blank">Development branch</a>
+    </li>
+</ul>
+{% endblock %}

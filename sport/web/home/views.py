@@ -8,6 +8,10 @@ def about(request):
     return render(request, "about.html")
 
 
+def status(request):
+    return render(request, "status.html")
+
+
 def index(request):
     exercises_number = Exercise.objects.filter(active=True).count()
     context = {"exercises_number": exercises_number}
