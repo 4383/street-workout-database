@@ -85,6 +85,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         ('Extra', {'classes': ('collapse', ), 'fields': ('equipments', )})
     )
     list_filter = ['category', 'muscles', 'level', 'active']
+    filter_horizontal = ('muscles', 'related_exercises')
 
 
 class EquipmentAdmin(admin.ModelAdmin):
