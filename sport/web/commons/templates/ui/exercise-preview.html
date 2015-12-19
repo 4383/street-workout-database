@@ -14,11 +14,11 @@
              role="group" aria-label="exercise-explorer">
             <a href="{% url 'exercise_videos' slug=item.slug %}" title="{% trans 'videos' %}" data-toggle="tooltip"
                data-placement="right" class="btn btn-default">
-                <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                <span class="fa fa-film" aria-hidden="true"></span>
             </a>
             <a href="{% url 'exercise_images' slug=item.slug %}" title="{% trans 'Images' %}" data-toggle="tooltip"
                data-placement="right" class="btn btn-default">
-                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                <span class="fa fa-picture-o" aria-hidden="true"></span>
             </a>
         </div>
         <span class="left diagonal-label padding-top-xl">
@@ -39,7 +39,7 @@
                     title="{% trans 'Description' %}"
                     data-toggle="popover"
                     data-content="{{ item.description|truncatewords:15 }}">
-                    <span class="glyphicon glyphicon-eye-open"></span>
+                    <span class="fa fa-eye"></span>
                 </button>
                 <a href="{% url 'exercise' slug=item.slug %}">{{ item.name|capfirst }}</a>
             </h4>

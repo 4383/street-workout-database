@@ -7,9 +7,9 @@ $(document).scroll(function() {
 //-------------------
 $(".show-step-description").click(function(event){
     var id = event.target.id.substr(event.target.id.length - 1);
-    var class_type = "glyphicon glyphicon-resize-small";
+    var class_type = "fa fa-compress";
     if ("collapse in" === $("#collapseDescription" + id).attr("class")) {
-        class_type = "glyphicon glyphicon-resize-full";
+        class_type = "fa fa-expand";
     }
     $("#collapseStepBtnSpan" + id).attr("class", class_type);
 });
