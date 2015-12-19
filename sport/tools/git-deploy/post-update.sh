@@ -61,6 +61,11 @@ cd $PROJECTDIR
 rm -rf $PROJECTDIR/$PROJECT
 git clone -b `whoami` /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT
 
+TIMESTAMP=date +"%T"
+echo "[UPDATE]" > $PROJECTDIR/$PROJECT/sport/web/update.ini
+echo "date=$TIMESTAMP" >> $PROJECTDIR/$PROJECT/sport/web/update.ini
+echo "status=passed" >> $PROJECTDIR/$PROJECT/sport/web/update.ini
+
 source $PROJECTDIR/bin/activate
 $PROJECTDIR/bin/pip install -r $PROJECTDIR/$PROJECT/sport/fixtures/`whoami`.requirements.txt
 
@@ -94,11 +99,6 @@ if [ ! -z $ERROR_OCCURED ]; then
     echo "Supervisor is done but expected to start" >> $LOG_FILE
     rollback
 fi
-
-TIMESTAMP=date +"%T"
-echo "[UPDATE]" > update.ini
-echo "date=$TIMESTAMP" >> update.ini
-echo "status=passed" >> update.ini
 
 echo "Finish at: `date`" >> $LOG_FILE
 exec git update-server-info
