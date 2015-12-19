@@ -22,26 +22,20 @@
         padding-left: 0px;
         padding-right: 0px;
     }
-
-    .jumbotron {
-        padding-left: 2%;
-        padding-right: 2%;
-        background-image: url('{% static "img/design/index4.jpg" %}');
-        background-color: black;
-        background-repeat: no-repeat;
-        background-size: 40% 100%;
-        background-position: right;
-        color: white;
-    }
 {% endblock %}
 
 
 {% block content %}
-<div class="jumbotron">
-    <h1>{% trans "Here you build your body !" %}</h1>
-    <p>
-        {% trans "Already" %} {{ exercises_number }} {% trans "referenced exercise" %}{{ exercises_number|pluralize }}
-    </p>
+<div class="jumbotron custom-jumbotron">
+    <h1>
+        <strong>
+            {% trans "Here you build your body !" %}<br>
+            <small class="fg-white">
+                {% trans "Already" %} {{ exercises_number }} {% trans "referenced exercise" %}{{ exercises_number|pluralize }}
+            </small>
+        </strong>
+
+    </h1>
     <p>
         <a class="btn btn-primary btn-lg" href="{% url 'exercises_categories' %}" role="button">
             {% trans "Find exercises by categories" %}
@@ -51,6 +45,29 @@
         </a>
     </p>
 </div>
+<div class="row custom-yellow">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-6 fg-white text-justify">
+        <h2>{% trans 'Help us to improve' %} <strong class="underline">{% trans 'your' %}</strong> {% trans 'website' %}</h2>
+        <h4>{% trans 'Contribute' %}</h4>
+        <p>
+            {% trans 'Contribute to a great project. Share your knowledge, your exercises and your workout' %}<br>
+            {% trans 'Become a content contributor, write content, share your experiences.' %}<br>
+            {% trans 'Become a developer, fork this project, add features, fix a bug, and send a pull request' %}<br>
+            <a class="badge badge-important" href="mailto:herveberaud.pro@gmail.com">{% trans "Enroll you now !" %}</a>
+        </p>
+        <h4>{% trans 'Make a wish !' %}</h4>
+        <p>
+            {% trans 'Propose new features, send any ideas we will study it !' %}
+        </p>
+        <h4>{% trans 'Anyone can help-us !' %}</h4>
+        <p>{% trans 'Really,' %} <strong>{% trans 'ANYONE' %}</strong>
+            {% trans 'can do something to help make The Street Workout Database better and greater!' %}</p>
+    </div>
+    <div class="col-lg-2 no-padding">
+        <img src="{% static 'img/design/we-want-you.png' %}" class="img-xxl">
+    </div>
+</div>
 <div class="text-center border-bottom-gray">
     <h2>{% trans "Retrieve a large variety of body weight exercises" %}</h2>
     <img src="{% static 'img/design/index1.jpg' %}" alt="" class="img-circle img-xl"/>
@@ -58,13 +75,6 @@
     <img src="{% static 'img/design/index3.jpg' %}" class="img-circle img-xl"/>
     <p class="text-xl padding-top-xl">
         {% trans 'The Street Workout Database is built by an enthusiast for enthusiasts' %}
-    </p>
-</div>
-<div class="text-center padding-top-xl border-bottom-gray" style="background-color: #1b6d85; color: white">
-    <h2>{% trans "This website have a responsive design" %}</h2>
-    <img src="{% static 'img/design/reponsive-design.png' %}" alt="" class="img-xl"/>
-    <p class="text-xl padding-top-xl">
-        {% trans "The Street Workout Database is built by an enthusiast for enthusiasts" %}
     </p>
 </div>
 <div class="text-center padding-top-xl">
