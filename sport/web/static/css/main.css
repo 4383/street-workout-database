@@ -124,7 +124,7 @@ separator: #E7E7E7
     background-size: 100% 100%;
     padding-right: 2%;
     color: white;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 @media (min-width: 768px) {
