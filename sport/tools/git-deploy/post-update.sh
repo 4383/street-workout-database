@@ -95,5 +95,10 @@ if [ ! -z $ERROR_OCCURED ]; then
     rollback
 fi
 
+TIMESTAMP=date +"%T"
+echo "[UPDATE]" > update.ini
+echo "date=$TIMESTAMP" >> update.ini
+echo "status=passed" >> update.ini
+
 echo "Finish at: `date`" >> $LOG_FILE
 exec git update-server-info
