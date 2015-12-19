@@ -4,7 +4,6 @@
 function ajax_exercises_by_muscles(muscle) {
     $("#loader").show();
     $("#loader-message").show();
-    console.log("Loading exercises information") // sanity check
     $.ajax({
         url : "/exercises/muscles/ajax-exercises-by-muscles/", // the endpoint
         type : "POST", // http method
@@ -12,14 +11,12 @@ function ajax_exercises_by_muscles(muscle) {
 
         // handle a successful response
         success : function(json) {
-            console.log(json); // log the returned json to the console
             json = JSON.stringify(json);
             json = JSON.parse(json);
             $("#loader").hide();
             $("#loader-message").hide();
             $("#exercises-count").text(json.count);
             $("#exercises-count").attr('href', json.link);
-
         },
 
         // handle a non-successful response

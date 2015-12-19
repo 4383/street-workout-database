@@ -8,8 +8,6 @@ $(document).scroll(function() {
 $(".show-step-description").click(function(event){
     var id = event.target.id.substr(event.target.id.length - 1);
     var class_type = "glyphicon glyphicon-resize-small";
-    console.log("#collapseDescription" + id);
-    console.log($("#collapseDescription" + id).attr("class"));
     if ("collapse in" === $("#collapseDescription" + id).attr("class")) {
         class_type = "glyphicon glyphicon-resize-full";
     }
@@ -56,8 +54,12 @@ $('#level-hard').click(function() {
 //----------------------
 // Muscle mapping
 //----------------------
-var json_images_data = JSON.parse(gallery_content);
-var reverse_json_images_data = JSON.parse(reverse_gallery_content);
+if (typeof gallery_content !== 'undefined') {
+    var json_images_data = JSON.parse(gallery_content);
+}
+if (typeof reverse_gallery_content !== 'undefined') {
+    var reverse_json_images_data = JSON.parse(reverse_gallery_content);
+}
 
 function display_muscle_details(area_id) {
     var muscle = json_images_data[area_id];
