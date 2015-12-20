@@ -1,9 +1,11 @@
 __author__ = 'herve.beraud'
+
 from datetime import datetime, timedelta
 
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
+from django.utils.timesince import timesince
 
 from community.models import InformationMessage
 from exercises.models import Category
@@ -78,6 +80,28 @@ def display_information_message(context):
 @register.simple_tag
 def current_version():
     return settings.CURRENT_VERSION
+
+
+@register.simple_tag
+def current_revision():
+    return settings.CURRENT_REVISION
+
+
+@register.simple_tag
+def last_update_date_since():
+    now = datetime.now()
+    update = datetime.fromtimestamp(settings.LAST_UPDATE_DATE)
+    return timesince(update, now)
+
+
+@register.simple_tag
+def last_update_date():
+    return datetime.fromtimestamp(settings.LAST_UPDATE_DATE)
+
+
+@register.simple_tag
+def last_update_status():
+    return settings.LAST_UPDATE_STATUS
 
 
 @register.simple_tag

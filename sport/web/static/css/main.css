@@ -116,6 +116,17 @@ separator: #E7E7E7
     color: #767676;
 }
 
+.custom-jumbotron {
+    background-image: url("../img/design/street-workout-parc.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    padding-left: 2%;
+    background-size: 100% 100%;
+    padding-right: 2%;
+    color: white;
+    margin-bottom: 0;
+}
+
 @media (min-width: 768px) {
     .main-footer {
         background-image: url("../img/design/brand-xs.png");
@@ -123,8 +134,12 @@ separator: #E7E7E7
         background-position: center;
     }
 
-    .rise {
-        top: -150px;
+    .raise {
+        top: -140px;
+    }
+
+    .custom-jumbotron {
+        background-size: 100% auto;
     }
 }
 
@@ -141,6 +156,16 @@ separator: #E7E7E7
 #information-message {
     width: 80%;
     margin: auto;
+}
+
+.custom-jumbotron h1 {
+    text-shadow: 0 0 7px rgba(0,0,0, 1);
+}
+
+.we-want-you {
+    background-image: url('../img/design/we-want-you.png');
+    background-size: auto 100%;
+    background-position: center;
 }
 
 /*-----------------
@@ -176,9 +201,10 @@ area:hover {
 }
 
 .vertical {
-    writing-modes: vertical-lr;
     -webkit-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
 
@@ -251,44 +277,18 @@ Images
     margin-top: 10px;
 }
 
-.small-background-opacity {
-    background-color: rgba(250, 250, 250, 0.7);
-}
-
-.easy-level-color {
-    background-color: #5cb85c;
-}
-
-.medium-level-color {
-    background-color: #f0ad4e;
-}
-
-.hard-level-color {
-    background-color: #d9534f;
-}
-
-.label-easy {
-    background-color: #5cb85c;
-}
-
-.label-medium {
-    background-color: #f0ad4e;
-}
-
-.label-hard {
-    background-color: #d9534f;
-}
-
 .diagonal-label {
     -ms-transform: rotate(-30deg);
     -webkit-transform: rotate(-30deg);
+    -o-transform: rotate(-90deg);
+    -moz-transform: rotate(-30deg);
     transform: rotate(-30deg);
 }
 
 .superposition {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
 }
 
 #exercises-list {
@@ -359,16 +359,16 @@ Margin and spacing
 }
 
 .no-margin-left {
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 .no-margin-right {
-    margin-right: 0px;
+    margin-right: 0;
 }
 
 .no-margin-left-right {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .margin-top-xs {
@@ -400,15 +400,15 @@ Margin and spacing
 }
 
 .no-margin {
-    margin: 0px;
+    margin: 0;
 }
 
 .no-padding {
-    padding: 0px;
+    padding: 0;
 }
 
 .no-padding-left {
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .padding-top-xs {
@@ -496,17 +496,65 @@ Colors
     color : white;
 }
 
+.small-background-opacity {
+    background-color: rgba(250, 250, 250, 0.7);
+}
 
+.easy-level-color {
+    background-color: #5cb85c;
+}
 
+.medium-level-color {
+    background-color: #f0ad4e;
+}
 
+.hard-level-color {
+    background-color: #d9534f;
+}
 
+.label-easy {
+    background-color: #5cb85c;
+}
 
+.label-medium {
+    background-color: #f0ad4e;
+}
 
+.label-hard {
+    background-color: #d9534f;
+}
 
+.custom-yellow {
+    background-color: #ff920a;
+}
 
+.custom-blue {
+    background-color: #22C3EA;
+}
 
+.custom-green {
+    background-color: #57AA39;
+}
 
+.custom-gray {
+    background-color: #373737;
+}
 
+.custom-light-gray {
+    background-color: #EEEEEE;
+}
+
+.custom-purple {
+    background-color: #BC237B;
+}
+
+.custom-light-blue {
+    background-color: #F4F7FC;
+}
+
+.custom-pink {
+    background-color: #DA1345;
+}
 /* ==========================================================================
    Helper classes
    ========================================================================== */
@@ -662,15 +710,14 @@ Colors
         max-width: 100% !important;
     }
 
-    p,
+    p {
+        orphans: 3;
+        widows: 3;
+    }
     h2,
     h3 {
         orphans: 3;
         widows: 3;
-    }
-
-    h2,
-    h3 {
         page-break-after: avoid;
     }
 }

@@ -12,6 +12,8 @@ urlpatterns = [
     url(r"^$", home_view.index, name="index"),
     url(r"^about/$", home_view.about, name="about"),
     url(r"^about$", home_view.about, name="about"),
+    url(r"^status/$", home_view.status, name="status"),
+    url(r"^status$", home_view.status, name="status"),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

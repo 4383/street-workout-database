@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from subprocess import check_output
 try:
     import configparser
 except ImportError:
@@ -31,10 +32,17 @@ config.read(configfile)
 
 CURRENT_ENVIRONMENT = config.get('SETTINGS', 'CURRENT_ENVIRONMENT')
 
-CURRENT_VERSION = "v2"
+CURRENT_VERSION = "v2.1"
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
+configfile_update = os.path.join(BASE_DIR, 'update.ini')
+config_update = configparser.RawConfigParser()
+config_update.read(configfile_update)
+
+LAST_UPDATE_DATE = config_update.getfloat('UPDATE', 'date')
+
+LAST_UPDATE_STATUS = config_update.get('UPDATE', 'status')
+
+CURRENT_REVISION = check_output(["git", "rev-parse", "HEAD"]).decode('utf8')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY_VALUE = config.get('SETTINGS', 'SECRET_KEY')
@@ -52,6 +60,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', config.get('SETTINGS', 'ALLOWED_HOSTS
 
 # Application definition
 INSTALLED_APPS = (
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -122,7 +131,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.template.context_processors.media',
     'django.template.context_processors.static',
     'django.template.context_processors.tz',
-    'django.contrib.messages.context_processors.messages')
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
+)
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'SWD Admin'
+}
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'

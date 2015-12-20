@@ -28,31 +28,37 @@ class CommonsPagesAttributesAdmin(admin.ModelAdmin):
 class ImageCategoryInLine(admin.StackedInline):
     model = ImageCategory
     extra = 2
+    readonly_fields = ('preview',)
 
 
 class ImageExerciseInLine(admin.TabularInline):
     model = ImageExercise
     extra = 2
+    readonly_fields = ('preview',)
 
 
 class ImageMuscleInLine(admin.StackedInline):
     model = ImageMuscle
     extra = 2
+    readonly_fields = ('preview',)
 
 
 class ImageMuscleGroupInLine(admin.StackedInline):
     model = ImageMuscleGroup
     extra = 2
+    readonly_fields = ('preview',)
 
 
 class ImageEquipmentInline(admin.StackedInline):
     model = ImageEquipment
     extra = 1
+    readonly_fields = ('preview',)
 
 
 class MappingAreaMusclesInline(admin.StackedInline):
     model = MappingAreaMuscles
     extra = 2
+    readonly_fields = ('preview_first', 'preview_second')
 
 
 class VideoExerciseInline(admin.StackedInline):
@@ -79,6 +85,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         ('Extra', {'classes': ('collapse', ), 'fields': ('equipments', )})
     )
     list_filter = ['category', 'muscles', 'level', 'active']
+    filter_horizontal = ('muscles', 'related_exercises')
 
 
 class EquipmentAdmin(admin.ModelAdmin):
