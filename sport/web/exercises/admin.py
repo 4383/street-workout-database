@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.forms import ModelForm
+from suit_redactor.widgets import RedactorWidget
 
 from exercises.models import Category
 from exercises.models import CommonsPagesAttributes
@@ -19,6 +21,13 @@ from exercises.models import MuscleType
 from exercises.models import Step
 from exercises.models import VideoExercise
 from exercises.models import VideoCategory
+
+
+class PageForm(ModelForm):
+    class Meta:
+        widgets = {
+            'description': RedactorWidget(editor_options={'lang': 'en'})
+        }
 
 
 class CommonsPagesAttributesAdmin(admin.ModelAdmin):
@@ -72,8 +81,17 @@ class VideoCategoryInline(admin.StackedInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
+    form = PageForm
+
     list_display = ('name', 'slug')
     inlines = [ImageCategoryInLine, VideoCategoryInline]
+
+    filter_horizontal = ('muscles',)
+
+    fieldsets = [
+        (None, {'fields': ('name', 'muscles', 'active', 'slug', 'related_category', 'common_page_attribute')}),
+        ('Description', {'classes': ('full-width',), 'fields': ('description',)}),
+    ]
 
 
 class ExerciseAdmin(admin.ModelAdmin):

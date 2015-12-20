@@ -40,7 +40,7 @@
     {% endif %}
 
     <section id="description">
-        <p class="text-justify text-xl">{{ category.description|capfirst }}</p>
+        <p class="text-justify text-xl">{% autoescape off %}{{ category.description|capfirst }}{% endautoescape %}</p>
     </section>
 
     {% if category.related_category.all %}
