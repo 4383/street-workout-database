@@ -61,7 +61,7 @@ cd $PROJECTDIR
 rm -rf $PROJECTDIR/$PROJECT
 git clone -b `whoami` /home/`whoami`/git/`whoami`.swd.git $PROJECTDIR/$PROJECT
 
-TIMESTAMP=date +"%T"
+TIMESTAMP=`date +%s`
 echo "[UPDATE]" > $PROJECTDIR/$PROJECT/sport/web/update.ini
 echo "date=$TIMESTAMP" >> $PROJECTDIR/$PROJECT/sport/web/update.ini
 echo "status=passed" >> $PROJECTDIR/$PROJECT/sport/web/update.ini
