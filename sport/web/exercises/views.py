@@ -119,6 +119,7 @@ def exercise(request, slug):
     except IndexError:
         main_exercise_set = None
 
+    related_exercises_image = None
     if current_exercise.have_related_exercises():
         related_exercises_image = ImageExercise.objects.filter(active=True,
                                                                binding__in=current_exercise.related_exercises.all())
