@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.contrib.auth.models import User
 
 MUSCLE_TYPE = (('skeleton', _('Skeletal Striated Muscle')),
                ('smooth', _('Smooth Muscle')),
@@ -153,6 +154,7 @@ class Exercise(models.Model):
     equipments = models.ManyToManyField(Equipment, blank=True, default=None)
     active = models.BooleanField(default=False)
     slug = models.SlugField(default='', unique=True)
+    created_by = models.ForeignKey(User, default=1)
 
     def __str__(self):
         return self.name

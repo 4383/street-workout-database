@@ -72,6 +72,9 @@
     {% show_muscles_mapping exercise %}
 
     <section id="description">
+        {% if exercise.created_by %}
+            <p class="fg-grey">{% trans 'Added by: ' %}{{ exercise.created_by }}</p>
+        {% endif %}
         <p class="text-justify text-xl">{% autoescape off %}{{ exercise.description|capfirst }}{% endautoescape %}</p>
     </section>
 

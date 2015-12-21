@@ -496,6 +496,10 @@ Colors
     color : white;
 }
 
+.fg-grey {
+    color: lightgray;
+}
+
 .small-background-opacity {
     background-color: rgba(250, 250, 250, 0.7);
 }
