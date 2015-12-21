@@ -68,10 +68,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'suit_redactor',
+    # swd apps
     'exercises',
     'commons',
     'community',
     'home',
+    'social',
 )
 
 
