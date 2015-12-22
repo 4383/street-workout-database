@@ -143,6 +143,11 @@ separator: #E7E7E7
     }
 }
 
+.concentrate {
+    margin: 0 auto;
+    max-width: 996px;
+}
+
 .main-footer .footer-col {
     margin-left: 30px;
     margin-right: 30px;
