@@ -7,6 +7,7 @@ from home import views as home_view
 
 urlpatterns = [
     url(r"^admin/", include(admin.site.urls)),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r"^exercises/", include('exercises.urls')),
     url(r"^/$", home_view.index, name="index"),
     url(r"^$", home_view.index, name="index"),

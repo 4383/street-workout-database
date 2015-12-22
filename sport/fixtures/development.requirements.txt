@@ -5,5 +5,7 @@ Pillow==2.9.0
 sqlparse==0.1.16
 django-suit==0.2.15
 django-suit-redactor==0.0.2
+django-registration==2.0.3
+
 
 
